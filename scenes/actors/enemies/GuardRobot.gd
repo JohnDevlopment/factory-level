@@ -4,7 +4,6 @@ extends Enemy
 export(float, 0.1, 1000, 0.1) var detection_radius : float setget set_detection_radius
 
 onready var timer : Timer = $Timer
-onready var tween : Tween = $Tween
 var blackboard
 
 var _distance_met := 0.0
@@ -16,23 +15,12 @@ func _ready() -> void:
 		set_physics_process(false)
 		return
 	
-	$Blackboard.queue_free()
-	
 	set_meta('initial_position', global_position)
-	
-#	yield(get_tree().create_timer(1), 'timeout')
-#	_state = 1
-#	direction.x = -1
-	
-#	blackboard = $Blackboard
-#	blackboard.set_data('detection_size', detection_radius)
-#	blackboard.set_data('player', Game.get_player())
-#	blackboard.set_data('initial_position', global_position)
-#	blackboard.set_data('charge_speed', 200)
 
 func _draw() -> void:
-	var draw_color : Color = ProjectSettings.get_setting('debug/shapes/collision/shape_color')
-	draw_circle(Vector2(), detection_radius, draw_color)
+	if Engine.editor_hint:
+		var draw_color : Color = ProjectSettings.get_setting('debug/shapes/collision/shape_color')
+		draw_circle(Vector2(), detection_radius, draw_color)
 
 func _physics_process(delta: float) -> void:
 	_exec_state(delta)
@@ -76,6 +64,9 @@ func _exec_state(delta: float) -> void:
 			# Wait a bit
 			if is_zero_approx(timer.time_left):
 				_state = 0
+
+func _on_damaged(_stats: Stats) -> void:
+	queue_free()
 
 func move_actor():
 	velocity = move_and_slide(velocity, Vector2.UP)
