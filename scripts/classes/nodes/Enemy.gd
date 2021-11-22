@@ -3,8 +3,6 @@ tool
 extends Actor
 class_name Enemy, "res://assets/textures/icons/Enemy.svg"
 
-# TODO: add documentation
-
 ## The stats of the @class enemy
 # @type Stats
 var stats: Stats
@@ -55,13 +53,12 @@ func _get_property_list():
 	]
 
 func _ready():
-	if Engine.editor_hint: return
-	assert(is_instance_valid(stats), "Enemy needs a 'stats' property")
-	stats.init_stats(self)
+	if Engine.editor_hint:
+		set_process(false)
+		set_physics_process(false)
+		return
 	
-	for node in get_children():
-		if node is Area2D:
-			node.set_meta("owner", self)
+	stats.init_stats(self)
 
 func _set(property, value):
 	match property:
@@ -73,32 +70,47 @@ func _set(property, value):
 			return false
 	return true
 
-## Called to decide the amount of damage to take based on the attacker's stats
-# @arg other_stats The Stats belonging to an opposing actor
+## Called when the enemy is damaged for specific behavior.
+# @virtual
+# @desc    Called at the end of @function decide_damage(). Used to implement
+#          custom behavior after the enemy has taken damage.
+func _on_damaged(_stats: Stats) -> void: pass
+
+## Returns true if the enemy should take damage.
+# @virtual
+# @desc    This function is called by @function should_damage(). It returns
+#          true by default but can be overriden to customize its behavior.
+#          Used for enemy-specific
+func _should_damage() -> bool: return true
+
+## Called to decide the amount of damage to take based on the attacker's stats.
+# @desc This function should be called by another actor dealing damage to this one.
+#       The values in @a other_stats are used in conjuction with @property stats to
+#       decide whether the @class Enemy should take damage or not, and how much.
 func decide_damage(other_stats: Stats) -> void:
 	if not should_damage(): return
 	var dmg = stats.calculate_damage(other_stats)
 	stats.health = int(max(0, stats.health - dmg))
-	if has_method("_on_damaged"):
-		call("_on_damaged", other_stats)
+	call("_on_damaged", other_stats)
 
-## Calculates the enemy's direction and distance to the player
-# @return  A dictionary with the direction and distance to the player, or null
-#          if the player does not exist inside the tree
+## Calculates the enemy's direction and distance to the player.
+# @const
+# @desc Returns a dictionary with the direction and distance to the player, or null
+#       if the player does not exist inside the tree.
 func direction_to_player():
 	if Game.has_player():
 		var player: Actor = Game.get_player()
 		var distance := player.get_center() - get_center()
 		return {distance = distance, direction = distance.normalized()}
 
-## Returns the current health
-# @return  The health of the @class Enemy
+## Returns the current health of the enemy.
+# @const
 func get_health() -> int: return stats.health
 
-## Returns a metadata value with a default as fallback
-# @arg    name     The key for which a metadata is defined
-# @arg    default  The default return value if @a name does not exist
-# @return          The metadata for @a name (if it exists) or @a default otherwise
+## Returns a metadata value with a fallback value.
+# @const
+# @desc  Returns the object's metadata entry for the given @a name. If @a name
+#        does not exist, then @a default is returned.
 func get_meta_or_default(name: String, default = null):
 	if has_meta(name):
 		return get_meta(name)
@@ -111,6 +123,5 @@ func get_meta_or_default(name: String, default = null):
 #          true, the @class Enemy takes damage according to the Stats of the other Actor.
 func should_damage() -> bool:
 	var result: bool = invincibility_timer.is_stopped()
-	if has_method("_should_damage"):
-		result = result && call("_should_damage")
+	result = result && call("_should_damage")
 	return result
