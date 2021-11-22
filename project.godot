@@ -89,6 +89,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/behavior_tree/src/bt_node.gd"
 }, {
+"base": "BTLeaf",
+"class": "BTNoop",
+"language": "GDScript",
+"path": "res://addons/behavior_tree/src/btnodes/leaves/bt_noop.gd"
+}, {
 "base": "BTComposite",
 "class": "BTParallel",
 "language": "GDScript",
@@ -128,6 +133,11 @@ _global_script_classes=[ {
 "class": "BTSequence",
 "language": "GDScript",
 "path": "res://addons/behavior_tree/src/btnodes/composites/bt_sequence.gd"
+}, {
+"base": "BTComposite",
+"class": "BTStateSelector",
+"language": "GDScript",
+"path": "res://addons/behavior_tree/src/btnodes/composites/bt_state_selector.gd"
 }, {
 "base": "BTLeaf",
 "class": "BTWait",
@@ -266,6 +276,7 @@ _global_script_class_icons={
 "BTGuard": "res://addons/behavior_tree/icons/btguard.svg",
 "BTLeaf": "res://addons/behavior_tree/icons/btleaf.svg",
 "BTNode": "res://addons/behavior_tree/icons/btnode.svg",
+"BTNoop": "",
 "BTParallel": "res://addons/behavior_tree/icons/btparallel.svg",
 "BTRandomSelector": "res://addons/behavior_tree/icons/btrndselector.svg",
 "BTRandomSequence": "res://addons/behavior_tree/icons/btrndsequence.svg",
@@ -274,6 +285,7 @@ _global_script_class_icons={
 "BTRevert": "res://addons/behavior_tree/icons/btrevert.svg",
 "BTSelector": "res://addons/behavior_tree/icons/btselector.svg",
 "BTSequence": "res://addons/behavior_tree/icons/btsequence.svg",
+"BTStateSelector": "",
 "BTWait": "res://addons/behavior_tree/icons/btwait.svg",
 "BehaviorTree": "res://addons/behavior_tree/icons/bt.svg",
 "Blackboard": "res://addons/behavior_tree/icons/blackboard.svg",
@@ -334,12 +346,14 @@ window/stretch/aspect="keep"
 
 [editor]
 
+version_control_autoload_on_startup=true
+version_control_plugin_name="GitAPI"
 version_control/autoload_on_startup=true
 version_control/plugin_name="GitAPI"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/AsepriteWizard/plugin.cfg", "res://addons/Todo_Manager/plugin.cfg", "res://addons/anima/plugin.cfg", "res://addons/debug_console/plugin.cfg", "res://addons/gut/plugin.cfg", "res://addons/node_mapper/plugin.cfg", "res://addons/snippets_plugin/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/AsepriteWizard/plugin.cfg", "res://addons/Todo_Manager/plugin.cfg", "res://addons/anima/plugin.cfg", "res://addons/behavior_tree/plugin.cfg", "res://addons/debug_console/plugin.cfg", "res://addons/gut/plugin.cfg", "res://addons/node_mapper/plugin.cfg", "res://addons/snippets_plugin/plugin.cfg" )
 
 [gdnative]
 
