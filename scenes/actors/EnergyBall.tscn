@@ -28,6 +28,7 @@ gravity_scale = 1.5
 script = ExtResource( 1 )
 throw_force = 1395.0
 upward_force = 1010.0
+required_force = 126.4
 
 [node name="Frames" type="Sprite" parent="."]
 texture = ExtResource( 2 )
