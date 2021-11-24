@@ -4,10 +4,8 @@ var debug_overlay
 var explorer
 
 func _ready() -> void:
-	explorer = $Explorer
+	explorer = $Actors/Explorer
 	debug_overlay = $DebugOverlay
-	debug_overlay.add_stat("Distance Travelled", $GuardRobot, '_distance_met', false)
-	debug_overlay.add_stat("Velocity", $GuardRobot, 'velocity', false)
 
 func _unhandled_key_input(event: InputEventKey) -> void:
 	if event.is_action_pressed('reset'):
