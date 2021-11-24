@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/actors/EnergyBall.gd" type="Script" id=1]
+[ext_resource path="res://assets/textures/actors/energy_ball.png" type="Texture" id=2]
+[ext_resource path="res://scenes/components/Hitbox.tscn" type="PackedScene" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 12.0
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 12, 12 )
+
+[node name="EnergyBall" type="KinematicBody2D"]
+collision_layer = 8
+collision_mask = 19
+script = ExtResource( 1 )
+__meta__ = {
+"collision_layer": 8,
+"collision_mask": 19
+}
+speed_cap = Vector2( 0, 0 )
+disabled = null
+
+[node name="Frames" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+self_modulate = Color( 0.0117647, 0.54902, 0.223529, 1 )
+light_mask = 0
+shape = SubResource( 1 )
+
+[node name="Hitbox" parent="." instance=ExtResource( 3 )]
+collision_mask = 260
+
+[node name="CollisionShape2D" parent="Hitbox" index="0"]
+shape = SubResource( 2 )
+
+[editable path="Hitbox"]
