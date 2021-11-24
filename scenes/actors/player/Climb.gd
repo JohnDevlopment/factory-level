@@ -6,7 +6,7 @@ func _setup() -> void:
 	var root : Actor = persistant_state
 	set_meta('gravity', root.gravity_value)
 	root.gravity_value = 0
-	root.velocity.x = 0
+	root.velocity = Vector2()
 	root.move_and_slide(Vector2.UP, Vector2.UP)
 
 func cleanup() -> void:
