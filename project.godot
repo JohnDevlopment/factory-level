@@ -250,6 +250,7 @@ _global_script_class_icons={
 
 config/name="Factory Level"
 run/main_scene="res://scenes/Demo.tscn"
+boot_splash/image="res://ggj2-splash.png"
 config/icon="res://icon.png"
 
 [autoload]
@@ -259,6 +260,7 @@ History="*res://addons/debug_console/History.gd"
 NodeMapper="*res://addons/node_mapper/NodeMapper.gd"
 Anima="*res://addons/anima/core/anima.gd"
 Math="*res://scripts/classes/singletons/Math.gd"
+Globals="*res://scripts/classes/singletons/Globals.gd"
 
 [debug]
 
