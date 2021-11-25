@@ -18,6 +18,9 @@ __meta__ = {
 "collision_layer": 8,
 "collision_mask": 19
 }
+neccessary_velocity = Vector2( 100, 150 )
+throw_force = 190.8
+reflect_speed = Vector2( 130, 150 )
 speed_cap = Vector2( 0, 0 )
 disabled = null
 
@@ -35,5 +38,16 @@ collision_mask = 260
 
 [node name="CollisionShape2D" parent="Hitbox" index="0"]
 shape = SubResource( 2 )
+
+[node name="DetectionField" type="Area2D" parent="."]
+visible = false
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionField"]
+shape = SubResource( 2 )
+
+[connection signal="body_entered" from="DetectionField" to="." method="_on_DetectionField_body_entered"]
+[connection signal="body_exited" from="DetectionField" to="." method="_on_DetectionField_body_exited"]
 
 [editable path="Hitbox"]
