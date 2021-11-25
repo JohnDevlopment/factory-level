@@ -164,11 +164,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/classes/resources/ErrorInfo.gd"
 }, {
-"base": "Container",
-"class": "HFlowContainer",
-"language": "GDScript",
-"path": "res://scripts/classes/nodes/HFlowContainer.gd"
-}, {
 "base": "Resource",
 "class": "MessageData",
 "language": "GDScript",
@@ -236,7 +231,6 @@ _global_script_class_icons={
 "DistanceNotifier": "",
 "Enemy": "res://assets/textures/icons/Enemy.svg",
 "ErrorInfo": "",
-"HFlowContainer": "",
 "MessageData": "",
 "Messenger": "",
 "State": "",
@@ -277,7 +271,7 @@ window/stretch/aspect="keep_height"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/AsepriteWizard/plugin.cfg", "res://addons/behavior_tree/plugin.cfg", "res://addons/debug_console/plugin.cfg", "res://addons/node_mapper/plugin.cfg", "res://addons/snippets_plugin/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/AsepriteWizard/plugin.cfg", "res://addons/Todo_Manager/plugin.cfg", "res://addons/behavior_tree/plugin.cfg", "res://addons/debug_console/plugin.cfg", "res://addons/jamcountdown/plugin.cfg", "res://addons/node_mapper/plugin.cfg", "res://addons/snippets_plugin/plugin.cfg" )
 
 [importer_defaults]
 
