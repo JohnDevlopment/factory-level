@@ -1,9 +1,14 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://scenes/actors/enemies/GuardRobot.gd" type="Script" id=1]
+[ext_resource path="res://scenes/actors/enemies/guard_robot/GuardRobot.gd" type="Script" id=1]
 [ext_resource path="res://assets/textures/actors/robot.res" type="SpriteFrames" id=2]
 [ext_resource path="res://scenes/components/Hurtbox.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scripts/classes/nodes/StateMachine.gd" type="Script" id=4]
 [ext_resource path="res://scripts/classes/resources/Stats.gd" type="Script" id=5]
+[ext_resource path="res://scenes/actors/enemies/guard_robot/Idle.gd" type="Script" id=6]
+[ext_resource path="res://scenes/actors/enemies/guard_robot/Charge.gd" type="Script" id=7]
+[ext_resource path="res://scenes/actors/enemies/guard_robot/MoveBack.gd" type="Script" id=8]
+[ext_resource path="res://scenes/actors/enemies/guard_robot/Cooldown.gd" type="Script" id=9]
 
 [sub_resource type="Resource" id=1]
 resource_local_to_scene = true
@@ -21,12 +26,13 @@ extents = Vector2( 6, 14.5 )
 self_modulate = Color( 0.301961, 0.909804, 0.196078, 1 )
 light_mask = 0
 collision_layer = 16
-collision_mask = 3
+collision_mask = 11
 script = ExtResource( 1 )
 __meta__ = {
 "collision_layer": 16,
-"collision_mask": 3
+"collision_mask": 11
 }
+time_to_radius = 0.5
 armor_time = 1.0
 stats = SubResource( 1 )
 speed_cap = Vector2( 75, 0 )
@@ -37,22 +43,38 @@ frames = ExtResource( 2 )
 animation = "Idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 light_mask = 0
 position = Vector2( 0, 1.5 )
 shape = SubResource( 2 )
 
 [node name="Timer" type="Timer" parent="."]
 process_mode = 0
+wait_time = 1.5
 one_shot = true
 
 [node name="Hurtbox" parent="." instance=ExtResource( 3 )]
-visible = false
 collision_layer = 256
 
 [node name="CollisionShape2D" parent="Hurtbox" index="0"]
 position = Vector2( 0, 1.5 )
 shape = SubResource( 2 )
+
+[node name="States" type="Node" parent="."]
+script = ExtResource( 4 )
+root_node = NodePath("..")
+paused = false
+
+[node name="Idle" type="Node" parent="States"]
+script = ExtResource( 6 )
+
+[node name="Charge" type="Node" parent="States"]
+script = ExtResource( 7 )
+
+[node name="MoveBack" type="Node" parent="States"]
+script = ExtResource( 8 )
+
+[node name="Cooldown" type="Node" parent="States"]
+script = ExtResource( 9 )
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 
