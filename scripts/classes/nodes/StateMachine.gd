@@ -30,7 +30,7 @@ var root_node: NodePath
 
 ## Whether the @class StateMachine is paused or not
 # @type   bool
-# @setter set_paused
+# @setter set_paused()
 var paused := false setget set_paused
 
 ## Which part of a state to enable or disable
@@ -39,7 +39,8 @@ enum StateCallMode {
 	PROCESS ## Run in the idle process
 }
 
-var user_data setget set_user_data
+var user_data
+
 var do_physics: FuncRef
 var do_process: FuncRef
 
@@ -128,20 +129,25 @@ func change_state(next_state: int) -> int:
 
 	return OK
 
-## Get the current state
+## Returns the index of the current state.
+# @desc This returns the numerical index of the current state. (If you have a @class State
+#       named "Idle", and it is the first child of the state machine, then its index will
+#       be zero, for example.)
 func current_state() -> int: return _current_state
 
-func set_paused(value: bool) -> void:
-	paused = value
+## Sets the paused state of the state machine.
+func set_paused(value: bool) -> void: paused = value
 
-# Set the user data forwarded to the state
+## Set the user data forwarded to the state
 # @desc  @a udata can be any type. The user data is forwarded to the
 #        state when it is initialized.
 func set_user_data(udata) -> void: user_data = udata
 
-# Call a state-specific method
-# @desc  Calls @a method in the current state, provided it exists. @a args
-#        are forwarded to @a method.
+# Call a state-specific method.
+# @desc  Calls @a method in the current state, with the elements in @a args provided
+#        as arguments, and returns the result of @a method.
+#
+#        If @a method does not exist in the current state, then this function does nothing.
 func state_call(method: String, args: Array = []):
 	if paused: return
 	var result
@@ -150,13 +156,23 @@ func state_call(method: String, args: Array = []):
 		result = state.callv(method, args)
 	return result
 
-## Go to the state's physics method
+## Go to the state's physics method.
+# @desc This function calls @function physics_main() from within the current state.
+#       It should be called from within @function _physics_process() or underneath it in the call stack.
+#       The @a delta argument from @function _physics_process() should be passed to this function as well.
+#
+#       The return value is whatever gets returned by the state method.
 func state_physics(delta: float):
 	if paused: return
 	assert(do_physics.is_valid())
 	return do_physics.call_func(delta)
 
-## Go to the state's process method
+## Go to the state's process method.
+# @desc This function calls @function process_main() from within the current state.
+#       It should be called from within @function _process() or underneath it in the call stack.
+#       The @a delta argument from @function _process() should be passed to this function as well.
+#
+#       The return value is whatever gets returned by the state method.
 func state_process(delta: float):
 	if paused: return
 	assert(do_process.is_valid())
