@@ -12,11 +12,11 @@ height = 9.0
 
 [node name="Explorer" type="KinematicBody2D" groups=["player"]]
 collision_layer = 4
-collision_mask = 11
+collision_mask = 3
 script = ExtResource( 5 )
 __meta__ = {
 "collision_layer": 4,
-"collision_mask": 11
+"collision_mask": 3
 }
 speed_cap = Vector2( 75, 300 )
 disabled = null
