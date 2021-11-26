@@ -18,10 +18,10 @@ func _ready() -> void:
 	
 	set_meta('initial_position', global_position)
 	
-	var charge_speed : float
+	#var charge_speed : float
 	assert(detection_radius > 0.0)
 	assert(time_to_radius > 0.0)
-	charge_speed = detection_radius / time_to_radius
+	#charge_speed = detection_radius / time_to_radius
 	
 	states.user_data = {
 		frames = $Frames,
@@ -65,3 +65,7 @@ func set_detection_radius(r: float) -> void:
 
 func _on_Timer_timeout() -> void:
 	states.change_state(STATE_IDLE)
+
+func _on_Hitbox_area_entered(area: Area2D) -> void:
+	var other : Actor = area.get_parent()
+	other.call(Globals.player_hurt_method, $Hitbox)

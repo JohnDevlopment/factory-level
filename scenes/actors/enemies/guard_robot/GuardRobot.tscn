@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scenes/actors/enemies/guard_robot/GuardRobot.gd" type="Script" id=1]
 [ext_resource path="res://assets/textures/actors/robot.res" type="SpriteFrames" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://scenes/actors/enemies/guard_robot/Charge.gd" type="Script" id=7]
 [ext_resource path="res://scenes/actors/enemies/guard_robot/MoveBack.gd" type="Script" id=8]
 [ext_resource path="res://scenes/actors/enemies/guard_robot/Cooldown.gd" type="Script" id=9]
+[ext_resource path="res://scenes/components/Hitbox.tscn" type="PackedScene" id=10]
 
 [sub_resource type="Resource" id=1]
 resource_local_to_scene = true
@@ -21,6 +22,9 @@ owner_name = "Guard Robot"
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 6, 14.5 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 2.5, 12.5 )
 
 [node name="GuardRobot" type="KinematicBody2D"]
 self_modulate = Color( 0.301961, 0.909804, 0.196078, 1 )
@@ -43,6 +47,7 @@ frames = ExtResource( 2 )
 animation = "Idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 light_mask = 0
 position = Vector2( 0, 1.5 )
 shape = SubResource( 2 )
@@ -52,7 +57,16 @@ process_mode = 0
 wait_time = 1.5
 one_shot = true
 
+[node name="Hitbox" parent="." instance=ExtResource( 10 )]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" parent="Hitbox" index="0"]
+position = Vector2( -3.5, -0.5 )
+shape = SubResource( 3 )
+
 [node name="Hurtbox" parent="." instance=ExtResource( 3 )]
+visible = false
 collision_layer = 256
 
 [node name="CollisionShape2D" parent="Hurtbox" index="0"]
@@ -77,5 +91,7 @@ script = ExtResource( 8 )
 script = ExtResource( 9 )
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="area_entered" from="Hitbox" to="." method="_on_Hitbox_area_entered"]
 
+[editable path="Hitbox"]
 [editable path="Hurtbox"]
