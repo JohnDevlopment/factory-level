@@ -1,8 +1,8 @@
 tool
 extends Actor
 
-signal picked_up
-signal dropped
+signal picked_up(node)
+signal dropped(node)
 
 export var neccessary_velocity := Vector2()
 export(float, 1, 500, 0.1) var throw_force : float = 1
@@ -29,8 +29,7 @@ func _process(_delta: float) -> void:
 	var fast_enough : bool = abs(velocity.x) >= neccessary_velocity.x or velocity.y >= neccessary_velocity.y
 	hitbox.disabled = !fast_enough
 
-# warning-ignore:unused_argument
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if picked_up:
 		direction = player.direction
 		global_position = player.global_position - Vector2(0, 20)
@@ -46,8 +45,8 @@ func _physics_process(delta: float) -> void:
 				(collider as Enemy).decide_damage(stats)
 	
 	if velocity.x:
-		var weight : float = 0.08 if is_on_floor() else 0.02
-		velocity.x = lerp(velocity.x, 0.0, weight) # TODO: Increase friction
+		var weight : float = 0.2 if is_on_floor() else 0.02
+		velocity.x = lerp(velocity.x, 0.0, weight)
 		if Math.is_almost_zero(velocity.x, 0.07):
 			velocity.x = 0
 
@@ -64,13 +63,13 @@ func _set_picked(picked: bool) -> void:
 		# Object is picked up
 		picked_up = true
 		gravity_value = 0
-		emit_signal('picked_up')
+		emit_signal('picked_up', self)
 	else:
 		# Object is dropped
 		picked_up = false
 		gravity_value = get_meta('gravity')
 		velocity = Vector2(throw_force * direction.x, -200)
-		emit_signal('dropped')
+		emit_signal('dropped', self)
 		
 	enable_collision(!picked_up)
 

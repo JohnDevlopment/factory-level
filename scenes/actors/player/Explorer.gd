@@ -6,10 +6,10 @@ enum { STATE_NORMAL, STATE_CLIMB, STATE_HURT }
 var direction := Vector2()
 onready var states : StateMachine = $States
 var stats : Stats = preload('res://scenes/actors/player/PlayerStats.tres')
-onready var hurt_timer : Timer = $HurtTimer
 
 var _in_ladder := false
 var _on_floor := false
+var _object_picked
 
 func _ready() -> void:
 	if Engine.editor_hint:
@@ -24,6 +24,10 @@ func _ready() -> void:
 		(node as Area2D).connect('body_entered', self, '_on_ladder_body_entered')
 		(node as Area2D).connect('body_exited', self, '_on_ladder_body_exited')
 	
+	for node in get_tree().get_nodes_in_group('pickable'):
+		(node as Actor).connect('picked_up', self, '_on_pickable_object_status_changed', [true])
+		(node as Actor).connect('dropped', self, '_on_pickable_object_status_changed', [false])
+	
 	states.user_data = {
 		hurtbox = $Hurtbox,
 		calculate_movement = funcref($States/Normal, 'calculate_movement')
@@ -37,10 +41,10 @@ func _unhandled_key_input(event: InputEventKey) -> void:
 	if event.is_action_pressed('jump'):
 		if _on_floor or _in_ladder:
 			velocity.y = -speed_cap.y
-			if states.current_state() == STATE_CLIMB:
+			if states.current_state() == STATE_CLIMB or _object_picked:
 				velocity.y /= 2
 				states.change_state(STATE_NORMAL)
-	elif event.is_action_pressed('ui_up') and _in_ladder:
+	elif event.is_action_pressed('ui_up') and _in_ladder and not _object_picked:
 		states.change_state(STATE_CLIMB)
 	elif event.is_action_pressed('debug') and is_on_floor():
 		velocity.x = -200
@@ -65,6 +69,9 @@ func _on_ladder_body_exited(_node):
 	if states.current_state() == STATE_CLIMB:
 		states.change_state(STATE_NORMAL)
 
+func _on_pickable_object_status_changed(node, picked_up: bool) -> void:
+	_object_picked = node if picked_up else null
+
 func calcuate_normal_movement(delta: float):
 	var goal_velocity : float = direction.x * speed_cap.x
 	var motion_delta := delta * (200 if direction.x else 300)
@@ -72,11 +79,8 @@ func calcuate_normal_movement(delta: float):
 
 func hurt(area: Area2D) -> void:
 	# Collided with enemy hitbox
-	if not hurt_timer.is_stopped(): return
+	if states.current_state() == STATE_HURT: return
 	var other : Enemy = area.get_parent()
 	var knockback_direction : Vector2 = global_position.direction_to(other.global_position) * -1
 	velocity = Vector2(knockback_direction.x * 200, 100)
 	states.change_state(STATE_HURT)
-
-func _on_HurtTimer_timeout() -> void:
-	pass # Replace with function body.
