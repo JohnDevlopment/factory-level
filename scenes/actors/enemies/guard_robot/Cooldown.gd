@@ -6,7 +6,3 @@ func _setup() -> void:
 	persistant_state.distance_met = 0
 	user_data.frames.play('Idle')
 	user_data.timer.start()
-	print("cooldown started")
-
-func cleanup() -> void:
-	print("cooldown finished")

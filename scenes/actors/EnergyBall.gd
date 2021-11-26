@@ -47,10 +47,9 @@ func _physics_process(delta: float) -> void:
 	
 	if velocity.x:
 		var weight : float = 0.08 if is_on_floor() else 0.02
-		velocity.x = lerp(velocity.x, 0.0, weight)
+		velocity.x = lerp(velocity.x, 0.0, weight) # TODO: Increase friction
 		if Math.is_almost_zero(velocity.x, 0.07):
 			velocity.x = 0
-			print('zero velocity')
 
 func _unhandled_key_input(event: InputEventKey) -> void:
 	if event.is_action_pressed('action'):
