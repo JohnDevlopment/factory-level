@@ -11,3 +11,5 @@ enum CollisionLayers {
 	ENEMY_HITBOX,
 	ENEMY_HURTBOX
 }
+
+var player_hurt_method := "hurt"
