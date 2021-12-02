@@ -48,6 +48,10 @@ func physics_main(delta: float):
 	
 	_current_time = max(_current_time - delta, 0)
 
-#func process_main(delta: float):
-#	pass
+func process_main(_delta):
+	var anim_state := 'Idle'
+	if persistant_state._object_picked:
+		anim_state += 'Carry'
+	
+	persistant_state.change_animation_state(anim_state)
 
