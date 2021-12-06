@@ -8,20 +8,21 @@ func _setup() -> void:
 	root.gravity_value = 0
 	root.velocity = Vector2()
 	root.move_and_slide(Vector2.UP, Vector2.UP)
+	#root.enable_collision(false)
 
 func cleanup() -> void:
 	persistant_state.gravity_value = get_meta('gravity')
+	#persistant_state.enable_collision(true)
 
 func physics_main(_delta):
-	if (persistant_state.direction.y < 0.0 or persistant_state.direction.x != 0.0) or persistant_state.is_on_floor():
+	if persistant_state.velocity.x:
+		persistant_state.velocity.x = 0
+	
+	if persistant_state.input_vector.x != 0.0 or persistant_state.is_on_floor():
 		return persistant_state.STATE_IDLE
 	
 	var vdir := Input.get_axis('ui_up', 'ui_down')
 	persistant_state.velocity.y = ladder_climb_speed * vdir
 
 func process_main(_delta):
-	var anim_state := 'Idle'
-	if persistant_state._object_picked:
-		anim_state += 'Carry'
-	
-	persistant_state.change_animation_state(anim_state)
+	persistant_state.change_animation_state('Idle')

@@ -4,11 +4,7 @@ extends State
 #	persistant_state.change_animation_state('Idle')
 
 func process_main(_delta):
-	var anim_state := 'Idle'
-	if persistant_state._object_picked:
-		anim_state += 'Carry'
+	persistant_state.change_animation_state('Idle')
 	
-	persistant_state.change_animation_state(anim_state)
-	
-	if persistant_state.direction.x:
+	if persistant_state.input_vector.x:
 		return persistant_state.STATE_RUN

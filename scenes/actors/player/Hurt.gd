@@ -7,7 +7,7 @@ var _current_time : float
 
 func _setup() -> void:
 	persistant_state.modulate = Color.red
-	persistant_state.direction.x = 0
+	persistant_state.input_vector.x = 0
 	
 	# Disable collision with enemies
 	user_data.hurtbox.set_collision_layer_bit(Globals.CollisionLayers.PLAYER_HURTBOX, false)
@@ -26,12 +26,11 @@ func cleanup() -> void:
 	user_data.hurtbox.set_collision_layer_bit(Globals.CollisionLayers.PLAYER_HURTBOX, true)
 
 func physics_main(delta: float):
-	var direction : Vector2 = persistant_state.direction
+	var input_vector : Vector2 = persistant_state.input_vector
 	var velocity : Vector2
 	
-	if direction.x:
-		persistant_state.calcuate_normal_movement(delta)
-		velocity = (persistant_state as Actor).velocity
+	if input_vector.x:
+		velocity = persistant_state.update_velocity(delta)
 	else:
 		velocity = (persistant_state as Actor).velocity
 		
@@ -39,19 +38,14 @@ func physics_main(delta: float):
 			velocity.x = 0
 		else:
 			velocity.x = lerp(velocity.x, 0, delta * 10)
-	
-	(persistant_state as Actor).velocity.x = velocity.x
+		
+		(persistant_state as Actor).velocity.x = velocity.x
 	
 	# Change state when time runs out
 	if is_zero_approx(_current_time):
-		return persistant_state.STATE_NORMAL
+		return persistant_state.STATE_IDLE
 	
 	_current_time = max(_current_time - delta, 0)
 
 func process_main(_delta):
-	var anim_state := 'Idle'
-	if persistant_state._object_picked:
-		anim_state += 'Carry'
-	
-	persistant_state.change_animation_state(anim_state)
-
+	persistant_state.change_animation_state('Idle')
