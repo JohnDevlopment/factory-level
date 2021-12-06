@@ -77,7 +77,7 @@ position = Vector2( 448, 384 )
 detection_radius = 107.8
 stats = SubResource( 2 )
 
-[node name="Explorer" parent="Actors" instance=ExtResource( 3 )]
+[node name="Bob" parent="Actors" instance=ExtResource( 3 )]
 position = Vector2( 192, 384 )
 
 [node name="EnergyBall" parent="Actors" instance=ExtResource( 9 )]
