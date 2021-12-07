@@ -7,6 +7,11 @@ func _setup() -> void:
 	var xdirection : float = root.global_position.direction_to(player.global_position).x
 	root.direction.x = sign(xdirection)
 	user_data.frames.play('Move')
+	
+	user_data.hitbox.disabled = false
+
+func cleanup() -> void:
+	user_data.hitbox.disabled = true
 
 func physics_main(delta: float):
 	var root : Actor = persistant_state

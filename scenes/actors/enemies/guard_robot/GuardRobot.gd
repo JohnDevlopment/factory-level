@@ -7,6 +7,7 @@ export(float, 0.1, 5, 0.1) var time_to_radius : float
 enum {STATE_INVALID = -1, STATE_IDLE, STATE_CHARGE, STATE_MOVEBACK, STATE_COOLDOWN}
 
 onready var states : StateMachine = $States
+onready var frames = $Frames
 
 var distance_met := 0.0
 
@@ -27,8 +28,11 @@ func _ready() -> void:
 		frames = $Frames,
 		initial_position = global_position,
 		timer = $Timer,
-		charge_speed = detection_radius / time_to_radius
+		charge_speed = detection_radius / time_to_radius,
+		hitbox = $Hitbox
 	}
+	
+	$Hitbox.disabled = true
 	
 	states.change_state(STATE_IDLE)
 
@@ -46,6 +50,10 @@ func _physics_process(delta: float) -> void:
 
 func _on_damaged(_stats: Stats) -> void:
 	queue_free()
+
+#func change_animation(anim: String, backwards: bool = false):
+#
+#	frames.play(anim, backwards)
 
 func move_actor() -> void:
 	velocity = move_and_slide(velocity, Vector2.UP)
