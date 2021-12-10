@@ -1,5 +1,3 @@
-# factory-level
+# Factory Level
 
-Game for the second GoGodotJam.
-
-Will post link when submitted.
+A simple quirky game about destroying robots with a large ball. A demo is in the works.
