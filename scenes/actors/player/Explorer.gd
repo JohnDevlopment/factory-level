@@ -97,13 +97,20 @@ func current_state() -> String:
 	
 	return ""
 
-func hurt(area: Area2D) -> void:
+func hurt(area: Area2D, speed: Vector2 = Vector2(100, 200)) -> void:
 	# Collided with enemy hitbox
 	if states.current_state() == STATE_HURT: return
+	
+	# Let go of carried object
+	if _object_picked:
+		#(_object_picked as Object).call_deferred('set_indexed', 'velocity:x', 130 * -direction.x)
+		_object_picked.drop()
+	
 	var other : Enemy = area.get_parent()
 	var knockback_direction : Vector2 = global_position.direction_to(other.global_position) * -1
-	velocity = Vector2(knockback_direction.x * 200, 100)
+	velocity = Vector2(knockback_direction.x * speed.x, -speed.y)
 	states.change_state(STATE_HURT)
+	$HurtAnimation.play('HurtStart')
 
 func update_velocity(delta: float) -> Vector2:
 	if input_vector.x:
@@ -112,3 +119,7 @@ func update_velocity(delta: float) -> Vector2:
 		velocity.x = move_toward(velocity.x, 0, 300 * delta)
 	
 	return velocity
+
+func _on_HurtAnimation_animation_finished(anim_name: String) -> void:
+	if anim_name == 'HurtStart':
+		$HurtAnimation.play('Hurt')

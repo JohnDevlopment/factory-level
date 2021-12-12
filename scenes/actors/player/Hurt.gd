@@ -13,6 +13,8 @@ func _setup() -> void:
 	# Disable input processing
 	(persistant_state as Node).set_process_unhandled_key_input(false)
 	persistant_state.input_vector.x = 0
+	
+	persistant_state.change_animation_state('Hurt')
 
 func cleanup() -> void:
 	# Enable collision with enemies
@@ -34,6 +36,6 @@ func physics_main(delta: float):
 		
 		_current_time = max(_current_time - delta, 0)
 
-# warning-ignore:unused_argument
-func process_main(delta: float):
-	persistant_state.change_animation_state('Idle')
+func process_main(_delta: float):
+	if persistant_state._on_floor:
+		persistant_state.change_animation_state('Idle')
