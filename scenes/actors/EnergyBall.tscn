@@ -8,7 +8,7 @@
 radius = 12.0
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 12, 12 )
+extents = Vector2( 13, 13 )
 
 [node name="EnergyBall" type="KinematicBody2D" groups=["energy_ball", "pickable"]]
 collision_layer = 8
@@ -34,7 +34,7 @@ light_mask = 0
 shape = SubResource( 1 )
 
 [node name="Hitbox" parent="." instance=ExtResource( 3 )]
-collision_mask = 260
+collision_mask = 256
 
 [node name="CollisionShape2D" parent="Hitbox" index="0"]
 shape = SubResource( 2 )
@@ -47,7 +47,14 @@ collision_mask = 4
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionField"]
 shape = SubResource( 2 )
 
+[node name="DisableTimer" type="Timer" parent="."]
+process_mode = 0
+one_shot = true
+autostart = true
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_Hitbox_area_entered"]
 [connection signal="body_entered" from="DetectionField" to="." method="_on_DetectionField_body_entered"]
 [connection signal="body_exited" from="DetectionField" to="." method="_on_DetectionField_body_exited"]
+[connection signal="timeout" from="DisableTimer" to="." method="_on_DisableTimer_timeout" flags=3]
 
 [editable path="Hitbox"]

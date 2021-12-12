@@ -72,6 +72,7 @@ func set_detection_radius(r: float) -> void:
 	detection_radius = r
 	update()
 
+# Hit the player
 func _on_Hitbox_area_entered(area: Area2D) -> void:
 	var other : Actor = area.get_parent()
 	var launch_speed := Vector2(abs(velocity.x) * 2, 300)
