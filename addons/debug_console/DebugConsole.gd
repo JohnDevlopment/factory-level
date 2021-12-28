@@ -147,10 +147,16 @@ func output_text(text: String) -> void:
 #
 #       Builtin Commands:
 #
-#       /help -- Display a list of supported commands@br
-#       /types -- Displays all the supported data types@br
-#       /print ARG -- Prints the @a ARG, interpreting as one of the supported data types@br
-#       /exit -- Deactivates the console
+#       @list_begin unordered
+#       @item /help
+#       Display a list of supported commands
+#       @item /types
+#       Displays all the supported data types
+#       @item /print ARG
+#       Prints the @a ARG, interpreting as one of the supported data types
+#       /exit
+#       Deactivates the console
+#       @list_end
 func process_command(text: String) -> void:
 	var args = _process_args(text)
 	if args is String:
