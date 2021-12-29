@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/actors/doors/PoweredDoorBase.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/actors/doors/PoweredDoor1x3.gd" type="Script" id=2]
+[ext_resource path="res://assets/textures/actors/doors/powered_door_1x3.png" type="Texture" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 7, 23 )
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 25.7099
+
+[node name="PoweredDoor1x3" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+height = 3
+
+[node name="Sprite" parent="." index="0"]
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" parent="." index="1"]
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D" parent="ClickableArea" index="0"]
+shape = SubResource( 2 )
+
+[connection signal="input_event" from="ClickableArea" to="." method="_on_ClickableArea_input_event"]
