@@ -243,7 +243,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Factory Level"
-run/main_scene="res://scenes/Demo.tscn"
+run/main_scene="res://Title.tscn"
 config/icon="res://icon.png"
 
 [autoload]
@@ -254,6 +254,7 @@ NodeMapper="*res://addons/node_mapper/NodeMapper.gd"
 Math="*res://scripts/classes/singletons/Math.gd"
 Globals="*res://scripts/classes/singletons/Globals.gd"
 Anima="*res://addons/anima/core/anima.gd"
+TransitionRect="*res://scenes/autoloads/TransitionRect.tscn"
 
 [debug]
 
