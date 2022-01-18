@@ -1,0 +1,89 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/buttons/BaseButton.gd" type="Script" id=1]
+[ext_resource path="res://assets/textures/button.res" type="SpriteFrames" id=2]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 9, 2 )
+
+[sub_resource type="Animation" id=4]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("CollisionShape2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, -4 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CollisionShape2D:shape:extents")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 9, 2 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "ToggledStatus"
+length = 0.33
+step = 0.033
+tracks/0/type = "value"
+tracks/0/path = NodePath("CollisionShape2D:shape:extents")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.33 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 9, 2 ), Vector2( 9, 0.5 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CollisionShape2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.33 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, -4 ), Vector2( 0, -2.5 ) ]
+}
+
+[node name="BaseButton" type="KinematicBody2D"]
+pause_mode = 2
+collision_layer = 2
+collision_mask = 4
+script = ExtResource( 1 )
+__meta__ = {
+"collision_layer": 2,
+"collision_mask": 4
+}
+speed_cap = Vector2( 0, 0 )
+disabled = null
+
+[node name="Frames" type="AnimatedSprite" parent="."]
+frames = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+modulate = Color( 0.117647, 0.780392, 0, 1 )
+light_mask = 0
+position = Vector2( 0, -4 )
+shape = SubResource( 2 )
+one_way_collision = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 4 )
+anims/ToggledStatus = SubResource( 3 )
