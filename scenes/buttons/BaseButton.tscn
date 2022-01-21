@@ -62,16 +62,17 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 0.5 ), Vector2( 0, 2 ) ]
 }
 
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 9, 2.5 )
+
 [node name="BaseButton" type="StaticBody2D"]
 pause_mode = 2
 collision_layer = 2
-collision_mask = 3
+collision_mask = 0
 script = ExtResource( 1 )
 __meta__ = {
 "type": "button"
 }
-speed_cap = Vector2( 0, 0 )
-disabled = null
 
 [node name="Frames" type="AnimatedSprite" parent="."]
 frames = ExtResource( 2 )
@@ -81,7 +82,20 @@ modulate = Color( 0.117647, 0.780392, 0, 1 )
 light_mask = 0
 position = Vector2( 0, 0.5 )
 shape = SubResource( 2 )
+one_way_collision = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 4 )
 anims/ToggledStatus = SubResource( 3 )
+
+[node name="DetectPlayer" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectPlayer"]
+position = Vector2( 0, -4.5 )
+shape = SubResource( 5 )
+
+[connection signal="body_entered" from="DetectPlayer" to="." method="_on_DetectPlayer_body_entered"]
+[connection signal="body_exited" from="DetectPlayer" to="." method="_on_DetectPlayer_body_exited"]
