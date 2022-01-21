@@ -507,6 +507,7 @@ __meta__ = {
 "collision_mask": 3
 }
 speed_cap = Vector2( 75, 300 )
+snap_length = 1.0
 disabled = null
 
 [node name="Frames" type="Sprite" parent="."]
@@ -544,8 +545,7 @@ anims/HurtStart = SubResource( 36 )
 anims/RESET = SubResource( 35 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-self_modulate = Color( 0.0509804, 0.329412, 0.992157, 1 )
+self_modulate = Color( 0.0156863, 0.862745, 0.168627, 1 )
 position = Vector2( 0, 2 )
 shape = SubResource( 1 )
 
