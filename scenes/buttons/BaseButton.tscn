@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/buttons/BaseButton.gd" type="Script" id=1]
 [ext_resource path="res://assets/textures/button.res" type="SpriteFrames" id=2]
@@ -68,8 +68,7 @@ collision_layer = 2
 collision_mask = 3
 script = ExtResource( 1 )
 __meta__ = {
-"collision_layer": 2,
-"collision_mask": 7
+"type": "button"
 }
 speed_cap = Vector2( 0, 0 )
 disabled = null
