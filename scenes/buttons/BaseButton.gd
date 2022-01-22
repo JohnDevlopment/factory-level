@@ -54,12 +54,12 @@ func _process(_delta: float) -> void:
 func _ready() -> void:
 	set_physics_process(false)
 	if Engine.editor_hint: return
-	Game.connect('changed_game_param', self, '_on_game_param_changed')
+	#Game.connect('changed_game_param', self, '_on_game_param_changed')
 
-func _on_game_param_changed(param: String, _value):
-	match param:
-		'tree_paused':
-			pass
+#func _on_game_param_changed(param: String, _value):
+#	match param:
+#		'tree_paused':
+#			pass
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey:
