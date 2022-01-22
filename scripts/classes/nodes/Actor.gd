@@ -23,8 +23,13 @@ const GRAVITY_STEP: float = 13.4
 # @type   Vector2
 # @desc   The max speed of the actor. As this property is not acted upon in @class Actor, it is
 #         up to the programmer whether to use it. That being said, it is meant to be used to
-# 		  cap the actor's speed, hence the name.
+#         cap the actor's speed, hence the name.
 var speed_cap := Vector2()
+
+## Length to snap to the floor
+# @type  float
+# @desc  This is the margin for the actor to snap to a colliding body, usually the floor or a platform.
+var snap_length := 1.0
 
 onready var gravity_value: float = ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -67,6 +72,8 @@ func _ready() -> void:
 	if Engine.editor_hint:
 		set_physics_process(false)
 		set_process(false)
+		return
+	call_deferred('_snap_to_ground')
 
 func _init() -> void:
 	set_meta("collision_layer", collision_layer)
@@ -83,6 +90,8 @@ func _set(property, value):
 	match property:
 		"speed_cap":
 			speed_cap = value
+		"snap_length":
+			snap_length = value
 		_:
 			return false
 	return true
@@ -91,6 +100,8 @@ func _get(property):
 	match property:
 		"speed_cap":
 			return speed_cap
+		"snap_length":
+			return snap_length
 
 func _get_property_list():
 	return [
@@ -105,6 +116,13 @@ func _get_property_list():
 			usage = PROPERTY_USAGE_DEFAULT
 		},
 		{
+			name = "snap_length",
+			type = TYPE_REAL,
+			usage = PROPERTY_USAGE_DEFAULT,
+			hint = PROPERTY_HINT_EXP_RANGE,
+			hint_string = '0.1,10,or_greater'
+		},
+		{
 			name = "disabled",
 			type = TYPE_BOOL,
 			usage = PROPERTY_USAGE_DEFAULT
@@ -113,3 +131,10 @@ func _get_property_list():
 
 func _physics_process(_delta):
 	velocity.y = move_toward(velocity.y, gravity_value, GRAVITY_STEP)
+
+func _snap_to_ground():
+	var length : float = max(snap_length, get_safe_margin())
+	var relvec := Vector2(0, length)
+	var collision := move_and_collide(relvec, false, true)
+	if is_instance_valid(collision):
+		move_and_collide(collision.remainder)
