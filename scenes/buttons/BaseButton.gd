@@ -29,9 +29,6 @@ func _process(_delta: float) -> void:
 
 func _ready() -> void:
 	if Engine.editor_hint: return
-	set_meta('button', true)
-	set_meta('button_toggled', toggled)
-	set_meta('after_ready', true)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey:
