@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/Room.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/tilesets/FactoryForeground.tres" type="TileSet" id=2]
@@ -6,11 +6,15 @@
 [ext_resource path="res://scenes/actors/player/Bob.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/actors/doors/PoweredDoor1x3.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/buttons/BaseButton.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/beta/Doors1.gd" type="Script" id=7]
+[ext_resource path="res://addons/debug_console/theme/Theme.tres" type="Theme" id=8]
+[ext_resource path="res://addons/debug_console/DebugOverlay.gd" type="Script" id=9]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4, 48 )
 
 [node name="Doors1" instance=ExtResource( 1 )]
+script = ExtResource( 7 )
 
 [node name="FactoryForeground" parent="Tilemaps" index="0" instance=ExtResource( 3 )]
 tile_set = ExtResource( 2 )
@@ -32,8 +36,33 @@ shape = SubResource( 1 )
 position = Vector2( 504, 376 )
 time_factor = 50
 
-[node name="Explorer" parent="Actors" index="2" instance=ExtResource( 4 )]
-position = Vector2( 56, 432 )
+[node name="Bob" parent="Actors" index="2" instance=ExtResource( 4 )]
+position = Vector2( 56, 429 )
+snap_length = 5.0
 
 [node name="BaseButton" parent="." index="2" instance=ExtResource( 6 )]
-position = Vector2( 140, 441 )
+position = Vector2( 168, 441 )
+
+[node name="DebugOverlay" type="CanvasLayer" parent="." index="3"]
+script = ExtResource( 9 )
+
+[node name="PanelContainer" type="PanelContainer" parent="DebugOverlay" index="0"]
+anchor_left = 0.35
+anchor_right = 0.65
+anchor_bottom = 0.35
+margin_bottom = -64.0
+theme = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DebugLabel" type="Label" parent="DebugOverlay/PanelContainer" index="0"]
+margin_left = 7.0
+margin_top = 8.0
+margin_right = 185.0
+margin_bottom = 96.0
+size_flags_vertical = 3
+text = "Label"
+__meta__ = {
+"_edit_use_anchors_": false
+}
