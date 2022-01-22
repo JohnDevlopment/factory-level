@@ -1,5 +1,5 @@
 tool
-extends Actor
+extends StaticBody2D
 
 const SPRITE_ANIMATION := "default"
 const HITBOX_ANIMATION := "ToggledStatus"
