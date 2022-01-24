@@ -31,6 +31,8 @@ onready var animation_player = $AnimationPlayer
 
 var _player : Actor
 var _dot : float
+var _commands := []
+var _after_ready := false
 
 func set_toggled(flag: bool) -> void:
 	toggled = flag
@@ -38,28 +40,39 @@ func set_toggled(flag: bool) -> void:
 	emit_signal('toggle_status_changed', flag)
 
 func _process(_delta: float) -> void:
-	if Engine.editor_hint:
+	set_process(false)
+	if Engine.editor_hint or not _after_ready:
 		var sprite2 = $Frames
 		var frame := 0
 		if toggled:
 			frame = sprite2.frames.get_frame_count(SPRITE_ANIMATION)
 		sprite2.frame = frame
 	else:
-		# Play the sprite animation either forwards or backwards, then animation the hitbox
+		# Play the sprite animation either forwards or backwards, then animate the hitbox
 		sprite.play(SPRITE_ANIMATION, !toggled)
 		var anim_speed : float = 1 if toggled else -1
 		animation_player.play(HITBOX_ANIMATION, -1, anim_speed, !toggled)
-	set_process(false)
+		# After the animation is finished, execute the button commands
+		yield(animation_player, 'animation_finished')
+		_do_commands()
 
 func _ready() -> void:
 	set_physics_process(false)
 	if Engine.editor_hint: return
+	for node in get_children():
+		if node.has_method('do_command'):
+			_commands.append(funcref(node, 'do_command'))
+	_after_ready = true
 	#Game.connect('changed_game_param', self, '_on_game_param_changed')
 
 #func _on_game_param_changed(param: String, _value):
 #	match param:
 #		'tree_paused':
 #			pass
+
+func _do_commands() -> void:
+	for fr in _commands:
+		(fr as FuncRef).call_func(toggled)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey:
