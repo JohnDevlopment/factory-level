@@ -1,3 +1,5 @@
+## Powered door base class
+# @name PoweredDoorBase
 extends StaticBody2D
 
 enum TimeFactor {
@@ -9,8 +11,18 @@ enum TimeFactor {
 	VERY_FAST = 25
 }
 
+## Whether door is open or not.
+# @type bool
 export var open := false
+
+## Height of the door in tiles.
+# @type int
+# @setter set_height(height)
 export var height := 1 setget set_height
+
+## Speed of the door closing and opening.
+# @type int
+# @desc May be one of the constants of the @constant TimeFactor enum.
 export(TimeFactor) var time_factor : int = TimeFactor.NORMAL
 
 var _pixel_height := 16
@@ -27,6 +39,11 @@ func _ready() -> void:
 	
 	_current_animation = 'up' if open else 'down'
 
+## Animate the door opening or closing.
+# @desc Starts an opening or closing animation for the door. @a anim may
+#       be either "down" or "up", denoting which direction to move the door.
+#       Returns instantly if the door is already animating or the same animation
+#       was played last.
 func do_animation(anim: String):
 	if _busy or anim == _current_animation: return
 	
