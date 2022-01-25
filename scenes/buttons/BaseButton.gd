@@ -11,7 +11,7 @@ signal toggle_status_changed(on)
 
 ## Name of the sprite animation
 # @type String
-const SPRITE_ANIMATION := "default"
+const SPRITE_ANIMATION := "Press/Release"
 
 ## Name of the hitbox animation
 # @type String
@@ -32,29 +32,26 @@ onready var animation_player = $AnimationPlayer
 var _player : Actor
 var _dot : float
 var _commands := []
-var _after_ready := false
+var _init := false
 
 func set_toggled(flag: bool) -> void:
 	toggled = flag
+	_init = true
 	set_process(true)
 	emit_signal('toggle_status_changed', flag)
 
 func _process(_delta: float) -> void:
-	set_process(false)
-	if Engine.editor_hint or not _after_ready:
-		var sprite2 = $Frames
-		var frame := 0
+	if Engine.editor_hint or not _init:
 		if toggled:
-			frame = sprite2.frames.get_frame_count(SPRITE_ANIMATION)
-		sprite2.frame = frame
+			$Frames.play('Glow')
+		else:
+			$Frames.animation = SPRITE_ANIMATION
 	else:
 		# Play the sprite animation either forwards or backwards, then animate the hitbox
 		sprite.play(SPRITE_ANIMATION, !toggled)
 		var anim_speed : float = 1 if toggled else -1
 		animation_player.play(HITBOX_ANIMATION, -1, anim_speed, !toggled)
-		# After the animation is finished, execute the button commands
-		yield(animation_player, 'animation_finished')
-		_do_commands()
+	set_process(false)
 
 func _ready() -> void:
 	set_physics_process(false)
@@ -62,13 +59,8 @@ func _ready() -> void:
 	for node in get_children():
 		if node.has_method('do_command'):
 			_commands.append(funcref(node, 'do_command'))
-	_after_ready = true
-	#Game.connect('changed_game_param', self, '_on_game_param_changed')
-
-#func _on_game_param_changed(param: String, _value):
-#	match param:
-#		'tree_paused':
-#			pass
+	$Frames.connect('animation_finished', self, '_on_Frames_animation_finished')
+	$AnimationPlayer.connect('animation_finished', self, '_on_AnimationPlayer_animation_finished')
 
 func _do_commands() -> void:
 	for fr in _commands:
@@ -85,8 +77,6 @@ func _physics_process(_delta: float) -> void:
 		_dot = dir.dot(Vector2.UP)
 		if _dot >= 0.5:
 			set_toggled(true)
-#		else:
-#			if not sticky and toggled: set_toggled(false)
 
 func _on_DetectPlayer_body_entered(body: Node) -> void:
 	set_physics_process(true)
@@ -96,3 +86,13 @@ func _on_DetectPlayer_body_exited(_body: Node) -> void:
 	set_physics_process(false)
 	if not sticky and toggled:
 		set_toggled(false)
+
+# Called when the hitbox animation finishes
+func _on_AnimationPlayer_animation_finished(_anim_name: String):
+	_do_commands()
+
+# Called when the toggle animation finishes
+func _on_Frames_animation_finished() -> void:
+	if sprite.animation == SPRITE_ANIMATION:
+		sprite.play('Glow')
+		pass
