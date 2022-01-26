@@ -103,6 +103,5 @@ func _on_AnimationPlayer_animation_finished(_anim_name: String):
 
 # Called when the toggle animation finishes
 func _on_Frames_animation_finished() -> void:
-	if sprite.animation == SPRITE_ANIMATION:
+	if sprite.animation == SPRITE_ANIMATION and toggled:
 		sprite.play('Glow')
-		pass
