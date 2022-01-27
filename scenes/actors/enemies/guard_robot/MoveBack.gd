@@ -3,7 +3,6 @@ extends State
 var _stopping := false
 
 func _setup() -> void:
-	persistant_state.direction.x = -(persistant_state.direction.x)
 	user_data.frames.play('Move', true)
 	_stopping = false
 
@@ -23,6 +22,6 @@ func physics_main(delta: float):
 		if Math.is_almost_equal(root.global_position.x, user_data.initial_position.x, 0.01):
 			_stopping = true
 		
-		velocity.x = lerp(velocity.x, 50.0 * root.direction.x, delta * 10)
+		velocity.x = lerp(velocity.x, 50.0 * -root.direction.x, delta * 10)
 	
 	root.velocity = velocity

@@ -31,9 +31,7 @@ func _ready() -> void:
 	}
 	
 	$Hitbox.disabled = true
-	
 	states.change_state(STATE_IDLE)
-	
 	call_deferred('_face_player')
 
 func _draw() -> void:

@@ -1,13 +1,7 @@
 extends State
 
 func _setup() -> void:
-	var root : Enemy = persistant_state
-	var player : Actor = Game.get_player()
-	
-	var xdirection : float = root.global_position.direction_to(player.global_position).x
-	root.direction.x = sign(xdirection)
 	user_data.frames.play('Move')
-	
 	user_data.hitbox.disabled = false
 
 func cleanup() -> void:

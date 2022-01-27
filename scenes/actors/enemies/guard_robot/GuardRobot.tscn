@@ -39,6 +39,7 @@ time_to_radius = 0.5
 armor_time = 1.0
 stats = SubResource( 1 )
 speed_cap = Vector2( 75, 0 )
+snap_length = 3.0
 disabled = null
 
 [node name="Frames" type="AnimatedSprite" parent="."]
