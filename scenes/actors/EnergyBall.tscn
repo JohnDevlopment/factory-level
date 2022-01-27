@@ -22,6 +22,7 @@ neccessary_velocity = Vector2( 100, 150 )
 throw_force = 190.8
 reflect_speed = Vector2( 130, 150 )
 speed_cap = Vector2( 0, 0 )
+snap_length = 1.0
 disabled = null
 
 [node name="Frames" type="Sprite" parent="."]
