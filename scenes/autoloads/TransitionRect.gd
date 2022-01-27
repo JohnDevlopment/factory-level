@@ -26,6 +26,7 @@ func _ready() -> void:
 	)
 	set_meta('screen_size', screen_size)
 	set_meta('current_fade', '...')
+	set_alpha(0)
 
 ## Start a fade-in effect.
 # @desc  This function interpolates the alpha value of a black rectangle from
