@@ -1,8 +1,63 @@
-[gd_scene format=2]
+[gd_scene load_steps=4 format=2]
 
-[node name="Ladder" type="Area2D" groups=["ladders"]]
+[ext_resource path="res://scenes/actors/Ladder.gd" type="Script" id=1]
+
+[sub_resource type="QuadMesh" id=1]
+size = Vector2( 16, 32 )
+center_offset = Vector3( 8, 16, 0 )
+
+[sub_resource type="GDScript" id=2]
+script/source = "tool
+extends Area2D
+
+const LadderTexture = preload('res://assets/textures/actors/ladder.png')
+const DRAW_SIZE := Vector2(16, 16)
+
+func _draw() -> void:
+	var tile_height : int = get_parent().tile_height
+	if tile_height == 3:
+		draw_texture(LadderTexture, Vector2())
+		return
+	
+	var _position := Vector2()
+	var i := tile_height - 1
+	
+	# draw top part first
+	draw_texture_rect_region(
+		LadderTexture,
+		Rect2(_position, DRAW_SIZE),
+		Rect2(Vector2(), DRAW_SIZE)
+	)
+	i -= 1
+	_position.y += DRAW_SIZE.y
+	
+	# draw middle and bottom parts
+	while i >= 0:
+		var idx := 2 if i == 0 else 1
+		draw_texture_rect_region(
+			LadderTexture,
+			Rect2(_position, DRAW_SIZE),
+			Rect2(Vector2(0, DRAW_SIZE.y * idx), DRAW_SIZE)
+		)
+		_position.y += DRAW_SIZE.y
+		i -= 1
+"
+
+[node name="Ladder" type="MeshInstance2D"]
+self_modulate = Color( 1, 1, 1, 0 )
+light_mask = 0
+mesh = SubResource( 1 )
+script = ExtResource( 1 )
+tile_height = 2
+
+[node name="Area" type="Area2D" parent="." groups=["ladders"]]
 collision_layer = 2
 collision_mask = 0
 input_pickable = false
+script = SubResource( 2 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Sprite" type="Sprite" parent="Area"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area"]
+modulate = Color( 0.360784, 0.913725, 0.0196078, 1 )
+light_mask = 0
