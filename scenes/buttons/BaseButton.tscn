@@ -1,13 +1,72 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://scenes/buttons/BaseButton.gd" type="Script" id=1]
-[ext_resource path="res://assets/textures/button.res" type="SpriteFrames" id=2]
 
-[sub_resource type="RectangleShape2D" id=6]
+[sub_resource type="StreamTexture" id=18]
+load_path = "res://.import/button.png-8911a537b9d74946e57d12c653cdadda.stex"
+
+[sub_resource type="AtlasTexture" id=19]
+atlas = SubResource( 18 )
+region = Rect2( 0, 64, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=20]
+atlas = SubResource( 18 )
+region = Rect2( 0, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=21]
+atlas = SubResource( 18 )
+region = Rect2( 32, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=22]
+atlas = SubResource( 18 )
+region = Rect2( 64, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=23]
+atlas = SubResource( 18 )
+region = Rect2( 64, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=24]
+atlas = SubResource( 18 )
+region = Rect2( 0, 32, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=25]
+atlas = SubResource( 18 )
+region = Rect2( 32, 32, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=26]
+atlas = SubResource( 18 )
+region = Rect2( 64, 32, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=27]
+atlas = SubResource( 18 )
+region = Rect2( 64, 32, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=28]
+atlas = SubResource( 18 )
+region = Rect2( 64, 32, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=29]
+atlas = SubResource( 18 )
+region = Rect2( 64, 32, 32, 32 )
+
+[sub_resource type="SpriteFrames" id=30]
+animations = [ {
+"frames": [ SubResource( 19 ) ],
+"loop": false,
+"name": "Glow",
+"speed": 30.0
+}, {
+"frames": [ SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), SubResource( 23 ), SubResource( 24 ), SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ), SubResource( 29 ) ],
+"loop": false,
+"name": "Press/Release",
+"speed": 62.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=14]
 resource_local_to_scene = true
 extents = Vector2( 9, 6.5 )
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=15]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("CollisionShape2D:position")
@@ -34,8 +93,7 @@ tracks/1/keys = {
 "values": [ Vector2( 9, 6.5 ) ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "ToggledStatus"
+[sub_resource type="Animation" id=16]
 length = 0.33
 step = 0.033
 tracks/0/type = "value"
@@ -63,7 +121,7 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 0.5 ), Vector2( 0, 2 ) ]
 }
 
-[sub_resource type="RectangleShape2D" id=5]
+[sub_resource type="RectangleShape2D" id=17]
 extents = Vector2( 9, 2.5 )
 
 [node name="BaseButton" type="StaticBody2D"]
@@ -77,19 +135,22 @@ __meta__ = {
 }
 
 [node name="Frames" type="AnimatedSprite" parent="."]
-frames = ExtResource( 2 )
+frames = SubResource( 30 )
 animation = "Press/Release"
+__meta__ = {
+"_editor_description_": "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpzb3VyY2V8PXJlczovL2Fzc2V0cy90ZXh0dXJlcy9idXR0b24uYXNlcHJpdGUKbGF5ZXJ8PQpvcF9leHB8PUZhbHNlCm9fZm9sZGVyfD1yZXM6Ly9hc3NldHMvdGV4dHVyZXMKb19uYW1lfD1idXR0b24ucG5nCm9ubHlfdmlzaWJsZXw9VHJ1ZQpvX2V4X3B8PQo="
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 modulate = Color( 0.117647, 0.780392, 0, 1 )
 light_mask = 0
 position = Vector2( 0, 0.5 )
-shape = SubResource( 6 )
+shape = SubResource( 14 )
 one_way_collision = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/RESET = SubResource( 4 )
-anims/ToggledStatus = SubResource( 3 )
+anims/RESET = SubResource( 15 )
+anims/ToggledStatus = SubResource( 16 )
 
 [node name="DetectPlayer" type="Area2D" parent="."]
 collision_layer = 0
@@ -98,7 +159,7 @@ monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectPlayer"]
 position = Vector2( 0, -4.5 )
-shape = SubResource( 5 )
+shape = SubResource( 17 )
 
 [connection signal="body_entered" from="DetectPlayer" to="." method="_on_DetectPlayer_body_entered"]
 [connection signal="body_exited" from="DetectPlayer" to="." method="_on_DetectPlayer_body_exited"]
