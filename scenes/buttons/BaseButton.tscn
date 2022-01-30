@@ -5,10 +5,6 @@
 [sub_resource type="StreamTexture" id=18]
 load_path = "res://.import/button.png-8911a537b9d74946e57d12c653cdadda.stex"
 
-[sub_resource type="AtlasTexture" id=19]
-atlas = SubResource( 18 )
-region = Rect2( 0, 64, 32, 32 )
-
 [sub_resource type="AtlasTexture" id=20]
 atlas = SubResource( 18 )
 region = Rect2( 0, 0, 32, 32 )
@@ -49,22 +45,26 @@ region = Rect2( 64, 32, 32, 32 )
 atlas = SubResource( 18 )
 region = Rect2( 64, 32, 32, 32 )
 
+[sub_resource type="AtlasTexture" id=19]
+atlas = SubResource( 18 )
+region = Rect2( 0, 64, 32, 32 )
+
 [sub_resource type="SpriteFrames" id=30]
 animations = [ {
-"frames": [ SubResource( 19 ) ],
-"loop": false,
-"name": "Glow",
-"speed": 30.0
-}, {
 "frames": [ SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), SubResource( 23 ), SubResource( 24 ), SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ), SubResource( 29 ) ],
 "loop": false,
 "name": "Press/Release",
 "speed": 62.0
+}, {
+"frames": [ SubResource( 19 ) ],
+"loop": false,
+"name": "Glow",
+"speed": 30.0
 } ]
 
 [sub_resource type="RectangleShape2D" id=14]
 resource_local_to_scene = true
-extents = Vector2( 9, 6.5 )
+extents = Vector2( 9, 7 )
 
 [sub_resource type="Animation" id=15]
 length = 0.001
@@ -78,7 +78,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 0, 0.5 ) ]
+"values": [ Vector2( 0, 1 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("CollisionShape2D:shape:extents")
@@ -90,12 +90,12 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 9, 6.5 ) ]
+"values": [ Vector2( 9, 7 ) ]
 }
 
 [sub_resource type="Animation" id=16]
-length = 0.33
-step = 0.033
+length = 0.16
+step = 0.016
 tracks/0/type = "value"
 tracks/0/path = NodePath("CollisionShape2D:shape:extents")
 tracks/0/interp = 1
@@ -103,10 +103,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.33 ),
+"times": PoolRealArray( 0, 0.16 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 9, 6.5 ), Vector2( 9, 5 ) ]
+"values": [ Vector2( 9, 7 ), Vector2( 9, 5.5 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("CollisionShape2D:position")
@@ -115,10 +115,10 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.33 ),
+"times": PoolRealArray( 0, 0.16 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0, 0.5 ), Vector2( 0, 2 ) ]
+"values": [ Vector2( 0, 1 ), Vector2( 0, 2.5 ) ]
 }
 
 [sub_resource type="RectangleShape2D" id=17]
@@ -133,6 +133,7 @@ __meta__ = {
 "_edit_group_": true,
 "type": "button"
 }
+position_snap = Vector2( 8, 8 )
 
 [node name="Frames" type="AnimatedSprite" parent="."]
 frames = SubResource( 30 )
@@ -144,7 +145,7 @@ __meta__ = {
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 modulate = Color( 0.117647, 0.780392, 0, 1 )
 light_mask = 0
-position = Vector2( 0, 0.5 )
+position = Vector2( 0, 1 )
 shape = SubResource( 14 )
 one_way_collision = true
 
