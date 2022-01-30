@@ -38,12 +38,18 @@ var _player : Actor
 var _dot : float
 var _commands := []
 var _init := false
+var _lock := false
 
 func set_toggled(flag: bool) -> void:
 	toggled = flag
 	_init = true
-	set_process(true)
+	_do_toggle_animation()
 	emit_signal('toggle_status_changed', flag)
+
+func _do_toggle_animation() -> void:
+	if not _lock:
+		_lock = true
+		set_process(true)
 
 func _notification(what: int) -> void:
 	match what:
@@ -58,6 +64,8 @@ func _notification(what: int) -> void:
 			$Frames.connect('animation_finished', self, '_on_Frames_animation_finished')
 			$AnimationPlayer.connect('animation_finished', self, '_on_AnimationPlayer_animation_finished')
 		NOTIFICATION_PHYSICS_PROCESS:
+			# don't detect collision during a lock
+			if _lock: return
 			if not toggled and _player.is_on_floor():
 				var dir := global_position.direction_to(_player.call('get_bottom_edge'))
 				_dot = dir.dot(Vector2.UP)
@@ -69,6 +77,7 @@ func _notification(what: int) -> void:
 					$Frames.animation = 'Glow'
 				else:
 					$Frames.animation = SPRITE_ANIMATION
+				_lock = false
 			else:
 				# Play the sprite animation either forwards or backwards, then animate the hitbox
 				sprite.play(SPRITE_ANIMATION, !toggled)
@@ -100,6 +109,7 @@ func _on_DetectPlayer_body_exited(_body: Node) -> void:
 # Called when the hitbox animation finishes
 func _on_AnimationPlayer_animation_finished(_anim_name: String):
 	_do_commands()
+	_lock = false
 
 # Called when the toggle animation finishes
 func _on_Frames_animation_finished() -> void:
