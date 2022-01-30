@@ -13,7 +13,7 @@ dest_files=[ "res://.import/button.aseprite-e52578ef378a880efdd87e5149f8b748.res
 
 split_layers=false
 exclude_layers_pattern=""
-only_visible_layers=false
+only_visible_layers=true
 trim_mode=0
 sprite_filename_pattern="{basename}.{layer}.{extension}"
 texture_strip/import_texture_strip=false
