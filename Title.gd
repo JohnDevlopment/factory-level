@@ -13,3 +13,11 @@ func _go_to_scene(scene: String) -> void:
 	yield(TransitionRect, 'fade_finished')
 	Game.set_paused(false)
 	Game.go_to_scene(scene)
+
+func _start_level(scene: String) -> void:
+	scene = "res://scenes/levels/%s.tscn" % scene
+	Game.set_paused(true)
+	TransitionRect.fade_out()
+	yield(TransitionRect, 'fade_finished')
+	Game.set_paused(false)
+	Game.go_to_scene(scene)
