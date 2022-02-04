@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scenes/actors/enemies/guard_robot/GuardRobot.gd" type="Script" id=1]
 [ext_resource path="res://assets/textures/actors/robot.res" type="SpriteFrames" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://scenes/actors/enemies/guard_robot/MoveBack.gd" type="Script" id=8]
 [ext_resource path="res://scenes/actors/enemies/guard_robot/Cooldown.gd" type="Script" id=9]
 [ext_resource path="res://scenes/components/Hitbox.tscn" type="PackedScene" id=10]
+[ext_resource path="res://assets/audio/robot-beep.wav" type="AudioStream" id=11]
 
 [sub_resource type="Resource" id=1]
 resource_local_to_scene = true
@@ -88,6 +89,11 @@ script = ExtResource( 8 )
 
 [node name="Cooldown" type="Node" parent="States"]
 script = ExtResource( 9 )
+
+[node name="BeepSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 11 )
+bus = "SFX"
+area_mask = 7
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_Hitbox_area_entered"]
 

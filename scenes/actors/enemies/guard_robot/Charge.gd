@@ -3,6 +3,7 @@ extends State
 func _setup() -> void:
 	user_data.frames.play('Move')
 	user_data.hitbox.disabled = false
+	(user_data.beep as AudioStreamPlayer2D).play()
 
 func cleanup() -> void:
 	user_data.hitbox.disabled = true

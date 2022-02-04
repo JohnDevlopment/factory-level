@@ -27,7 +27,8 @@ func _ready() -> void:
 		initial_position = global_position,
 		timer = $Timer,
 		charge_speed = detection_radius / time_to_radius,
-		hitbox = $Hitbox
+		hitbox = $Hitbox,
+		beep = $BeepSound
 	}
 	
 	$Hitbox.disabled = true
