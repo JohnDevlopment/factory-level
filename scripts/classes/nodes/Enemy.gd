@@ -3,6 +3,8 @@ tool
 extends Actor
 class_name Enemy, "res://assets/textures/icons/Enemy.svg"
 
+signal defeated
+
 ## The stats of the @class enemy
 # @type Stats
 var stats: Stats
@@ -102,6 +104,9 @@ func direction_to_player():
 		var player: Actor = Game.get_player()
 		var distance := player.get_center() - get_center()
 		return {distance = distance, direction = distance.normalized()}
+
+func emit_defeated() -> void:
+	emit_signal('defeated')
 
 ## Returns the current health of the enemy.
 # @const
