@@ -13,9 +13,12 @@ func physics_main(delta: float):
 	var velocity : Vector2 = root.velocity
 	
 	if root.distance_met >= root.detection_radius:
-		velocity.x = lerp(velocity.x, 0, delta * 10)
+		velocity.x = lerp(velocity.x, 0, delta * 13)
+		if abs(velocity.x) < 0.05:
+			velocity.x = 0.0
 		if is_zero_approx(velocity.x):
 			root.distance_met = 0
+			user_data['delay'] = 1.0
 			return root.STATE_MOVEBACK
 	else:
 		velocity.x = lerp(velocity.x, user_data.charge_speed * root.direction.x, delta * 5)

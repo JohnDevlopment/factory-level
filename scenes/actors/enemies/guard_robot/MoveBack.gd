@@ -3,12 +3,18 @@ extends State
 var _stopping := false
 
 func _setup() -> void:
-	user_data.frames.play('Move', true)
+	user_data.frames.play('Idle', false)
 	_stopping = false
+	yield(get_tree().create_timer(user_data.delay), 'timeout')
+	user_data.frames.play('Move', true)
 
 func physics_main(delta: float):
 	var root : Actor = persistant_state
 	var velocity : Vector2 = root.velocity
+	
+	if not is_zero_approx(user_data.delay):
+		user_data.delay -= delta
+		return
 	
 	if _stopping:
 		if abs(velocity.x) < 0.01:
