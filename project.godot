@@ -267,6 +267,7 @@ TransitionRect="*res://scenes/autoloads/TransitionRect.tscn"
 gdscript/warnings/narrowing_conversion=false
 gdscript/warnings/unused_signal=false
 gdscript/warnings/return_value_discarded=false
+gdscript/warnings/integer_division=false
 shapes/collision/shape_color=Color( 1, 1, 1, 0.419608 )
 
 [display]
