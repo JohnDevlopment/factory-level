@@ -105,11 +105,15 @@ func create_expression(expression: String, binds: PoolStringArray) -> Expression
 #       Indices:
 #
 #       @list_begin unordered
-#       @item 0 = left
-#       @item 1 = up
-#       @item 2 = right
-#       @item 3 = down
-#       @unordered
+#       @item `0
+#       left
+#       @item 1
+#       up
+#       @item 2
+#       right
+#       @item 3
+#       down
+#       @list_end
 func get_adjacent_tiles(tile_location: Vector2, tilemap: TileMap) -> Array:
 	var result := [
 		Vector2.LEFT,
@@ -179,8 +183,14 @@ func get_subtiles(autotile_id: int) -> Array:
 				})
 	return return_values
 
-func slope_tile(id: int, bitmask: int, loc: Vector2, tilemap: TileMap,
-map: Dictionary, reverse: bool = false):
+## Place a slope tile.
+# @desc @a id is assumed to be an autotile which defines a slope. @a bitmask is the bitmask
+#       argument from @function _forward_subtile_selection. @a loc is the location of the cell
+#       on the @a tilemap where said autotile will be placed. @a map is a dictionary that defines
+#       the rules on how the slope tiles will be determined.
+#
+#       Format of @a map: { @code{'vertical':} VERTICAL_RULES, @code{'horizontal':} HORIZONTAL_RULES }
+func slope_tile(id: int, bitmask: int, loc: Vector2, tilemap: TileMap, map: Dictionary, reverse: bool = false):
 	var neighbor_tiles := get_adjacent_tiles(loc, tilemap)
 	var bind : int
 	var new_id := id
