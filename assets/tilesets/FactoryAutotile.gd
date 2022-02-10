@@ -37,7 +37,7 @@ const BINDS := {
 	LEFT_FACING_LONG_SLOPE: [FOREGROUND],
 	RIGHT_FACING_SLOPE: [FOREGROUND],
 	RIGHT_FACING_LONG_SLOPE: [FOREGROUND],
-	FOREGROUND: [LEFT_FACING_LONG_SLOPE, RIGHT_FACING_LONG_SLOPE, LEFT_FACING_SLOPE, RIGHT_FACING_SLOPE]
+	#FOREGROUND: [LEFT_FACING_LONG_SLOPE, RIGHT_FACING_LONG_SLOPE, LEFT_FACING_SLOPE, RIGHT_FACING_SLOPE]
 }
 
 enum TileDirection {LEFT, UP, RIGHT, DOWN}
@@ -49,14 +49,35 @@ func _is_tile_bound(drawn_id: int, neighbor_id: int) -> bool:
 
 func _forward_subtile_selection(autotile_id: int, bitmask: int, tilemap: Object, tile_location: Vector2):
 	match autotile_id:
-		FOREGROUND:
-			var factory_bind_range := range(5, 9)
-			var tm := tilemap as TileMap
-			if bitmask & BIND_TOP:
-				if tm.get_cellv(tile_location + Vector2.UP) in factory_bind_range:
-					# tile above is a slope
-					tm.set_cellv(tile_location, autotile_id)
-					return Vector2(9, 2)
+#		FOREGROUND:
+#			var neighbor_tiles := get_adjacent_tiles(tile_location, tilemap)
+#			var coord : Vector2
+#			var new_tile_id := autotile_id
+#			#var subtiles := get_subtiles(autotile_id)
+#
+#			#if _check_bitmask(bitmask, 0, BIND_TOPRIGHT):
+#			if bitmask & BIND_TOP:
+#				var uptile_id : int
+#				match neighbor_tiles[TileDirection.UP].id:
+#					LEFT_FACING_LONG_SLOPE:
+#						uptile_id = get_subtile_id_from_vector(
+#							neighbor_tiles[TileDirection.UP].autotile_coord,
+#							neighbor_tiles[TileDirection.UP].size.x
+#						)
+#						if uptile_id < 2:
+#							new_tile_id = LEFT_FACING_LONG_SLOPE
+#							coord = get_subtile_coord(
+#								uptile_id + 3,
+#								int(neighbor_tiles[TileDirection.UP].size.x)
+#							)
+#						else:
+#							new_tile_id = SLOPE_FILL_TILE
+#						print("change tile to slope-l-l %d %s" % [uptile_id + 3, coord])
+#					_:
+#						printerr("Invalid tile ID %d" % uptile_id)
+#						return
+#				(tilemap as TileMap).set_cellv(tile_location, new_tile_id)
+#				return coord
 		LEFT_FACING_LONG_SLOPE, LEFT_FACING_SLOPE:
 			var fill_tile := MapperTile.new(SLOPE_FILL_TILE)
 			var map := { 'horizontal': 1 }
@@ -71,13 +92,6 @@ func _forward_subtile_selection(autotile_id: int, bitmask: int, tilemap: Object,
 			else:
 				(tilemap as TileMap).set_cellv(tile_location, autotile_id)
 				return autotile_get_icon_coordinate(autotile_id)
-
-func create_expression(expression: String, binds: PoolStringArray) -> Expression:
-	var e := Expression.new()
-	var err := e.parse(expression, binds)
-	if err:
-		printerr(e.get_error_text())
-	return e
 
 ## Returns an array of tiles that are adjacent to the one at the given cell.
 # @desc Each element is a dictionary:
@@ -202,13 +216,14 @@ func slope_tile(id: int, bitmask: int, loc: Vector2, tilemap: TileMap, map: Dict
 			printerr("'%s' key not found in 'map'" % e)
 			return
 	
-	var diffs = {
+	var diffs := {
 		binds = [BIND_RIGHT if reverse else BIND_LEFT, BIND_TOP],
 		dir = [TileDirection.RIGHT if reverse else TileDirection.LEFT, TileDirection.UP],
 		map = PoolStringArray(['horizontal', 'vertical'])
 	}
 	
 	for i in range(2):
+		if diffs.map[i] == null: continue
 		bind = diffs.binds[i]
 		if bitmask & bind:
 			# check tile to the left or right of us
@@ -223,20 +238,19 @@ func slope_tile(id: int, bitmask: int, loc: Vector2, tilemap: TileMap, map: Dict
 				if coord.x < 0 or coord.y < 0:
 					printerr("No autotile coordinate for tile %d" % tile.id)
 					return
-				var their_sid : int = get_subtile_id(id, coord)
-				if true:
-					var temp = _slope_offset_subtile(their_sid, map[diffs.map[i]])
-					print(temp)
-					if temp is MapperTile:
-						new_id = temp.id
-						coord = temp.get_autotile_coordinate()
+				
+				var their_sid : int = get_subtile_id_from_vector(coord, int(tile.size.x))
+				var temp = _slope_offset_subtile(their_sid, map[diffs.map[i]])
+				if temp is MapperTile:
+					new_id = temp.id
+					coord = temp.get_autotile_coordinate()
+				else:
+					var our_sid : int = temp
+					if our_sid < subtiles.size() and our_sid >= 0:
+						coord = subtiles[our_sid].coord
 					else:
-						var our_sid : int = temp
-						if our_sid < subtiles.size() and our_sid >= 0:
-							coord = subtiles[our_sid].coord
-						else:
-							new_id = SLOPE_FILL_TILE
-							coord = Vector2()
+						new_id = SLOPE_FILL_TILE
+						coord = Vector2()
 				tilemap.set_cellv(loc, new_id)
 				return coord
 
@@ -249,3 +263,11 @@ func _slope_offset_subtile(their_sid: int, map):
 			result = map[their_sid]
 	
 	return result
+
+func _print_bitmask(bitmask: int) -> void:
+	print("top: %s, right: %s, bottom: %s, left: %s"
+		% [ bool(bitmask & BIND_TOP), bool(bitmask & BIND_RIGHT),
+		bool(bitmask & BIND_BOTTOM), bool(bitmask & BIND_LEFT) ])
+
+func _check_bitmask(value: int, mask: int, ignore: int) -> bool:
+	return (value & (~ignore)) == mask
