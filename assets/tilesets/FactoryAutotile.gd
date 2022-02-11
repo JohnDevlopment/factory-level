@@ -92,6 +92,19 @@ func _forward_subtile_selection(autotile_id: int, bitmask: int, tilemap: Object,
 			else:
 				(tilemap as TileMap).set_cellv(tile_location, autotile_id)
 				return autotile_get_icon_coordinate(autotile_id)
+		RIGHT_FACING_LONG_SLOPE, RIGHT_FACING_SLOPE:
+			var fill_tile := MapperTile.new(SLOPE_FILL_TILE)
+			var map := { 'horizontal': -1 }
+			if autotile_id == RIGHT_FACING_LONG_SLOPE:
+				map['vertical'] = [fill_tile, fill_tile, fill_tile, 0, 1]
+			else:
+				map['vertical'] = [2, fill_tile, fill_tile]
+			var coord = slope_tile(autotile_id, bitmask, tile_location, tilemap, map, true)
+			if coord is Vector2:
+				return coord
+			else:
+				(tilemap as TileMap).set_cellv(tile_location, autotile_id)
+				return autotile_get_icon_coordinate(autotile_id)
 
 ## Returns an array of tiles that are adjacent to the one at the given cell.
 # @desc Each element is a dictionary:
