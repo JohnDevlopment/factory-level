@@ -33,6 +33,8 @@ func _ready() -> void:
 	
 	states.user_data = {hurtbox = $Hurtbox}
 	states.change_state(STATE_IDLE)
+	
+	stats.init_stats(self)
 
 func _unhandled_key_input(event: InputEventKey) -> void:
 	input_vector.x = Input.get_axis('ui_left', 'ui_right')
@@ -115,6 +117,10 @@ func hurt(area: Area2D, speed: Vector2 = Vector2(100, 200)) -> void:
 	velocity = Vector2(knockback_direction.x * speed.x, -speed.y)
 	states.change_state(STATE_HURT)
 	$HurtAnimation.play('HurtStart')
+	
+	var damage = stats.calculate_damage(other.stats)
+	if damage:
+		stats.health = int(max(0, stats.health - damage))
 
 func update_velocity(delta: float) -> Vector2:
 	if input_vector.x:
