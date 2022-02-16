@@ -35,6 +35,8 @@ func _ready() -> void:
 	states.change_state(STATE_IDLE)
 	
 	stats.init_stats(self)
+	
+	call_deferred('_hud_set_hp')
 
 func _unhandled_key_input(event: InputEventKey) -> void:
 	input_vector.x = Input.get_axis('ui_left', 'ui_right')
@@ -133,3 +135,8 @@ func update_velocity(delta: float) -> Vector2:
 func _on_HurtAnimation_animation_finished(anim_name: String) -> void:
 	if anim_name == 'HurtStart':
 		$HurtAnimation.play('Hurt')
+
+func _hud_set_hp() -> void:
+	var hud = UI.get_hud()
+	if hud:
+		hud.set_hp(stats.health)
