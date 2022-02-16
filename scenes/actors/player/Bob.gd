@@ -123,6 +123,7 @@ func hurt(area: Area2D, speed: Vector2 = Vector2(100, 200)) -> void:
 	var damage = stats.calculate_damage(other.stats)
 	if damage:
 		stats.health = int(max(0, stats.health - damage))
+		_hud_set_hp()
 
 func update_velocity(delta: float) -> Vector2:
 	if input_vector.x:
