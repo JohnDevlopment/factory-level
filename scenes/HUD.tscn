@@ -1,0 +1,62 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/HUD.gd" type="Script" id=1]
+
+[node name="HUD" type="MarginContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -30.0
+margin_bottom = -336.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Layout" type="GridContainer" parent="."]
+margin_right = 600.0
+margin_bottom = 134.0
+custom_constants/hseparation = 30
+columns = 2
+
+[node name="Label" type="Label" parent="Layout"]
+margin_right = 118.0
+margin_bottom = 14.0
+text = "HP:"
+
+[node name="HPLabel" type="Label" parent="Layout"]
+margin_left = 148.0
+margin_right = 163.0
+margin_bottom = 14.0
+text = "0"
+align = 2
+
+[node name="Label2" type="Label" parent="Layout"]
+margin_top = 18.0
+margin_right = 118.0
+margin_bottom = 32.0
+text = "Current Room:"
+
+[node name="FloorLabel" type="Label" parent="Layout"]
+margin_left = 148.0
+margin_top = 18.0
+margin_right = 163.0
+margin_bottom = 32.0
+text = "1F"
+align = 2
+
+[node name="Label3" type="Label" parent="Layout"]
+margin_top = 36.0
+margin_right = 118.0
+margin_bottom = 50.0
+text = "Robots Destroyed:"
+
+[node name="RobotLabel" type="Label" parent="Layout"]
+margin_left = 148.0
+margin_top = 36.0
+margin_right = 163.0
+margin_bottom = 50.0
+text = "0"
+align = 2
