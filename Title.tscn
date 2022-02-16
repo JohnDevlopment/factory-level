@@ -45,4 +45,4 @@ text = "Start"
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Button" to="." method="_go_to_scene" binds= [ "Doors1" ]]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Button2" to="." method="_go_to_scene" binds= [ "Enemy1" ]]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/Button3" to="." method="_start_level" binds= [ "level1" ]]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Button3" to="." method="_start_level" binds= [ "Level1" ]]
