@@ -279,7 +279,7 @@ window/stretch/aspect="keep_height"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/AsepriteWizard/plugin.cfg", "res://addons/Todo_Manager/plugin.cfg", "res://addons/anima/plugin.cfg", "res://addons/behavior_tree/plugin.cfg", "res://addons/debug_console/plugin.cfg", "res://addons/metadata_inspector/plugin.cfg", "res://addons/node_mapper/plugin.cfg", "res://addons/snippets_plugin/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/AsepriteWizard/plugin.cfg", "res://addons/anima/plugin.cfg", "res://addons/debug_console/plugin.cfg", "res://addons/node_mapper/plugin.cfg", "res://addons/snippets_plugin/plugin.cfg" )
 
 [importer_defaults]
 
