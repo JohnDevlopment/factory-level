@@ -6,30 +6,43 @@ const DebugSetting := 'BitmapFontPlugin/debug/print_messages'
 
 var _dialog : Control
 var _show_button
+var _inspector_plugin
 
 func _enter_tree() -> void:
 	if not ProjectSettings.has_setting(DebugSetting):
 		ProjectSettings.set_setting(DebugSetting, false)
 		ProjectSettings.set_initial_value(DebugSetting, false)
-	ProjectSettings.save()
+		ProjectSettings.save()
+	add_autoload_singleton('BFCHelpers', 'res://addons/bitmap_font_creator/BFCHelpers.gd')
+	# Add dialog to bottom window
 	_dialog = Window.instance()
+	_dialog.inspector = get_editor_interface().get_inspector()
 	_dialog.undo_redo = get_undo_redo()
-	_dialog.init()
 	_show_button = add_control_to_bottom_panel(_dialog, 'Bitmap Font')
 	_show_button.hide()
+	_dialog.connect('launch_charmap_wizard', self, '_launch_charmap_wizard')
+	_dialog.init()
+	# Inspector plugin
+	_inspector_plugin = preload('res://addons/bitmap_font_creator/inspector_plugin.gd').new()
+	add_inspector_plugin(_inspector_plugin)
 
 func _exit_tree() -> void:
-	remove_control_from_bottom_panel(_dialog)
-	_dialog.queue_free()
-	_dialog = null
-	_show_button = null
+	if is_instance_valid(_dialog):
+		remove_control_from_bottom_panel(_dialog)
+		_dialog.queue_free()
+		_dialog = null
+		_show_button = null
+	if _inspector_plugin:
+		remove_inspector_plugin(_inspector_plugin)
+	#remove_autoload_singleton('BFCHelpers')
 
 func apply_changes() -> void:
 	if is_instance_valid(_dialog) and (_dialog as Control).is_visible_in_tree():
 		_dialog.apply()
 
 func clear() -> void:
-	_dialog.clear_state()
+	if is_instance_valid(_dialog):
+		_dialog.clear_state()
 
 func edit(object: Object) -> void:
 	if is_instance_valid(_dialog):
@@ -58,7 +71,15 @@ func make_visible(visible: bool) -> void:
 		if (_dialog as Control).is_visible_in_tree():
 			hide_bottom_panel()
 
-func save_external_data() -> void:
-	if is_instance_valid(_dialog) and (_dialog as Control).is_visible_in_tree():
-		print('save_external_data')
-		_dialog.save()
+#func save_external_data() -> void:
+#	if is_instance_valid(_dialog) and (_dialog as Control).is_visible_in_tree():
+#		print('save_external_data')
+#		_dialog.save()
+
+func _launch_charmap_wizard(font: BitmapFont, font_res_path: String, texture_count: int):
+	var dlg = preload('res://addons/bitmap_font_creator/ui/CharacterMapWizard.tscn').instance()
+	get_editor_interface().get_base_control().add_child(dlg)
+	(dlg as Popup).popup_centered_ratio(0.5)
+	clear()
+	make_visible(false)
+	dlg.edit(font, font_res_path, texture_count)
