@@ -21,10 +21,8 @@ image = SubResource( 8 )
 size = Vector2( 16, 16 )
 
 [sub_resource type="StyleBoxTexture" id=5]
-content_margin_left = 6.0
-content_margin_right = 6.0
-content_margin_top = 2.0
-content_margin_bottom = 2.0
+content_margin_left = 4.0
+content_margin_right = 4.0
 texture = SubResource( 4 )
 region_rect = Rect2( 0, 0, 16, 16 )
 margin_left = 4.0
@@ -37,6 +35,9 @@ expand_margin_top = 2.0
 expand_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxTexture" id=2]
+content_margin_left = 4.0
+content_margin_right = 4.0
+content_margin_top = 4.0
 texture = ExtResource( 2 )
 region_rect = Rect2( 0, 0, 42, 19 )
 margin_left = 2.0
@@ -45,6 +46,9 @@ margin_top = 1.0
 margin_bottom = 2.0
 
 [sub_resource type="StyleBoxTexture" id=1]
+content_margin_left = 4.0
+content_margin_right = 4.0
+content_margin_top = 4.0
 texture = ExtResource( 1 )
 region_rect = Rect2( 0, 0, 42, 19 )
 margin_left = 2.0
@@ -53,6 +57,9 @@ margin_top = 1.0
 margin_bottom = 2.0
 
 [sub_resource type="StyleBoxTexture" id=7]
+content_margin_left = 4.0
+content_margin_right = 4.0
+content_margin_top = 4.0
 texture = ExtResource( 4 )
 region_rect = Rect2( 0, 0, 42, 19 )
 margin_left = 2.0
