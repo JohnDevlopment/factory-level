@@ -17,6 +17,9 @@ func _ready() -> void:
 	NodeMapper.map_nodes(self)
 	_after_ready = true
 
+func connect_room(room: Node):
+	room.connect('tree_exiting', self, '_on_room_tree_exiting')
+
 func set_current_floor(cf: String) -> void:
 	current_floor = cf
 	if _after_ready:
@@ -34,3 +37,9 @@ func set_robots_destroyed(rb: int) -> void:
 	robots_destroyed = rb
 	if _after_ready:
 		RobotLabel.text = str(robots_destroyed)
+
+func _on_room_tree_exiting() -> void:
+	hide()
+	HPLabel.text = '0'
+	FloorLabel.text = '~'
+	RobotLabel.text = '0'
