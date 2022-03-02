@@ -3,7 +3,11 @@
 [ext_resource path="res://scenes/Room.gd" type="Script" id=1]
 
 [node name="Room" type="Node2D"]
+light_mask = 0
+z_index = 1
 script = ExtResource( 1 )
+editor_color = Color( 0.5, 1, 0.83, 0.4 )
+editor_draw = false
 
 [node name="Tilemaps" type="Node" parent="."]
 
