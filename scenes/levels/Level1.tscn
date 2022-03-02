@@ -32,6 +32,9 @@ owner_name = "Guard Robot"
 
 [node name="Level1" instance=ExtResource( 1 )]
 script = ExtResource( 10 )
+camera_rects = [ Rect2( 0, 72, 1070, 230 ) ]
+editor_color = Color( 1, 0, 0.913725, 0.839216 )
+editor_draw = true
 
 [node name="FG" parent="Tilemaps" index="0" instance=ExtResource( 3 )]
 tile_set = ExtResource( 2 )
