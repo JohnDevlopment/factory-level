@@ -125,6 +125,14 @@ func hurt(area: Area2D, speed: Vector2 = Vector2(100, 200)) -> void:
 		stats.health = int(max(0, stats.health - damage))
 		_hud_set_hp()
 
+func set_camera_limits_from_rect(rect: Rect2):
+	var camera : Camera2D = $Camera2D
+	camera.limit_left = rect.position.x
+	camera.limit_top = rect.position.y
+	camera.limit_right = rect.end.x
+	camera.limit_bottom = rect.end.y
+	camera.align()
+
 func update_velocity(delta: float) -> Vector2:
 	if input_vector.x:
 		velocity.x = move_toward(velocity.x, direction.x * speed_cap.x, 200 * delta)
