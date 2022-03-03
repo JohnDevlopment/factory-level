@@ -77,9 +77,8 @@ func _set(property: String, value) -> bool:
 func _align_camera():
 	if not Game.has_player(): return
 	yield(get_tree(), 'idle_frame')
-	var rect: Rect2
 	var player := Game.get_player()
 	for _rect in camera_rects:
-		rect = _rect
+		var rect: Rect2 = _rect
 		if rect.has_point(player.global_position):
 			player.set_camera_limits_from_rect(rect)
