@@ -64,7 +64,7 @@ func _physics_process(delta: float) -> void:
 		state_return = states.change_state(state_return)
 		assert(state_return == OK)
 	
-	var snap_vector := Vector2.DOWN * 10 if velocity.y > 0 else Vector2()
+	var snap_vector := Vector2(0, 4) if velocity.y > 0 else Vector2()
 	var _velocity := move_and_slide_with_snap(velocity, snap_vector, Vector2.UP, true, 4, 0.785398, false)
 	velocity.y = _velocity.y
 	
