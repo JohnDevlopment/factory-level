@@ -10,6 +10,7 @@ var editor_draw := false setget set_editor_draw
 func _ready() -> void:
 	if Engine.editor_hint: return
 	yield(_align_camera(), 'completed')
+	_show_hud()
 	Game.set_paused(true)
 	TransitionRect.set_alpha(1)
 	TransitionRect.fade_in()
@@ -88,3 +89,8 @@ func _align_camera():
 			print("camera rect expanded to ", rect)
 		if rect.has_point(player.global_position):
 			player.set_camera_limits_from_rect(rect)
+
+func _show_hud() -> void:
+	var hud = UI.get_hud()
+	hud.show()
+	hud.connect_room(self)
