@@ -1,6 +1,8 @@
 tool
 extends Node2D
 
+const CAMERA_SIZE := Vector2(256, 192)
+
 export(Array, Rect2) var camera_rects : Array setget set_camera_rects
 var editor_color := Color( 0.5, 1, 0.83, 0.4 ) setget set_editor_color
 var editor_draw := false setget set_editor_draw
@@ -80,5 +82,9 @@ func _align_camera():
 	var player := Game.get_player()
 	for _rect in camera_rects:
 		var rect: Rect2 = _rect
+		if rect.size < CAMERA_SIZE:
+			var diff := CAMERA_SIZE - rect.size
+			rect = rect.grow_individual(0, 0, diff.x, diff.y)
+			print("camera rect expanded to ", rect)
 		if rect.has_point(player.global_position):
 			player.set_camera_limits_from_rect(rect)
