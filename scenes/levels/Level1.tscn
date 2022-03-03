@@ -32,7 +32,7 @@ owner_name = "Guard Robot"
 
 [node name="Level1" instance=ExtResource( 1 )]
 script = ExtResource( 10 )
-camera_rects = [ Rect2( 0, 72, 1070, 230 ), Rect2( 768, 72, 302, 230 ) ]
+camera_rects = [ Rect2( 0, 104, 1069, 198 ), Rect2( 768, 104, 301, 198 ) ]
 editor_color = Color( 1, 0, 0.913725, 0.839216 )
 editor_draw = true
 
