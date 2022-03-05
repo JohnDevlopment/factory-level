@@ -56,6 +56,8 @@ const TILE_SIZE := Vector2(16, 16)
 #       itself to its default value of -1.
 var level_entrance := -1 setget ,get_level_entrance
 
+## The size of the screen (initialized on game load).
+# @type Vector2
 var screen_size := Vector2()
 
 func adjust_window_for_gut() -> void:
