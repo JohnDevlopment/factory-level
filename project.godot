@@ -328,6 +328,7 @@ console={
 2d_physics/layer_7="player hurtbox"
 2d_physics/layer_8="enemy hitbox"
 2d_physics/layer_9="enemy hurtbox"
+2d_physics/layer_10="triggers"
 
 [physics]
 
