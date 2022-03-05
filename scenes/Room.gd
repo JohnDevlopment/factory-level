@@ -91,3 +91,10 @@ func _fade_in():
 	TransitionRect.fade_in()
 	yield(TransitionRect, 'fade_finished')
 	Game.set_paused(false)
+
+func _fade_out():
+	Game.set_paused(true)
+	TransitionRect.set_alpha(0)
+	TransitionRect.fade_out()
+	yield(TransitionRect, 'fade_finished')
+	Game.set_paused(false)
