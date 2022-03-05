@@ -46,27 +46,26 @@ enum CollisionLayer {
 
 const TILE_SIZE := Vector2(16, 16)
 
-enum ActorIDS {
-	KEVIN,
-	DARK_BEAST,
-	SIGN,
-	
-	COUNT
-}
+#enum ActorIDS {
+#	KEVIN,
+#	DARK_BEAST,
+#	SIGN,
+#
+#	COUNT
+#}
 
-var default_kevin_speed := Vector2(85, 275)
-var level_size := Vector2(1020, 610) setget set_level_size
-var dialog_mode := false setget set_dialog_mode
+#var level_size := Vector2(1020, 610) setget set_level_size
+#var dialog_mode := false setget set_dialog_mode
 
-func actor_id_to_string(id: int) -> String:
-	match id:
-		ActorIDS.DARK_BEAST:
-			return 'DARK_BEAST'
-		ActorIDS.KEVIN:
-			return 'KEVIN'
-		ActorIDS.SIGN:
-			return 'SIGN'
-	return ''
+#func actor_id_to_string(id: int) -> String:
+#	match id:
+#		ActorIDS.DARK_BEAST:
+#			return 'DARK_BEAST'
+#		ActorIDS.KEVIN:
+#			return 'KEVIN'
+#		ActorIDS.SIGN:
+#			return 'SIGN'
+#	return ''
 
 ## Fetch the player node.
 # @desc Returns a reference to the player node. If the player is not in the
@@ -90,32 +89,32 @@ func has_player() -> bool: return get_tree().has_group('player')
 #		parent.add_child(vfx)
 #		(vfx as Node2D).global_position = position
 
-func is_key_pressed(e: InputEventKey, key: int, echo: bool = false):
-	if e.pressed and e.scancode == key:
-		if echo:
-			return true
-		else:
-			if not e.echo: return true
-	return false
+#func is_key_pressed(e: InputEventKey, key: int, echo: bool = false):
+#	if e.pressed and e.scancode == key:
+#		if echo:
+#			return true
+#		else:
+#			if not e.echo: return true
+#	return false
 
-## Set or clear dialog mode.
+# Set or clear dialog mode.
 # @desc Depending on whether @a enabled is true or false, this sets or disables
 #       dialog mode. In dialog mode, affected nodes stop working and do not
 #       accept input from the user, allowing dialog boxes to work without interruption.
 #
 #       Emits the @code changed_game_param signal.
-func set_dialog_mode(enabled: bool):
-	dialog_mode = enabled
-	emit_signal("changed_game_param", "dialog_mode", enabled)
+#func set_dialog_mode(enabled: bool):
+#	dialog_mode = enabled
+#	emit_signal("changed_game_param", "dialog_mode", enabled)
 
-## Set the size of the current level.
+# Set the size of the current level.
 # @desc Sets the size of the level to @a size. The size of the level should be
 #       in tiles; the value can be converted to pixels using the @constant TILE_SIZE constant.
 #
 #       Emits the @code change_game_param signal.
-func set_level_size(size: Vector2):
-	level_size = size
-	emit_signal('changed_game_param', 'level_size', level_size)
+#func set_level_size(size: Vector2):
+#	level_size = size
+#	emit_signal('changed_game_param', 'level_size', level_size)
 
 ## Set the pause status of the scene tree.
 # @desc Pauses the scene tree if @a paused is true or unpauses it otherwise.
