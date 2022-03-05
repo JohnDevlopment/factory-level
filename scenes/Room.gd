@@ -10,11 +10,7 @@ var editor_draw := false setget set_editor_draw
 func _ready() -> void:
 	if Engine.editor_hint: return
 	yield(_align_camera(), 'completed')
-	Game.set_paused(true)
-	TransitionRect.set_alpha(1)
-	TransitionRect.fade_in()
-	yield(TransitionRect, 'fade_finished')
-	Game.set_paused(false)
+	_fade_in()
 
 func _draw() -> void:
 	if not Engine.editor_hint or not editor_draw: return
@@ -88,3 +84,10 @@ func _align_camera():
 			print("camera rect expanded to ", rect)
 		if rect.has_point(player.global_position):
 			player.set_camera_limits_from_rect(rect)
+
+func _fade_in():
+	Game.set_paused(true)
+	TransitionRect.set_alpha(1)
+	TransitionRect.fade_in()
+	yield(TransitionRect, 'fade_finished')
+	Game.set_paused(false)
