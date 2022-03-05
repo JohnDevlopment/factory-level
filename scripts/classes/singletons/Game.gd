@@ -68,12 +68,18 @@ func actor_id_to_string(id: int) -> String:
 			return 'SIGN'
 	return ''
 
+## Fetch the player node.
+# @desc Returns a reference to the player node. If the player is not in the
+#       scene tree, @code null is returned and an error is emitted.
 func get_player() -> Actor: return get_tree().get_nodes_in_group("player")[0]
 
+## Change scenes.
+# @desc Switch to the given @a scene. Emits the @code changed_game_param signal.
 func go_to_scene(scene: String) -> void:
 	get_tree().change_scene(scene)
 	emit_signal('changed_game_param', 'changing_scene', scene)
 
+## Returns true if the player is inside the scene tree.
 func has_player() -> bool: return get_tree().has_group('player')
 
 #func insert_vfx(vfx_name: String, parent: Node, position: Vector2):
