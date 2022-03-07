@@ -100,6 +100,10 @@ func current_state() -> String:
 	
 	return ""
 
+func deserialize(data: Dictionary) -> void:
+	global_position = data.global_position
+	states.change_state(data.current_state)
+
 func get_bottom_edge() -> Vector2:
 	return global_position + Vector2(0, 16)
 
@@ -121,6 +125,15 @@ func hurt(area: Area2D, speed: Vector2 = Vector2(100, 200)) -> void:
 	var damage = stats.calculate_damage(other.stats)
 	if damage:
 		stats.health = int(max(0, stats.health - damage))
+
+func serialize() -> Dictionary:
+	return {
+		current_state = states.current_state(),
+		current_animation_state = _current_anim_state,
+		current_hp = stats.health,
+		global_position = global_position,
+		name = name
+	}
 
 func set_camera_limits_from_rect(rect: Rect2):
 	var camera : Camera2D = $Camera2D
