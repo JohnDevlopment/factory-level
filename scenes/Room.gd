@@ -9,7 +9,9 @@ var editor_draw := false setget set_editor_draw
 
 func _ready() -> void:
 	if Engine.editor_hint: return
-	yield(_align_camera(), 'completed')
+	var result = _align_camera()
+	if result:
+		yield(result, 'completed')
 	_fade_in()
 
 func _draw() -> void:
