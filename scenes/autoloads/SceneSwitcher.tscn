@@ -3,4 +3,5 @@
 [ext_resource path="res://scenes/autoloads/SceneSwitcher.gd" type="Script" id=1]
 
 [node name="SceneSwitcher" type="Node"]
+pause_mode = 2
 script = ExtResource( 1 )
