@@ -2,6 +2,7 @@ tool
 extends Node2D
 
 const CAMERA_SIZE := Vector2(256, 192)
+const INVISIBLE_WALL = preload('res://scripts/InvisibleWall.gd')
 
 export(Array, Rect2) var camera_rects : Array setget set_camera_rects
 var editor_color := Color( 0.5, 1, 0.83, 0.4 ) setget set_editor_color
@@ -9,6 +10,17 @@ var editor_draw := false setget set_editor_draw
 
 func _ready() -> void:
 	if Engine.editor_hint: return
+	# connect level exits
+	for node in get_tree().get_nodes_in_group('exits'):
+		(node as Node).connect('go_to_scene', self, '_on_Room_Exit_go_to_scene')
+	# check if there is an entrance defined
+	if Game.has_player():
+		var level_entrance = Game.level_entrance
+		for _node in get_tree().get_nodes_in_group('entrances'):
+			var node : Position2D = _node
+			if level_entrance == _node.entrance_id:
+				var player := Game.get_player()
+				player.global_position = node.global_position
 	var result = _align_camera()
 	if result:
 		yield(result, 'completed')
@@ -86,6 +98,25 @@ func _align_camera():
 			print("camera rect expanded to ", rect)
 		if rect.has_point(player.global_position):
 			player.set_camera_limits_from_rect(rect)
+			_add_invisible_wall(rect)
+
+func _add_invisible_wall(region: Rect2) -> void:
+	# end of region
+	var static_body := INVISIBLE_WALL.new(
+		Vector2(region.end.x, region.position.y),
+		Vector2(region.end.x, region.end.y)
+	)
+	static_body.collision_layer = Game.CollisionLayer.WALLS
+	static_body.collision_mask = 0
+	add_child(static_body)
+	# start of region
+	static_body = INVISIBLE_WALL.new(
+		region.position,
+		Vector2(region.position.x, region.end.y)
+	)
+	static_body.collision_layer = Game.CollisionLayer.WALLS
+	static_body.collision_mask = 0
+	add_child(static_body)
 
 func _fade_in():
 	Game.set_paused(true)
@@ -100,3 +131,11 @@ func _fade_out():
 	TransitionRect.fade_out()
 	yield(TransitionRect, 'fade_finished')
 	Game.set_paused(false)
+
+# signals
+
+func _on_Room_Exit_go_to_scene(scene: PackedScene, entrance: int) -> void:
+	yield(_fade_out(), 'completed')
+	Game.level_entrance = entrance
+	SceneSwitcher.add_node_data(Game.get_player())
+	SceneSwitcher.change_scene_to(scene)
