@@ -1,8 +1,17 @@
+## Singleton for switching scenes.
+# @name SceneSwitcher
+# @singleton
 extends Node
 
+## The fallback scene.
+# @type PackedScene
 export var fallback_scene : PackedScene
 
 var previous_scene : Node
+
+## Options dictionary.
+# @type Dictionary
+# @setter set_options()
 var options : Dictionary setget set_options
 
 var _quit := false
@@ -10,6 +19,11 @@ var _quit := false
 func _ready() -> void:
 	set_options({})
 
+## Register a node to the scene transition.
+# @desc Adds @a node to the list of nodes whose data transferred to the next
+#       scene. Call this before @function change_scene or @function change_scene_to.
+#       This function calls a method inside @a node to fetch the data: @a function
+#       must return @type Dictionary. Naturally @a function must also exist as well.
 func add_node_data(node: Node, function: String = 'serialize') -> void:
 	if not is_instance_valid(node):
 		push_error("Node is invalid")
@@ -23,10 +37,19 @@ func add_node_data(node: Node, function: String = 'serialize') -> void:
 		return
 	options['save_nodes'] = save_nodes
 
+## Change scenes.
+# @desc Changes the scene to the one identified by @a scene, which must be an
+#       absolute path to a packed scene.
+#
+#       Returns @constant OK (0) if the switch is successful, and any other value on failure.
 func change_scene(scene: String, opt: Dictionary = {}) -> int:
 	set_options(opt)
 	return _load_scene(scene, 'change_scene_to')
 
+## Change scenes.
+# @desc Changes the scene to @a scene.
+#
+#       Returns @constant OK (0) if the switch is successful, and any other value on failure.
 func change_scene_to(scene: PackedScene) -> int:
 	var node : Node
 	if is_instance_valid(scene):
