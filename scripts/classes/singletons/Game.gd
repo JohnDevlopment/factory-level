@@ -46,26 +46,20 @@ enum CollisionLayer {
 
 const TILE_SIZE := Vector2(16, 16)
 
-#enum ActorIDS {
-#	KEVIN,
-#	DARK_BEAST,
-#	SIGN,
-#
-#	COUNT
-#}
-
 #var level_size := Vector2(1020, 610) setget set_level_size
 #var dialog_mode := false setget set_dialog_mode
 
-#func actor_id_to_string(id: int) -> String:
-#	match id:
-#		ActorIDS.DARK_BEAST:
-#			return 'DARK_BEAST'
-#		ActorIDS.KEVIN:
-#			return 'KEVIN'
-#		ActorIDS.SIGN:
-#			return 'SIGN'
-#	return ''
+## A number indicating the level entrance.
+# @type int
+# @getter get_level_entrance()
+# @desc This value can be set like any other property, but when it is read, it resets
+#       itself to its default value of -1.
+var level_entrance := -1 setget ,get_level_entrance
+
+func get_level_entrance() -> int:
+	var temp = level_entrance
+	level_entrance = -1
+	return temp
 
 ## Fetch the player node.
 # @desc Returns a reference to the player node. If the player is not in the
@@ -80,22 +74,6 @@ func go_to_scene(scene: String) -> void:
 
 ## Returns true if the player is inside the scene tree.
 func has_player() -> bool: return get_tree().has_group('player')
-
-#func insert_vfx(vfx_name: String, parent: Node, position: Vector2):
-#	var vfx = Scenes.get(vfx_name)
-#	assert(vfx is PackedScene, "key \"%s\" is not a PackedScene" % vfx_name)
-#	if vfx:
-#		vfx = (vfx as PackedScene).instance()
-#		parent.add_child(vfx)
-#		(vfx as Node2D).global_position = position
-
-#func is_key_pressed(e: InputEventKey, key: int, echo: bool = false):
-#	if e.pressed and e.scancode == key:
-#		if echo:
-#			return true
-#		else:
-#			if not e.echo: return true
-#	return false
 
 # Set or clear dialog mode.
 # @desc Depending on whether @a enabled is true or false, this sets or disables
