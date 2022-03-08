@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "tool
+extends \"res://addons/gut/plugin_control.gd\"
+
+func _ready() -> void:
+	if Engine.editor_hint: return
+	OS.window_size.x = 800
+	get_tree().set_screen_stretch(SceneTree.STRETCH_MODE_VIEWPORT, SceneTree.STRETCH_ASPECT_KEEP_HEIGHT, OS.window_size)
+"
+
+[node name="TestRunner" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 740, 250 )
+script = SubResource( 1 )
+_font_size = 14
+_should_maximize = true
+_directory1 = "res://test/integreation"
+_directory2 = "res://test/unit"
