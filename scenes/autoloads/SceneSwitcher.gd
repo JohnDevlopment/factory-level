@@ -10,7 +10,10 @@ var _quit := false
 func _ready() -> void:
 	set_options({})
 
-func add_node_data(node: Node, function: String = 'serialize'):
+func add_node_data(node: Node, function: String = 'serialize') -> void:
+	if not is_instance_valid(node):
+		push_error("Node is invalid")
+		return
 	var save_nodes : Dictionary = options.get('save_nodes', {})
 	if node.has_method(function):
 		var data = node.call(function)
