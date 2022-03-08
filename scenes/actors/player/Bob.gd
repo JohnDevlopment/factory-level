@@ -70,6 +70,9 @@ func _physics_process(delta: float) -> void:
 	
 	_on_floor = is_on_floor()
 
+func _to_string() -> String:
+	return "Bob[Actor:%d]" % get_instance_id()
+
 func _on_ladder_body_change_enter_state(_node, flag: bool):
 	_in_ladder = flag
 	
