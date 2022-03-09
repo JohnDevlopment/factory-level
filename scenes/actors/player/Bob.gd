@@ -104,8 +104,7 @@ func current_state() -> String:
 	return ""
 
 func deserialize(data: Dictionary) -> void:
-	global_position = data.global_position
-	states.change_state(data.current_state)
+	stats.health = data.current_hp
 
 func get_bottom_edge() -> Vector2:
 	return global_position + Vector2(0, 16)
@@ -134,7 +133,6 @@ func serialize() -> Dictionary:
 		current_state = states.current_state(),
 		current_animation_state = _current_anim_state,
 		current_hp = stats.health,
-		global_position = global_position,
 		name = name
 	}
 
