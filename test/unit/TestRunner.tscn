@@ -6,8 +6,14 @@ extends \"res://addons/gut/plugin_control.gd\"
 
 func _ready() -> void:
 	if Engine.editor_hint: return
-	OS.window_size.x = 800
-	get_tree().set_screen_stretch(SceneTree.STRETCH_MODE_VIEWPORT, SceneTree.STRETCH_ASPECT_KEEP_HEIGHT, OS.window_size)
+	yield(get_tree(), 'idle_frame')
+	var vp_size := get_viewport().size
+	get_viewport().size = vp_size * 2
+	OS.window_size = OS.window_size * 2
+	get_tree().set_screen_stretch(
+		SceneTree.STRETCH_MODE_DISABLED, SceneTree.STRETCH_ASPECT_KEEP_HEIGHT,
+		OS.window_size)
+	OS.center_window()
 "
 
 [node name="TestRunner" type="Control"]
@@ -16,6 +22,6 @@ anchor_bottom = 1.0
 rect_min_size = Vector2( 740, 250 )
 script = SubResource( 1 )
 _font_size = 14
-_should_maximize = true
+_log_level = 2
 _directory1 = "res://test/integreation"
 _directory2 = "res://test/unit"
