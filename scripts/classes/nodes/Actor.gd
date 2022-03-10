@@ -84,7 +84,7 @@ func _enter_tree() -> void:
 		set_physics_process(false)
 		set_process(false)
 
-func _to_string(): return "[Actor:%d]" % get_instance_id()
+#func _to_string(): return "[Actor:%d]" % get_instance_id()
 
 func _set(property, value):
 	match property:
