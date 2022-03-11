@@ -4,7 +4,7 @@ extends Node2D
 const CAMERA_SIZE := Vector2(256, 192)
 const INVISIBLE_WALL = preload('res://scripts/InvisibleWall.gd')
 
-export(Array, Rect2) var camera_rects : Array setget set_camera_rects
+export(Array, Rect2) var camera_rects : Array setget set_camera_rects,get_camera_rects
 var editor_color := Color( 0.5, 1, 0.83, 0.4 ) setget set_editor_color
 var editor_draw := false setget set_editor_draw
 
@@ -33,6 +33,9 @@ func _draw() -> void:
 	for temp in camera_rects:
 		var rect := temp as Rect2
 		draw_rect(rect, editor_color, false)
+
+func get_camera_rects() -> Array:
+	return camera_rects
 
 func set_camera_rects(rects: Array) -> void:
 	var i := 0
