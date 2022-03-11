@@ -8,11 +8,14 @@ export(Array, Rect2) var camera_rects : Array setget set_camera_rects
 var editor_color := Color( 0.5, 1, 0.83, 0.4 ) setget set_editor_color
 var editor_draw := false setget set_editor_draw
 
-func _ready() -> void:
+func _enter_tree() -> void:
 	if Engine.editor_hint: return
 	# connect level exits
 	for node in get_tree().get_nodes_in_group('exits'):
 		(node as Node).connect('go_to_scene', self, '_on_Room_Exit_go_to_scene')
+
+func _ready() -> void:
+	if Engine.editor_hint: return
 	# check if there is an entrance defined
 	if Game.has_player():
 		var level_entrance = Game.level_entrance
@@ -21,10 +24,9 @@ func _ready() -> void:
 			if level_entrance == _node.entrance_id:
 				var player := Game.get_player()
 				player.global_position = node.global_position
-	var result = _align_camera()
-	if result:
-		yield(result, 'completed')
-	_fade_in()
+		call_deferred('_align_camera')
+	if is_inside_tree():
+		_fade_in()
 
 func _draw() -> void:
 	if not Engine.editor_hint or not editor_draw: return
@@ -87,15 +89,12 @@ func _set(property: String, value) -> bool:
 	return true
 
 func _align_camera():
-	if not Game.has_player(): return
-	yield(get_tree(), 'idle_frame')
 	var player := Game.get_player()
 	for _rect in camera_rects:
 		var rect: Rect2 = _rect
 		if rect.size < CAMERA_SIZE:
 			var diff := CAMERA_SIZE - rect.size
 			rect = rect.grow_individual(0, 0, diff.x, diff.y)
-			print("camera rect expanded to ", rect)
 		if rect.has_point(player.global_position):
 			player.set_camera_limits_from_rect(rect)
 			_add_invisible_wall(rect)
@@ -119,18 +118,20 @@ func _add_invisible_wall(region: Rect2) -> void:
 	add_child(static_body)
 
 func _fade_in():
-	Game.set_paused(true)
-	TransitionRect.set_alpha(1)
-	TransitionRect.fade_in()
-	yield(TransitionRect, 'fade_finished')
-	Game.set_paused(false)
+	if get_tree().current_scene == self:
+		Game.set_paused(true)
+		TransitionRect.set_alpha(1)
+		TransitionRect.fade_in()
+		yield(TransitionRect, 'fade_finished')
+		Game.set_paused(false)
 
 func _fade_out():
-	Game.set_paused(true)
-	TransitionRect.set_alpha(0)
-	TransitionRect.fade_out()
-	yield(TransitionRect, 'fade_finished')
-	Game.set_paused(false)
+	if get_tree().current_scene == self:
+		Game.set_paused(true)
+		TransitionRect.set_alpha(0)
+		TransitionRect.fade_out()
+		yield(TransitionRect, 'fade_finished')
+		Game.set_paused(false)
 
 # signals
 
