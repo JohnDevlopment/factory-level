@@ -63,6 +63,14 @@ func get_level_entrance() -> int:
 	level_entrance = -1
 	return temp
 
+## Returns the metadata entry for @a meta or a default value.
+# @desc If the metadata entry @a meta is not defined, @a default becomes
+#       the new value for said entry and is returned.
+func get_meta_default(meta: String, default = null):
+	if not has_meta(meta):
+		set_meta(meta, default)
+	return get_meta(meta)
+
 ## Fetch the player node.
 # @desc Returns a reference to the player node. If the player is not in the
 #       scene tree, @code null is returned and an error is emitted.
