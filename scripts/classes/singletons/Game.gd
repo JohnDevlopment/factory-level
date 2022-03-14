@@ -56,6 +56,8 @@ const TILE_SIZE := Vector2(16, 16)
 #       itself to its default value of -1.
 var level_entrance := -1 setget ,get_level_entrance
 
+var screen_size := Vector2()
+
 func get_level_entrance() -> int:
 	var temp = level_entrance
 	level_entrance = -1
@@ -104,3 +106,7 @@ func set_paused(paused: bool) -> void:
 
 func _ready() -> void:
 	pause_mode = Node.PAUSE_MODE_PROCESS
+	screen_size = Vector2(
+		ProjectSettings.get_setting('display/window/size/width'),
+		ProjectSettings.get_setting('display/window/size/height')
+	)
