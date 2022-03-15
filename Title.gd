@@ -23,4 +23,4 @@ func _start_level(scene: String) -> void:
 	Game.go_to_scene(scene)
 
 func _gut_test() -> void:
-	Game.go_to_scene('res://test/unit/TestRunner.tscn')
+	Game.go_to_scene('res://test/resources/TestRunner.tscn')
