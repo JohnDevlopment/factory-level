@@ -259,9 +259,9 @@ History="*res://addons/debug_console/History.gd"
 NodeMapper="*res://addons/node_mapper/NodeMapper.gd"
 Math="*res://scripts/classes/singletons/Math.gd"
 Globals="*res://scripts/classes/singletons/Globals.gd"
-Anima="*res://addons/anima/core/anima.gd"
 TransitionRect="*res://scenes/autoloads/TransitionRect.tscn"
 SceneSwitcher="*res://scenes/autoloads/SceneSwitcher.tscn"
+Anima="*res://addons/anima/core/anima.gd"
 
 [debug]
 
