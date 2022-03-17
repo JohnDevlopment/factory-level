@@ -58,6 +58,21 @@ var level_entrance := -1 setget ,get_level_entrance
 
 var screen_size := Vector2()
 
+func adjust_window_for_gut() -> void:
+	# new size that keeps aspect ratio
+	var new_size : Vector2
+	if true:
+		var window_ar := OS.window_size.aspect()
+		var growth := OS.window_size * window_ar
+		new_size = Vector2(int(growth.x), int(growth.y))
+	# resize & center the window, and disable stretch
+	get_tree().set_screen_stretch(
+		SceneTree.STRETCH_MODE_DISABLED, SceneTree.STRETCH_ASPECT_KEEP_HEIGHT,
+		OS.window_size)
+	get_viewport().size = new_size
+	OS.window_size = new_size
+	OS.center_window()
+
 func get_level_entrance() -> int:
 	var temp = level_entrance
 	level_entrance = -1
