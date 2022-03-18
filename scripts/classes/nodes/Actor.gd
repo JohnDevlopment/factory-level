@@ -35,11 +35,16 @@ onready var gravity_value: float = ProjectSettings.get_setting("physics/2d/defau
 
 var velocity: = Vector2.ZERO
 
+var _enabled := true
+
 ## Enable/disable the @class Actor
 # @desc  Call this function to enable or disable the actor.
 #        Affects the visibility and collision of the actor.
 #        The argument @a flag can be true or false; true to enable
 #        the actor's collision and rendering, or false to disable it.
+#
+#        The virtual method @function _enable_actor() is called if it is
+#        implemented in the subclass.
 func enable_actor(flag: bool) -> void:
 	visible = flag
 	enable_collision(flag)
@@ -62,11 +67,14 @@ func enable_collision(flag: bool) -> void:
 ## Returns the center of the actor
 # @virtual
 # @const
-# @return   The center of the actor as a @type Vector2
 # @desc     Call this function to return the center of the actor. In its base form,
 #           this function returns an empty Vector2, but you can override it to return the actual
 #           center of your actor.
 func get_center() -> Vector2: return Vector2()
+
+## Returns whether the actor is currently enabled.
+# @const
+func is_enabled() -> bool: return _enabled
 
 func _ready() -> void:
 	if Engine.editor_hint:
