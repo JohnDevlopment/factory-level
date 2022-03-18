@@ -1,8 +1,27 @@
+## Screen Transition Rectangle (STR) component
+# @name ScreenTransitionRect
+# @desc When the player collides with this area when inside a room, the screen
+#       transitions to a different part of the room, called a @i{camera region}.
+#
+#       This is a standalone component, and all it does is commence the screen
+#       transition. What happens before or after is up to the user.
 extends Area2D
 
+## A signal that gets emitted after a screen transition finishes.
 signal transition_finished
 
-export var camera_rects : Array setget set_camera_rects,get_camera_rects
+## The enclosing room's camera regions.
+# @type Array
+# @setter set_camera_rects(rects)
+# @getter get_camera_rects()
+# @desc Each element of this array is a @type Rect2.
+export var camera_rects := [] setget set_camera_rects,get_camera_rects
+
+## The camera regions this transition rect currently overlaps.
+# @type Array
+# @setter set_connected_screens(screens)
+# @getter get_connected_screens()
+# @desc Each element of this array is a Rect2.
 export var connected_screens := [] setget set_connected_screens,get_connected_screens
 
 onready var collision_shape : CollisionShape2D = $CollisionShape2D
