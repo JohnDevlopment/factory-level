@@ -48,7 +48,7 @@ var _enabled := true
 func enable_actor(flag: bool) -> void:
 	visible = flag
 	enable_collision(flag)
-
+	_enabled = flag
 	if has_method("_enable_actor"):
 		call("_enable_actor", flag)
 
@@ -82,6 +82,7 @@ func _ready() -> void:
 		set_process(false)
 		return
 	call_deferred('_snap_to_ground')
+	set_meta('gravity', gravity_value)
 
 func _init() -> void:
 	set_meta("collision_layer", collision_layer)
