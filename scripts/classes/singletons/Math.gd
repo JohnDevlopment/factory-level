@@ -24,7 +24,8 @@ static func is_almost_equal(a: float, b: float, epsilon: float = CMP_EPSILON) ->
 static func is_almost_zero(a: float, epsilon: float = CMP_EPSILON) -> bool:
 	return abs(a) < epsilon
 
-## Returns @code true if the value is within a range
-# @desc Returns @code true if @a value is within the range [ @a min_value,@a max_value ].
+## Returns @code true if the value is within a range.
+# @desc For this function to return @code true, @a value must be within the range
+#       [ @a min_value,@a max_value ].
 static func is_in_range(value: float, min_value: float, max_value: float) -> bool:
 	return (value >= min_value) && (value <= max_value)

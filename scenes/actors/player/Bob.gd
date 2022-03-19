@@ -72,6 +72,9 @@ func _physics_process(delta: float) -> void:
 	
 	_on_floor = is_on_floor()
 
+func _to_string() -> String:
+	return "Bob[Actor:%d]" % get_instance_id()
+
 func _on_ladder_body_change_enter_state(_node, flag: bool):
 	_in_ladder = flag
 	
@@ -102,6 +105,9 @@ func current_state() -> String:
 	
 	return ""
 
+func deserialize(data: Dictionary) -> void:
+	stats.health = data.current_hp
+
 func get_bottom_edge() -> Vector2:
 	return global_position + Vector2(0, 16)
 
@@ -124,6 +130,22 @@ func hurt(area: Area2D, speed: Vector2 = Vector2(100, 200)) -> void:
 	if damage:
 		stats.health = int(max(0, stats.health - damage))
 		_hud_set_hp()
+
+func set_camera_limits_from_rect(rect: Rect2):
+	var camera : Camera2D = $Camera2D
+	camera.limit_left = rect.position.x
+	camera.limit_top = rect.position.y
+	camera.limit_right = rect.end.x
+	camera.limit_bottom = rect.end.y
+	camera.align()
+
+func serialize() -> Dictionary:
+	return {
+		current_state = states.current_state(),
+		current_animation_state = _current_anim_state,
+		current_hp = stats.health,
+		name = name
+	}
 
 func set_camera_limits_from_rect(rect: Rect2):
 	var camera : Camera2D = $Camera2D
