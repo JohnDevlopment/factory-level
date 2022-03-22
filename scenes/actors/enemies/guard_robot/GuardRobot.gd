@@ -68,7 +68,7 @@ func move_actor() -> void:
 		distance_met += abs(slide.travel.x)
 		if slide.collider is Actor:
 			var other : Actor = slide.collider
-			if other.get_collision_layer_bit(Globals.CollisionLayers.OBJECTS):
+			if other.get_collision_layer_bit(Game.CollisionLayer.OBJECTS):
 				var normal : Vector2 = -(slide.normal)
 				other.velocity = normal * (speed_cap * 2.0)
 
@@ -80,4 +80,4 @@ func set_detection_radius(r: float) -> void:
 func _on_Hitbox_area_entered(area: Area2D) -> void:
 	var other : Actor = area.get_parent()
 	var launch_speed := Vector2(abs(velocity.x) * 2, 300)
-	other.call(Globals.player_hurt_method, $Hitbox, launch_speed)
+	other.call(Game.PLAYER_HURT_METHOD, $Hitbox, launch_speed)
