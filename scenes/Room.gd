@@ -17,9 +17,8 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	if Engine.editor_hint: return
 	# provide screen transition rects with the camera rects
-	for tr in get_tree().get_nodes_in_group('transition_rects'):
-		tr.camera_rects = camera_rects
-		_connect_STR_to_camera_regions(tr)
+	for tr in get_tree().get_nodes_in_group('screen_transitions'):
+		tr.set_camera_regions(camera_rects)
 	# check if there is an entrance defined
 	if Game.has_player():
 		var level_entrance = Game.level_entrance
@@ -139,16 +138,6 @@ func _fade_out():
 		TransitionRect.fade_out()
 		yield(TransitionRect, 'fade_finished')
 		Game.set_paused(false)
-
-# STR = screen transition rectangle
-func _connect_STR_to_camera_regions(strect):
-	assert(strect is Area2D)
-	var area_rect : Rect2 = strect.get_shape_rect()
-	var connected := []
-	for cr in camera_rects:
-		if area_rect.intersects(cr):
-			connected.push_back(cr)
-	strect.connected_screens = connected
 
 # signals
 
