@@ -27,6 +27,7 @@ func _ready() -> void:
 		(node as Area2D).connect('body_entered', self, '_on_ladder_body_change_enter_state', [true])
 		(node as Area2D).connect('body_exited', self, '_on_ladder_body_change_enter_state', [false])
 	
+	# Connect signals from pickable objects
 	for node in get_tree().get_nodes_in_group('pickable'):
 		(node as Actor).connect('picked_up', self, '_on_pickable_object_status_changed', [true])
 		(node as Actor).connect('dropped', self, '_on_pickable_object_status_changed', [false])
@@ -72,16 +73,6 @@ func _physics_process(delta: float) -> void:
 
 func _to_string() -> String:
 	return "Bob[Actor:%d]" % get_instance_id()
-
-func _on_ladder_body_change_enter_state(_node, flag: bool):
-	_in_ladder = flag
-	
-	if not _in_ladder:
-		if states.current_state() == STATE_CLIMB:
-			states.change_state(STATE_IDLE)
-
-func _on_pickable_object_status_changed(node, picked_up: bool) -> void:
-	_object_picked = node if picked_up else null
 
 func change_animation_state(state: String) -> void:
 	if _object_picked: state += 'Carry'
@@ -152,6 +143,19 @@ func update_velocity(delta: float) -> Vector2:
 	
 	return velocity
 
+#signals
+
 func _on_HurtAnimation_animation_finished(anim_name: String) -> void:
 	if anim_name == 'HurtStart':
 		$HurtAnimation.play('Hurt')
+
+func _on_ladder_body_change_enter_state(_node, flag: bool):
+	_in_ladder = flag
+	
+	if not _in_ladder:
+		if states.current_state() == STATE_CLIMB:
+			states.change_state(STATE_IDLE)
+
+func _on_pickable_object_status_changed(node, picked_up: bool) -> void:
+	_object_picked = node if picked_up else null
+
