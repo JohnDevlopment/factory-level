@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=2]
+[gd_scene load_steps=53 format=2]
 
 [ext_resource path="res://scenes/actors/player/Idle.gd" type="Script" id=1]
 [ext_resource path="res://assets/textures/actors/player.png" type="Texture" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://scenes/components/Hurtbox.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/actors/player/Hurt.gd" type="Script" id=7]
 [ext_resource path="res://scenes/actors/player/Run.gd" type="Script" id=8]
+[ext_resource path="res://scenes/actors/player/ScreenTrans.gd" type="Script" id=9]
 
 [sub_resource type="Animation" id=38]
 resource_name = "HurtLeft"
@@ -551,11 +552,15 @@ position = Vector2( 0, 4 )
 shape = SubResource( 1 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
+pause_mode = 2
 current = true
 zoom = Vector2( 0.4, 0.4 )
 limit_left = 0
 limit_top = 0
 limit_bottom = 480
+limit_smoothed = true
+smoothing_enabled = true
+smoothing_speed = 8.0
 
 [node name="States" type="Node" parent="."]
 script = ExtResource( 3 )
@@ -574,6 +579,9 @@ ladder_climb_speed = 50.0
 
 [node name="Hurt" type="Node" parent="States"]
 script = ExtResource( 7 )
+
+[node name="ScreenTrans" type="Node" parent="States"]
+script = ExtResource( 9 )
 
 [node name="Hurtbox" parent="." instance=ExtResource( 6 )]
 collision_layer = 64

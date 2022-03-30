@@ -1,7 +1,7 @@
 tool
 extends Actor
 
-enum { STATE_IDLE, STATE_RUN, STATE_CLIMB, STATE_HURT }
+enum { STATE_IDLE, STATE_RUN, STATE_CLIMB, STATE_HURT, STATE_SCREENTRANS }
 
 var input_vector := Vector2()
 var direction := Vector2()
@@ -32,7 +32,10 @@ func _ready() -> void:
 		(node as Actor).connect('picked_up', self, '_on_pickable_object_status_changed', [true])
 		(node as Actor).connect('dropped', self, '_on_pickable_object_status_changed', [false])
 	
-	states.user_data = {hurtbox = $Hurtbox}
+	for node in get_tree().get_nodes_in_group('screen_transitions'):
+		node.connect_to_actor(self, '_on_screenarea_body_entered')
+	
+	states.user_data = {hurtbox = $Hurtbox, camera = $Camera2D}
 	states.change_state(STATE_IDLE)
 	
 	stats.init_stats(self)
@@ -134,6 +137,7 @@ func set_camera_limits_from_rect(rect: Rect2):
 	camera.limit_right = rect.end.x
 	camera.limit_bottom = rect.end.y
 	camera.align()
+	camera.reset_smoothing()
 
 func update_velocity(delta: float) -> Vector2:
 	if input_vector.x:
@@ -159,3 +163,12 @@ func _on_ladder_body_change_enter_state(_node, flag: bool):
 func _on_pickable_object_status_changed(node, picked_up: bool) -> void:
 	_object_picked = node if picked_up else null
 
+func _on_screenarea_body_entered(_body, area) -> void:
+	assert(_body == self)
+	
+	var regions : Array = area.get_connected_screens(global_position)
+	assert(regions.size() == 2)
+	
+	states.user_data['rect_src'] = regions[0]
+	states.user_data['rect_dest'] = regions[1]
+	states.change_state(STATE_SCREENTRANS)
