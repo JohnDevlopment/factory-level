@@ -36,7 +36,6 @@ onready var animation_player = $AnimationPlayer
 
 var _player : Actor
 var _dot : float
-var _commands := []
 var _init := false
 var _lock := false
 
@@ -58,9 +57,6 @@ func _notification(what: int) -> void:
 			if Engine.editor_hint:
 				set_notify_transform(true)
 				return
-			for node in get_children():
-				if node.has_method('do_command'):
-					_commands.append(funcref(node, 'do_command'))
 			$Frames.connect('animation_finished', self, '_on_Frames_animation_finished')
 			$AnimationPlayer.connect('animation_finished', self, '_on_AnimationPlayer_animation_finished')
 		NOTIFICATION_PHYSICS_PROCESS:
@@ -88,10 +84,6 @@ func _notification(what: int) -> void:
 			var s := global_position.snapped(position_snap)
 			global_position = s
 
-func _do_commands() -> void:
-	for fr in _commands:
-		(fr as FuncRef).call_func(toggled)
-
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey:
 		if event.is_action_pressed('debug'):
@@ -108,7 +100,6 @@ func _on_DetectPlayer_body_exited(_body: Node) -> void:
 
 # Called when the hitbox animation finishes
 func _on_AnimationPlayer_animation_finished(_anim_name: String):
-	_do_commands()
 	_lock = false
 
 # Called when the toggle animation finishes
