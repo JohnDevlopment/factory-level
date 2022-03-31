@@ -103,7 +103,7 @@ func _align_camera():
 			rect = rect.grow_individual(0, 0, diff.x, diff.y)
 		if rect.has_point(player.global_position):
 			player.set_camera_limits_from_rect(rect)
-			#_add_invisible_wall(rect)
+			_add_invisible_wall(rect)
 
 func _add_invisible_wall(region: Rect2) -> void:
 	# end of region
