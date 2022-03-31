@@ -5,6 +5,10 @@
 [sub_resource type="StreamTexture" id=18]
 load_path = "res://.import/button.png-8911a537b9d74946e57d12c653cdadda.stex"
 
+[sub_resource type="AtlasTexture" id=19]
+atlas = SubResource( 18 )
+region = Rect2( 0, 64, 32, 32 )
+
 [sub_resource type="AtlasTexture" id=20]
 atlas = SubResource( 18 )
 region = Rect2( 0, 0, 32, 32 )
@@ -45,21 +49,17 @@ region = Rect2( 64, 32, 32, 32 )
 atlas = SubResource( 18 )
 region = Rect2( 64, 32, 32, 32 )
 
-[sub_resource type="AtlasTexture" id=19]
-atlas = SubResource( 18 )
-region = Rect2( 0, 64, 32, 32 )
-
 [sub_resource type="SpriteFrames" id=30]
 animations = [ {
-"frames": [ SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), SubResource( 23 ), SubResource( 24 ), SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ), SubResource( 29 ) ],
-"loop": false,
-"name": "Press/Release",
-"speed": 62.0
-}, {
 "frames": [ SubResource( 19 ) ],
 "loop": false,
 "name": "Glow",
 "speed": 30.0
+}, {
+"frames": [ SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), SubResource( 23 ), SubResource( 24 ), SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ), SubResource( 29 ) ],
+"loop": false,
+"name": "Press/Release",
+"speed": 62.0
 } ]
 
 [sub_resource type="RectangleShape2D" id=14]
