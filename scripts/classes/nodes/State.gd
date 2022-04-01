@@ -16,6 +16,14 @@ signal state_change_request(new_state)
 #                     for @class StateMachine for details).
 signal state_parent_call(name, args)
 
+## Emitted by a @class State and forwarded by its @class StateMachine parent.
+# @arg String name  The name of a signal
+# @arg Array  args  An array of parameters for the signal
+# @desc             A @class StateMachine connects to this signal automatically and
+#                   forwards it to the outside when this signal is emitted.
+#                   Useful for letting states communicate with the persistent state.
+signal state_signal(name, args)
+
 var persistant_state: Object
 var user_data
 

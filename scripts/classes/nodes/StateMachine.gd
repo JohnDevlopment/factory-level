@@ -33,6 +33,11 @@ var root_node: NodePath
 # @setter set_paused()
 var paused := false setget set_paused
 
+## Emitted in response to a @class State emitting a signal of the same name.
+# @arg String spec  The name of the subsignal being emitted
+# @arg Array  args  A list of arguments to the subsignal
+signal state_signal(spec, args)
+
 ## Which part of a state to enable or disable
 enum StateCallMode {
 	PHYSICS, ## Run in the physics process
@@ -89,6 +94,7 @@ func _ready():
 		var s: State = state
 		s.connect('state_change_request', self, "_change_state", [], CONNECT_DEFERRED)
 		s.connect('state_parent_call', self, '_state_parent_call')
+		s.connect('state_signal', self, '_state_signal')
 		_states.append(s)
 
 func _set(property: String, value) -> bool:
@@ -195,3 +201,6 @@ func _state_parent_call(n: String, args: Array) -> void:
 				do_physics = funcref(self, 'physics_main')
 			elif args[0] == StateCallMode.PROCESS:
 				do_process = funcref(self, 'process_main')
+
+func _state_signal(spec: String, args: Array) -> void:
+	emit_signal('state_signal', spec, args)
