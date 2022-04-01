@@ -28,6 +28,10 @@ func _ready() -> void:
 				var player := Game.get_player()
 				player.global_position = node.global_position
 		call_deferred('_align_camera')
+		# Connect player signals
+		var player = Game.get_player()
+		player.connect('transition_finished', self, '_on_player_transition_finished')
+		player.connect('transition_started', self, '_on_player_transition_started')
 	if is_inside_tree():
 		_fade_in()
 
@@ -106,22 +110,20 @@ func _align_camera():
 			_add_invisible_wall(rect)
 
 func _add_invisible_wall(region: Rect2) -> void:
-	# end of region
-	var static_body := INVISIBLE_WALL.new(
-		Vector2(region.end.x, region.position.y),
-		Vector2(region.end.x, region.end.y)
-	)
-	static_body.collision_layer = Game.CollisionLayer.WALLS
-	static_body.collision_mask = 0
-	add_child(static_body)
-	# start of region
-	static_body = INVISIBLE_WALL.new(
-		region.position,
-		Vector2(region.position.x, region.end.y)
-	)
-	static_body.collision_layer = Game.CollisionLayer.WALLS
-	static_body.collision_mask = 0
-	add_child(static_body)
+	var data := [
+		[region.position, Vector2(region.position.x, region.end.y)],
+		[Vector2(region.end.x, region.position.y), region.end]
+	]
+	
+	for params in data:
+		var static_body := INVISIBLE_WALL.new(params[0], params[1])
+		static_body.collision_layer = Game.CollisionLayer.WALLS
+		static_body.collision_mask = 0
+		add_child(static_body)
+
+func _clear_invisible_walls() -> void:
+	for node in get_tree().get_nodes_in_group(INVISIBLE_WALL.GROUP_NAME):
+		node.queue_free()
 
 func _fade_in():
 	if get_tree().current_scene == self:
@@ -146,3 +148,9 @@ func _on_Room_Exit_go_to_scene(scene: PackedScene, entrance: int) -> void:
 	Game.level_entrance = entrance
 	SceneSwitcher.add_node_data(Game.get_player())
 	SceneSwitcher.change_scene_to(scene)
+
+func _on_player_transition_finished(rect: Rect2) -> void:
+	_add_invisible_wall(rect)
+
+func _on_player_transition_started() -> void:
+	_clear_invisible_walls()

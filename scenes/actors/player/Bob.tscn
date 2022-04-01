@@ -591,5 +591,6 @@ position = Vector2( 0, 2 )
 shape = SubResource( 2 )
 
 [connection signal="animation_finished" from="HurtAnimation" to="." method="_on_HurtAnimation_animation_finished"]
+[connection signal="state_signal" from="States" to="." method="_on_States_state_signal"]
 
 [editable path="Hurtbox"]

@@ -41,8 +41,15 @@ func _setup() -> void:
 	anima.play()
 	
 	_finished = false
+	emit_signal('state_signal', 'transition_started', [])
 	yield(anima, 'animation_completed')
 	_finished = true
+
+func cleanup() -> void:
+	var dest_rect : Rect2 = user_data.rect_dest
+	user_data['rect_dest'] = null
+	user_data['rect_src'] = null
+	emit_signal('state_signal', 'transition_finished', [dest_rect])
 
 func process_main(_delta: float):
 	if _finished:

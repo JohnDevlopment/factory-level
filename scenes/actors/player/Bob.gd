@@ -1,6 +1,9 @@
 tool
 extends Actor
 
+signal transition_finished(rect)
+signal transition_started
+
 enum { STATE_IDLE, STATE_RUN, STATE_CLIMB, STATE_HURT, STATE_SCREENTRANS }
 
 var input_vector := Vector2()
@@ -172,3 +175,11 @@ func _on_screenarea_body_entered(_body, area) -> void:
 	states.user_data['rect_src'] = regions[0]
 	states.user_data['rect_dest'] = regions[1]
 	states.change_state(STATE_SCREENTRANS)
+
+func _on_States_state_signal(spec: String, args: Array) -> void:
+	match spec:
+		'transition_finished':
+			var rect: Rect2 = args.pop_front()
+			emit_signal('transition_finished', rect)
+		'transition_started':
+			emit_signal('transition_started')
