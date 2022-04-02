@@ -1,0 +1,28 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://scripts/classes/resources/TilemapClobberData.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+data = {
+1: {
+"uv": Vector2( 32, 64 ),
+"width": 6
+},
+2: {
+"uv": Vector2( 0, 64 ),
+"width": 2
+},
+3: {
+"uv": Vector2( 128, 64 ),
+"width": 4
+},
+4: {
+"uv": Vector2( 0, 128 ),
+"width": 4
+},
+10: {
+"uv": Vector2( 112, 128 ),
+"width": 1
+}
+}
