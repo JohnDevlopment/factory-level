@@ -6,7 +6,7 @@ var _current_time : float
 
 func _setup() -> void:
 	# Disable collision with enemies
-	user_data.hurtbox.set_collision_layer_bit(Game.CollisionLayer.PLAYER_HURTBOX, false)
+	user_data.hurtbox.set_collision_layer_bit(Game.CollisionLayerIndex.PLAYER_HURTBOX, false)
 	
 	_current_time = INPUT_TIMER
 	
@@ -18,7 +18,7 @@ func _setup() -> void:
 
 func cleanup() -> void:
 	# Enable collision with enemies
-	user_data.hurtbox.set_collision_layer_bit(Game.CollisionLayer.PLAYER_HURTBOX, true)
+	user_data.hurtbox.set_collision_layer_bit(Game.CollisionLayerIndex.PLAYER_HURTBOX, true)
 	
 	# Reenable input processing
 	(persistant_state as Node).set_process_unhandled_key_input(true)

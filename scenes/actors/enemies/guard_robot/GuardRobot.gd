@@ -68,7 +68,7 @@ func move_actor() -> void:
 		distance_met += abs(slide.travel.x)
 		if slide.collider is Actor:
 			var other : Actor = slide.collider
-			if other.get_collision_layer_bit(Game.CollisionLayer.OBJECTS):
+			if other.get_collision_layer_bit(Game.CollisionLayerIndex.OBJECTS):
 				var normal : Vector2 = -(slide.normal)
 				other.velocity = normal * (speed_cap * 2.0)
 

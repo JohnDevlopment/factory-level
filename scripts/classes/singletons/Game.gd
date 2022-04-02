@@ -44,6 +44,19 @@ enum CollisionLayer {
 	TRIGGERS = 0x200 ## Invisible triggers
 }
 
+enum CollisionLayerIndex {
+	WALLS = 0, ## Walls
+	PLATFORMS = 1, ## Platforms
+	PLAYER = 2, ## Player foreground collision
+	OBJECTS = 3, ## Objects
+	ENEMIES = 4, ## Enemy foreground collision
+	PLAYER_HITBOX = 5, ## Player hitbox
+	PLAYER_HURTBOX = 6, ## Player hurtbox
+	ENEMY_HITBOX = 7, ## Enemy hitbox
+	ENEMY_HURTBOX = 8, ## Enemy hurtbox
+	TRIGGERS = 9 ## Invisible triggers
+}
+
 const TILE_SIZE := Vector2(16, 16)
 
 const PLAYER_HURT_METHOD := 'hurt'

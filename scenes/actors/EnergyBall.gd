@@ -40,7 +40,7 @@ func _physics_process(_delta: float) -> void:
 		var slide := get_slide_collision(i)
 		var collider = slide.collider
 		if collider is Actor:
-			if collider.get_collision_layer_bit(Game.CollisionLayer.ENEMIES):
+			if collider.get_collision_layer_bit(Game.CollisionLayerIndex.ENEMIES):
 				_check_collision_with_enemy(slide)
 				#(collider as Enemy).decide_damage(stats)
 	
