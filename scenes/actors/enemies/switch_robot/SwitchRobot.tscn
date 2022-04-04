@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://scenes/actors/enemies/switch_robot/SwitchRobot.gd" type="Script" id=1]
+[ext_resource path="res://scripts/classes/resources/Stats.gd" type="Script" id=2]
+[ext_resource path="res://assets/textures/actors/switch_robot.png" type="Texture" id=3]
+[ext_resource path="res://scenes/components/Hurtbox.tscn" type="PackedScene" id=4]
+
+[sub_resource type="Resource" id=2]
+resource_local_to_scene = true
+script = ExtResource( 2 )
+max_health = 1
+max_mana = 0
+attack = 1
+defense = 0
+owner_name = ""
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 7, 10 )
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 8, 10 )
+
+[node name="SwitchRobot" type="KinematicBody2D"]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource( 1 )
+__meta__ = {
+"collision_layer": 16,
+"collision_mask": 0
+}
+armor_time = 1.0
+stats = SubResource( 2 )
+speed_cap = Vector2( 0, 0 )
+snap_length = 1.0
+disabled = null
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 2, 0 )
+shape = SubResource( 3 )
+
+[node name="Hurtbox" parent="." instance=ExtResource( 4 )]
+collision_layer = 256
+
+[node name="CollisionShape2D" parent="Hurtbox" index="0"]
+position = Vector2( 2, 0 )
+shape = SubResource( 1 )
+
+[editable path="Hurtbox"]
