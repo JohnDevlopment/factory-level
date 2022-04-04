@@ -1,4 +1,8 @@
-## An enemy actor type
+## An enemy actor type.
+# @desc In order for this class work properly, there are a few things that
+#       need to be done. For example, the @i stats object must be initialized.
+#       Do this by calling its @function init_stats() method, passing it the
+#       toplevel Enemy as its argument.
 tool
 extends Actor
 class_name Enemy, "res://assets/textures/icons/Enemy.svg"
@@ -72,17 +76,16 @@ func _set(property, value):
 			return false
 	return true
 
-## Called when the enemy is damaged for specific behavior.
+## Called after the enemy has taken damaged.
 # @virtual
-# @desc    Called at the end of @function decide_damage(). Used to implement
-#          custom behavior after the enemy has taken damage.
+# @desc    The attacking actor's stats are contained in @a _stats.
 func _on_damaged(_stats: Stats) -> void: pass
 
 ## Returns true if the enemy should take damage.
 # @virtual
 # @desc    This function is called by @function should_damage(). It returns
 #          true by default but can be overriden to customize its behavior.
-#          Used for enemy-specific
+#          Used for enemy-specific damage calculations.
 func _should_damage() -> bool: return true
 
 ## Called to decide the amount of damage to take based on the attacker's stats.
@@ -105,6 +108,8 @@ func direction_to_player():
 		var distance := player.get_center() - get_center()
 		return {distance = distance, direction = distance.normalized()}
 
+## Emits the @signal defeated signal.
+# @const
 func emit_defeated() -> void:
 	emit_signal('defeated')
 
@@ -122,11 +127,18 @@ func get_meta_or_default(name: String, default = null):
 	return default
 
 ## Returns true if the @class Enemy should take damage
-# @virtual
-# @return  True if the Enemt should take damage, false otherwise
-# @note    This function is called by @function decide_damage; if this returns
+# @const
+# @desc    This function is called by @function decide_damage; if this returns
 #          true, the @class Enemy takes damage according to the Stats of the other Actor.
 func should_damage() -> bool:
 	var result: bool = invincibility_timer.is_stopped()
 	result = result && call("_should_damage")
 	return result
+
+## Start the invincibility timer.
+# @desc The timer is set to @a time seconds. If @a time is less than zero,
+#       @property armor_time is used instead.
+func make_invincible(time: float = -1.0) -> void:
+	if time < 0.0:
+		time = armor_time
+	invincibility_timer.start(time)
