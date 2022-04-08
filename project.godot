@@ -164,6 +164,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/classes/resources/ErrorInfo.gd"
 }, {
+"base": "EditorVCSInterface",
+"class": "GitAPI",
+"language": "NativeScript",
+"path": "res://addons/godot-git-plugin/git_api.gdns"
+}, {
 "base": "Resource",
 "class": "MessageData",
 "language": "GDScript",
@@ -241,6 +246,7 @@ _global_script_class_icons={
 "DistanceNotifier": "",
 "Enemy": "res://assets/textures/icons/Enemy.svg",
 "ErrorInfo": "",
+"GitAPI": "",
 "MessageData": "",
 "Messenger": "",
 "State": "",
@@ -284,9 +290,18 @@ window/size/height=480
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 
+[editor]
+
+version_control/autoload_on_startup=true
+version_control/plugin_name="GitAPI"
+
 [editor_plugins]
 
 enabled=PoolStringArray( "res://addons/AsepriteWizard/plugin.cfg", "res://addons/Todo_Manager/plugin.cfg", "res://addons/anima/plugin.cfg", "res://addons/debug_console/plugin.cfg", "res://addons/gut/plugin.cfg", "res://addons/node_mapper/plugin.cfg", "res://addons/snippets_plugin/plugin.cfg" )
+
+[gdnative]
+
+singletons=[  ]
 
 [importer_defaults]
 
