@@ -11,6 +11,12 @@ func _ready():
 
 func _on_damaged(_stats: Stats) -> void:
 	hide()
+	
+	# Create explosion
+	var explosion : Node2D = load('res://scenes/vfx/Explosion.tscn').instance()
+	get_parent().add_child_below_node(self, explosion, true)
+	explosion.global_position = global_position
+	
 	emit_defeated()
 	queue_free()
 
