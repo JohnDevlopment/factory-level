@@ -551,7 +551,7 @@ self_modulate = Color( 0.0156863, 0.862745, 0.168627, 1 )
 position = Vector2( 0, 4 )
 shape = SubResource( 1 )
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." groups=["player_camera"]]
 pause_mode = 2
 current = true
 zoom = Vector2( 0.4, 0.4 )

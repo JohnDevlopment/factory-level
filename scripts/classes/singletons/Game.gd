@@ -108,6 +108,10 @@ func get_meta_default(meta: String, default = null):
 #       scene tree, @code null is returned and an error is emitted.
 func get_player() -> Actor: return get_tree().get_nodes_in_group("player")[0]
 
+## Returns all cameras marked as player cameras.
+# @desc All cameras belonging to the group @code player_camera are returned.
+func get_player_cameras() -> Array: return get_tree().get_nodes_in_group('player_camera')
+
 ## Change scenes.
 # @desc Switch to the given @a scene. Emits the @code changed_game_param signal.
 func go_to_scene(scene: String) -> void:
