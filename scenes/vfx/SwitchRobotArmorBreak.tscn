@@ -1,0 +1,90 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://scenes/vfx/ArmorChunk.gd" type="Script" id=1]
+[ext_resource path="res://scenes/vfx/SwitchRobotArmorBreak.gd" type="Script" id=2]
+[ext_resource path="res://assets/textures/actors/switch_robot.png" type="Texture" id=3]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 3 )
+region = Rect2( 48, 0, 12, 12 )
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 3 )
+region = Rect2( 60, 0, 12, 12 )
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 3 )
+region = Rect2( 48, 12, 12, 12 )
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 3 )
+region = Rect2( 60, 12, 12, 12 )
+filter_clip = true
+
+[node name="SwitchRobotArmorBreak" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Chunk1" type="KinematicBody2D" parent="."]
+position = Vector2( -5, -6 )
+script = ExtResource( 1 )
+__meta__ = {
+"collision_layer": 1,
+"collision_mask": 1
+}
+speed_cap = Vector2( -50, -85 )
+snap_length = 1.0
+disabled = null
+
+[node name="Sprite" type="Sprite" parent="Chunk1"]
+texture = SubResource( 1 )
+
+[node name="Chunk2" type="KinematicBody2D" parent="."]
+position = Vector2( 7, -6 )
+script = ExtResource( 1 )
+__meta__ = {
+"collision_layer": 1,
+"collision_mask": 1
+}
+speed_cap = Vector2( 50, -85 )
+snap_length = 1.0
+disabled = null
+
+[node name="Sprite" type="Sprite" parent="Chunk2"]
+texture = SubResource( 2 )
+
+[node name="Chunk3" type="KinematicBody2D" parent="."]
+position = Vector2( -5, 6 )
+script = ExtResource( 1 )
+__meta__ = {
+"collision_layer": 1,
+"collision_mask": 1
+}
+speed_cap = Vector2( -50, -50 )
+snap_length = 1.0
+disabled = null
+
+[node name="Sprite" type="Sprite" parent="Chunk3"]
+texture = SubResource( 3 )
+
+[node name="Chunk4" type="KinematicBody2D" parent="."]
+position = Vector2( 7, 6 )
+script = ExtResource( 1 )
+__meta__ = {
+"collision_layer": 1,
+"collision_mask": 1
+}
+speed_cap = Vector2( 50, -50 )
+snap_length = 1.0
+disabled = null
+
+[node name="Sprite" type="Sprite" parent="Chunk4"]
+texture = SubResource( 4 )
+
+[node name="KillTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[connection signal="timeout" from="KillTimer" to="." method="_on_KillTimer_timeout"]

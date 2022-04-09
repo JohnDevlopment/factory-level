@@ -28,7 +28,7 @@ __meta__ = {
 "collision_layer": 16,
 "collision_mask": 0
 }
-armor_time = 1.0
+armor_time = 0.5
 stats = SubResource( 2 )
 speed_cap = Vector2( 0, 0 )
 snap_length = 1.0
@@ -36,6 +36,7 @@ disabled = null
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 3 )
+hframes = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 2, 0 )
