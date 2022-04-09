@@ -5,3 +5,6 @@
 
 [node name="EC_OpenDoor" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+command_name = "ec_open_door"
+enemy_condition = 0
+powered_door = NodePath("")
