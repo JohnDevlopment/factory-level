@@ -25,7 +25,7 @@ func _on_damaged(_stats: Stats) -> void:
 	else:
 		hide()
 		# Create explosion
-		var explosion : Node2D = load('res://scenes/vfx/Explosion.tscn').instance()
+		var explosion : Node2D = load('res://scenes/vfx/RobotExplosion.tscn').instance()
 		get_parent().add_child_below_node(self, explosion)
 		explosion.global_position = global_position
 		# Delete the node
