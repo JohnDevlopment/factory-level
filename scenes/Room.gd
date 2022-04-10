@@ -8,14 +8,14 @@ export(Array, Rect2) var camera_rects : Array setget set_camera_rects,get_camera
 var editor_color := Color( 0.5, 1, 0.83, 0.4 ) setget set_editor_color
 var editor_draw := false setget set_editor_draw
 
-func _enter_tree() -> void:
+func _ready() -> void:
 	if Engine.editor_hint: return
 	# connect level exits
 	for node in get_tree().get_nodes_in_group('exits'):
-		(node as Node).connect('go_to_scene', self, '_on_Room_Exit_go_to_scene')
-
-func _ready() -> void:
-	if Engine.editor_hint: return
+		node.connect_exit(self, '_on_Room_Exit_go_to_scene')
+	# connect doors
+	for node in get_tree().get_nodes_in_group('doors'):
+		node.connect_exit(self, '_on_door_go_to_scene')
 	# provide screen transition rects with the camera rects
 	for tr in get_tree().get_nodes_in_group('screen_transitions'):
 		tr.set_camera_regions(camera_rects)
@@ -143,11 +143,14 @@ func _fade_out():
 
 # signals
 
-func _on_Room_Exit_go_to_scene(scene: PackedScene, entrance: int) -> void:
+func _on_Room_Exit_go_to_scene(_body, scene: PackedScene, entrance: int) -> void:
 	yield(_fade_out(), 'completed')
 	Game.level_entrance = entrance
 	SceneSwitcher.add_node_data(Game.get_player())
 	SceneSwitcher.change_scene_to(scene)
+
+func _on_door_go_to_scene(scene: PackedScene, entrance: int) -> void:
+	_on_Room_Exit_go_to_scene(null, scene, entrance)
 
 func _on_player_transition_finished(rect: Rect2) -> void:
 	_add_invisible_wall(rect)
