@@ -5,6 +5,8 @@ const CAMERA_SIZE := Vector2(256, 192)
 const INVISIBLE_WALL = preload('res://scripts/InvisibleWall.gd')
 
 export(Array, Rect2) var camera_rects : Array setget set_camera_rects,get_camera_rects
+export var no_fade_in := false
+
 var editor_color := Color( 0.5, 1, 0.83, 0.4 ) setget set_editor_color
 var editor_draw := false setget set_editor_draw
 
@@ -126,7 +128,7 @@ func _clear_invisible_walls() -> void:
 		node.queue_free()
 
 func _fade_in():
-	if get_tree().current_scene == self:
+	if not no_fade_in:
 		Game.set_paused(true)
 		TransitionRect.set_alpha(1)
 		TransitionRect.fade_in()
