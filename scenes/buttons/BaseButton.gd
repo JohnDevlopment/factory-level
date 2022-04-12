@@ -43,7 +43,7 @@ func set_toggled(flag: bool) -> void:
 	toggled = flag
 	_init = true
 	_do_toggle_animation()
-	emit_signal('toggle_status_changed', flag)
+	set_meta('toggled', flag)
 
 func _do_toggle_animation() -> void:
 	if not _lock:
@@ -101,6 +101,7 @@ func _on_DetectPlayer_body_exited(_body: Node) -> void:
 # Called when the hitbox animation finishes
 func _on_AnimationPlayer_animation_finished(_anim_name: String):
 	_lock = false
+	emit_signal('toggle_status_changed', get_meta('toggled'))
 
 # Called when the toggle animation finishes
 func _on_Frames_animation_finished() -> void:

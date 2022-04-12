@@ -131,6 +131,7 @@ collision_mask = 0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true,
+"toggled": false,
 "type": "button"
 }
 position_snap = Vector2( 8, 8 )
