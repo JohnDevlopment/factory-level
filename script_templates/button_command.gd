@@ -1,4 +1,4 @@
 extends %BASE%
 
-func do_command(flag: bool)%VOID_RETURN%:
+func do_command()%VOID_RETURN%:
 %TS%pass
