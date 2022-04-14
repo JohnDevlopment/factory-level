@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/components/commands/button_commands/ButtonCommand.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/components/commands/button_commands/BC_ConveyorBeltSwitch.gd" type="Script" id=2]
+
+[node name="BC_ConveyorBeltSwitch" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+command_name = "bc_conveyor_belt_switch"
+conveyor_belt = NodePath("")
