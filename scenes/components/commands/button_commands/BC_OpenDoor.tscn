@@ -6,3 +6,4 @@
 [node name="BC_OpenDoor" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 command_name = "bc_open_door"
+powered_door = NodePath("")
