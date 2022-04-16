@@ -41,7 +41,8 @@ enum CollisionLayer {
 	PLAYER_HURTBOX = 0x40, ## Player hurtbox
 	ENEMY_HITBOX = 0x80, ## Enemy hitbox
 	ENEMY_HURTBOX = 0x100, ## Enemy hurtbox
-	TRIGGERS = 0x200 ## Invisible triggers
+	TRIGGERS = 0x200, ## Invisible triggers
+	STAIRS = 0x400 ## Staircases
 }
 
 enum CollisionLayerIndex {
@@ -54,7 +55,8 @@ enum CollisionLayerIndex {
 	PLAYER_HURTBOX = 6, ## Player hurtbox
 	ENEMY_HITBOX = 7, ## Enemy hitbox
 	ENEMY_HURTBOX = 8, ## Enemy hurtbox
-	TRIGGERS = 9 ## Invisible triggers
+	TRIGGERS = 9, ## Invisible triggers
+	STAIRS = 10 ## Staircases
 }
 
 const TILE_SIZE := Vector2(16, 16)
