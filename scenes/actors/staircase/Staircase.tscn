@@ -1,0 +1,46 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/actors/staircase/Staircase.gd" type="Script" id=1]
+[ext_resource path="res://scenes/actors/staircase/TopPlatform.gd" type="Script" id=2]
+
+[node name="Staircase" type="StaticBody2D"]
+light_mask = 0
+collision_layer = 1024
+collision_mask = 0
+script = ExtResource( 1 )
+__meta__ = {
+"_editor_description_": "Expects a CollisionPolygon2D for its collision. If no such node is added, then at the start of the scene one is added automatically.
+
+If a CollisionPolygon2D child is added (in the editor or scene), its collision points are set automatically."
+}
+editor_draw_collision = false
+editor_draw_color = Color( 0.301961, 0.647059, 0.109804, 1 )
+
+[node name="DetectionField" type="Area2D" parent="."]
+visible = false
+modulate = Color( 0.00784314, 1, 0, 1 )
+light_mask = 0
+collision_layer = 0
+collision_mask = 4
+input_pickable = false
+monitorable = false
+
+[node name="TopPlatform" type="StaticBody2D" parent="."]
+light_mask = 0
+collision_layer = 2
+collision_mask = 0
+script = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopPlatform"]
+visible = false
+one_way_collision = true
+
+[node name="DetectionArea" type="Area2D" parent="TopPlatform"]
+modulate = Color( 0, 0.690196, 0.929412, 1 )
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+
+[connection signal="body_entered" from="DetectionField" to="." method="_on_DetectionField_body" binds= [ true ]]
+[connection signal="body_exited" from="DetectionField" to="." method="_on_DetectionField_body" binds= [ false ]]
+[connection signal="body_entered" from="TopPlatform/DetectionArea" to="TopPlatform" method="_on_DetectionArea_body" binds= [ true ]]
