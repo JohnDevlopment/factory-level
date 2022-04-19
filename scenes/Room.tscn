@@ -11,6 +11,8 @@ editor_draw = false
 
 [node name="Tilemaps" type="Node" parent="."]
 
+[node name="Platforms" type="Node" parent="."]
+
 [node name="Actors" type="Node" parent="."]
 
 [node name="Triggers" type="Node" parent="Actors"]
