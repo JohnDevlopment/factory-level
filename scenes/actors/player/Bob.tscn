@@ -506,6 +506,7 @@ collision_layer = 4
 collision_mask = 3
 script = ExtResource( 5 )
 __meta__ = {
+"_editor_description_": "Jump height: c. 3 1/2 tiles",
 "collision_layer": 4,
 "collision_mask": 3
 }
