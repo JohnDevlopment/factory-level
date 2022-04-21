@@ -13,6 +13,9 @@ light_mask = 0
 collision_layer = 2
 collision_mask = 0
 script = ExtResource( 1 )
+__meta__ = {
+"_editor_description_": "Add a CollisionShape2D as a child and its collision shape will be set automatically."
+}
 
 [node name="ResourcePreloader" type="ResourcePreloader" parent="."]
 resources = [ PoolStringArray( "conveyor_belt_a_animated", "conveyor_belt_a_animated_rev", "conveyor_belt_b_animated", "conveyor_belt_b_animated_rev", "conveyor_belt_c_animated", "conveyor_belt_c_animated_rev" ), [ ExtResource( 4 ), ExtResource( 5 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 6 ), ExtResource( 7 ) ] ]
