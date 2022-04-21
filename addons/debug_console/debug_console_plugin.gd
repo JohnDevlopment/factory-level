@@ -1,7 +1,12 @@
 tool
 extends EditorPlugin
 
+#var _debug_overlay_inspector_plugin
+
 func _enter_tree() -> void:
+#	_debug_overlay_inspector_plugin = preload('res://addons/debug_console/debug_overlay_inspector_plugin.gd').new()
+#	add_inspector_plugin(_debug_overlay_inspector_plugin)
+	
 	add_custom_type('StringCommand', 'Reference', preload('res://addons/debug_console/StringCommand.gd'), load('res://addons/debug_console/Reference.svg'))
 	
 	add_autoload_singleton('History', 'res://addons/debug_console/History.gd')
@@ -13,6 +18,8 @@ func _enter_tree() -> void:
 	add_tool_menu_item('Instance Debug Overlay', self, '_instance_debug_overlay')
 
 func _exit_tree() -> void:
+#	remove_inspector_plugin(_debug_overlay_inspector_plugin)
+	
 	remove_custom_type('StringCommand')
 	
 	remove_custom_type('DebugConsoleInsancer')

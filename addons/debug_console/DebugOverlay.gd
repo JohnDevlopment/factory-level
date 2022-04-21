@@ -2,10 +2,24 @@
 # @name DebugOverlay
 extends CanvasLayer
 
+export var stat_names : PoolStringArray
+export(Array, NodePath) var stat_nodes : Array
+export var stat_refs : PoolStringArray
+export var stat_is_method : PoolByteArray
+
 onready var debug_label : Label = $PanelContainer/DebugLabel
 
 var stats: = []
 var blocked: = false
+
+func _ready() -> void:
+	for i in stat_names.size():
+		if i >= stat_nodes.size() or i >= stat_refs.size() or i >= stat_is_method.size():
+			push_error("One or more elements have different sizes to the others")
+			return
+		var node = get_node(stat_nodes[i])
+		if node:
+			add_stat(stat_names[i], node, stat_refs[i], bool(stat_is_method[i]))
 
 ## Adds a stat to the overlay.
 # @desc Displays information about a stat on the debug overlay. @a stat_ref is a path to
@@ -14,6 +28,14 @@ var blocked: = false
 func add_stat(stat_name: String, object: Object, stat_ref: String, is_method: bool) -> void:
 	if blocked: return
 	stats.append([stat_name, object, stat_ref, is_method])
+
+## Returns the class name.
+# @const
+func get_class() -> String: return 'DebugOverlay'
+
+## Returns true if the object inherits from the given class @a cls.
+# @const
+func is_class(cls: String) -> bool: return cls == 'DebugOverlay'
 
 ## Remove a stat from the overlay.
 # @desc Removes a stat from the overlay indicated by @a stat_name. It is the same name

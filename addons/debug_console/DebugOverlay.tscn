@@ -18,8 +18,8 @@ __meta__ = {
 [node name="DebugLabel" type="Label" parent="PanelContainer"]
 margin_left = 7.0
 margin_top = 8.0
-margin_right = 300.2
-margin_bottom = 202.0
+margin_right = 185.0
+margin_bottom = 160.0
 size_flags_vertical = 3
 text = "Label"
 __meta__ = {
