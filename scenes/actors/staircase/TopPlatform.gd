@@ -3,6 +3,10 @@ extends StaticBody2D
 
 var _player : Actor
 
+func _ready() -> void:
+	if Engine.editor_hint: return
+	set_process_unhandled_key_input(false)
+
 func set_collision_box(width: float, tile_size: Vector2) -> void:
 	var shape := RectangleShape2D.new()
 	shape.extents = Vector2(width * tile_size.x, 4) / 2
