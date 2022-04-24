@@ -142,7 +142,11 @@ func _draw_stair_tiles(drawpos : Vector2):
 	return drawpos
 
 func _unhandled_key_input(event: InputEventKey) -> void:
-	if event.is_action_pressed('ui_down'):
+	if event.is_action_pressed('jump'):
+		if _player.is_on_floor():
+			_player.set_collision_mask_bit(Game.CollisionLayerIndex.STAIRS, true)
+		get_tree().set_input_as_handled()
+	elif event.is_action_pressed('ui_down'):
 		if _player.is_on_floor() and _player.get_collision_mask_bit(Game.CollisionLayerIndex.STAIRS):
 			_player.set_collision_mask_bit(Game.CollisionLayerIndex.STAIRS, false)
 		get_tree().set_input_as_handled()
