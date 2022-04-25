@@ -5,22 +5,18 @@ enum Direction {LEFT = -1, RIGHT = 1}
 
 export(Direction) var direction : int = Direction.LEFT setget set_direction
 export var height := 2 setget set_height
-export var hollow := true setget set_hollow
 var editor_draw_collision := false setget set_editor_draw_collision
 
-var editor_draw_color := Color.red
-
 const STAIR_TEXTURE := preload('res://assets/textures/stairs.png')
-
-const TEXTURE_OFFSETS := PoolVector2Array([
-	Vector2(0, 16),
-	Vector2(16, 16),
-	Vector2(16, 0)
-])
 
 const TILE_SIZE := Vector2(16, 16)
 
 const AREA_COLLISION_THICKNESS := 30.0
+
+# In tiles
+const ATLAS_WIDTH := 6
+
+const DRAW_TILE_IDS := PoolIntArray([2, 8])
 
 var _player : Actor
 
@@ -94,53 +90,6 @@ func _notification(what: int) -> void:
 					Color(0.4, 0, 0.1, 0.7)
 				)
 
-func _draw_stair_tiles(drawpos : Vector2):
-	var i := height - 1
-	
-	# Draw tiles
-	while i >= 0:
-		# Top platform
-		draw_texture_rect_region(
-			STAIR_TEXTURE,
-			Rect2(Vector2(drawpos.x, 0), TILE_SIZE),
-			Rect2(TEXTURE_OFFSETS[2], TILE_SIZE)
-		)
-		
-		# Stairs
-		draw_texture_rect_region(STAIR_TEXTURE,
-			Rect2(
-				drawpos,
-				TILE_SIZE
-			),
-			Rect2(
-				TEXTURE_OFFSETS[int(hollow)],
-				TILE_SIZE
-			)
-		)
-		draw_texture_rect_region(STAIR_TEXTURE,
-			Rect2(
-				drawpos + Vector2(0, TILE_SIZE.y),
-				TILE_SIZE
-			),
-			Rect2(
-				TEXTURE_OFFSETS[int(hollow)] + Vector2(0, TILE_SIZE.y),
-				TILE_SIZE
-			)
-		)
-		if i > 0 and not hollow:
-			for ii in range(1, i + 1):
-				var middlepos := drawpos + Vector2(0, 16) * (2 + ii - 1)
-				draw_texture_rect_region(
-					STAIR_TEXTURE,
-					Rect2(middlepos, TILE_SIZE),
-					Rect2(Vector2.ZERO, TILE_SIZE)
-				)
-		
-		drawpos += Vector2(-TILE_SIZE.x, TILE_SIZE.y)
-		i -= 1
-	
-	return drawpos
-
 func _unhandled_key_input(event: InputEventKey) -> void:
 	if event.is_action_pressed('jump'):
 		if _player.is_on_floor():
@@ -163,16 +112,7 @@ func set_height(h: int) -> void:
 	height = max(2, h)
 	update()
 
-func set_hollow(flag: bool) -> void:
-	hollow = flag
-	update()
-
-func _on_tree_child_entered(node: Node) -> void:
-	if node is CollisionPolygon2D:
-		if node.polygon.empty():
-			print_debug("Add collision points to %s" % self)
-			node.polygon = _get_collision_points()
-			node.one_way_collision = true
+# Internal functions
 
 func _get_collision_points() -> PoolVector2Array:
 	return PoolVector2Array([
@@ -184,20 +124,60 @@ func _get_collision_points() -> PoolVector2Array:
 		Vector2(0, 7)
 	])
 
+# Drawing subfunctions
+
+func _get_tile_offset_from_id(id: int) -> Vector2:
+	return Vector2(
+		float(id % ATLAS_WIDTH),
+		float(id / ATLAS_WIDTH)
+	) * TILE_SIZE
+
+func _draw_stair_tiles(drawpos : Vector2):
+	var i := height - 1
+	var stair_offset_a := _get_tile_offset_from_id(DRAW_TILE_IDS[0])
+	var stair_offset_b := _get_tile_offset_from_id(DRAW_TILE_IDS[1])
+	
+	# Draw tiles
+	while i >= 0:
+		# Top platform
+		draw_texture_rect_region(
+			STAIR_TEXTURE,
+			Rect2(Vector2(drawpos.x, 0), TILE_SIZE),
+			Rect2(_get_tile_offset_from_id(1), TILE_SIZE)
+		)
+		
+		# Stairs
+		draw_texture_rect_region(STAIR_TEXTURE,
+			Rect2(drawpos, TILE_SIZE),
+			Rect2(stair_offset_a,TILE_SIZE)
+		)
+		draw_texture_rect_region(STAIR_TEXTURE,
+			Rect2(
+				drawpos + Vector2(0, TILE_SIZE.y),
+				TILE_SIZE
+			),
+			Rect2(
+				stair_offset_b,
+				TILE_SIZE
+			)
+		)
+		
+		drawpos += Vector2(-TILE_SIZE.x, TILE_SIZE.y)
+		i -= 1
+	
+	return drawpos
+
+# Properties
+
 func _get(property: String):
 	match property:
 		'editor_draw_collision':
 			return editor_draw_collision
-		'editor_draw_color':
-			return editor_draw_color
 
 func _set(property: String, value) -> bool:
 	match property:
 		'editor_draw_collision':
 			editor_draw_collision = value
-			update()
-		'editor_draw_color':
-			editor_draw_color = value
 			update()
 		_:
 			return false
@@ -216,13 +196,16 @@ func _get_property_list() -> Array:
 			name = 'editor_draw_collision',
 			type = TYPE_BOOL,
 			usage = PROPERTY_USAGE_DEFAULT
-		},
-		{
-			name = 'editor_draw_color',
-			type = TYPE_COLOR,
-			usage = PROPERTY_USAGE_DEFAULT
 		}
 	]
+
+# Signals
+
+func _on_tree_child_entered(node: Node) -> void:
+	if node is CollisionPolygon2D:
+		if node.polygon.empty():
+			node.polygon = _get_collision_points()
+			node.one_way_collision = true
 
 func _on_DetectionField_body(body: Node, entered: bool) -> void:
 	set_process_unhandled_key_input(entered)
