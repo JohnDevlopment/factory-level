@@ -9,10 +9,6 @@ extends StaticBody2D
 #               @function set_toggled().
 signal toggle_status_changed(on)
 
-## Name of the sprite animation
-# @type String
-const SPRITE_ANIMATION := "Press/Release"
-
 ## Name of the hitbox animation
 # @type String
 const HITBOX_ANIMATION := "ToggledStatus"
@@ -22,16 +18,11 @@ const HITBOX_ANIMATION := "ToggledStatus"
 # @setter set_toggled(flag)
 export var toggled := false setget set_toggled
 
-## If this option is set, the button will stay pressed.
-# @type bool
-export var sticky := true
-
 ## Vector to snap the button to
 # @type Vector2
 # @desc When moving the button within the editor, its position is snapped to this.
 export var position_snap := Vector2(7, 7)
 
-onready var sprite = $Frames
 onready var animation_player = $AnimationPlayer
 
 var _player : Actor
@@ -46,7 +37,6 @@ func _notification(what: int) -> void:
 			if Engine.editor_hint:
 				set_notify_transform(true)
 				return
-			$Frames.connect('animation_finished', self, '_on_Frames_animation_finished')
 			$AnimationPlayer.connect('animation_finished', self, '_on_AnimationPlayer_animation_finished')
 		NOTIFICATION_PHYSICS_PROCESS:
 			# don't detect collision during a lock
@@ -59,13 +49,16 @@ func _notification(what: int) -> void:
 		NOTIFICATION_PROCESS:
 			if Engine.editor_hint or not _init:
 				if toggled:
-					$Frames.animation = 'Glow'
+					$ButtonSprite.frame = 10
 				else:
-					$Frames.animation = SPRITE_ANIMATION
+					$ButtonSprite.frame = 0
 				_lock = false
 			else:
 				# Play the sprite animation either forwards or backwards, then animate the hitbox
-				sprite.play(SPRITE_ANIMATION, !toggled)
+				if toggled:
+					animation_player.play('ToggledStatus')
+				else:
+					animation_player.play_backwards('ToggledStatus')
 				var anim_speed : float = 1 if toggled else -1
 				animation_player.play(HITBOX_ANIMATION, -1, anim_speed, !toggled)
 			set_process(false)
@@ -75,9 +68,10 @@ func _notification(what: int) -> void:
 
 func set_toggled(flag: bool) -> void:
 	toggled = flag
-	_init = true
 	_do_toggle_animation()
-	set_meta('toggled', flag)
+	if not Engine.editor_hint:
+		_init = true
+		set_meta('toggled', flag)
 
 func _do_toggle_animation() -> void:
 	if not _lock:
@@ -92,15 +86,8 @@ func _on_DetectPlayer_body_entered(body: Node) -> void:
 
 func _on_DetectPlayer_body_exited(_body: Node) -> void:
 	set_physics_process(false)
-	if not sticky and toggled:
-		set_toggled(false)
 
 # Called when the hitbox animation finishes
 func _on_AnimationPlayer_animation_finished(_anim_name: String):
 	_lock = false
 	emit_signal('toggle_status_changed', get_meta('toggled'))
-
-# Called when the toggle animation finishes
-func _on_Frames_animation_finished() -> void:
-	if sprite.animation == SPRITE_ANIMATION and toggled:
-		sprite.play('Glow')
