@@ -39,17 +39,6 @@ var _dot : float
 var _init := false
 var _lock := false
 
-func set_toggled(flag: bool) -> void:
-	toggled = flag
-	_init = true
-	_do_toggle_animation()
-	set_meta('toggled', flag)
-
-func _do_toggle_animation() -> void:
-	if not _lock:
-		_lock = true
-		set_process(true)
-
 func _notification(what: int) -> void:
 	match what:
 		NOTIFICATION_READY:
@@ -84,10 +73,18 @@ func _notification(what: int) -> void:
 			var s := global_position.snapped(position_snap)
 			global_position = s
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		if event.is_action_pressed('debug'):
-			set_toggled(!toggled)
+func set_toggled(flag: bool) -> void:
+	toggled = flag
+	_init = true
+	_do_toggle_animation()
+	set_meta('toggled', flag)
+
+func _do_toggle_animation() -> void:
+	if not _lock:
+		_lock = true
+		set_process(true)
+
+# Signals
 
 func _on_DetectPlayer_body_entered(body: Node) -> void:
 	set_physics_process(true)
