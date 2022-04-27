@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/buttons/Button.gd" type="Script" id=1]
 [ext_resource path="res://assets/textures/actors/button.png" type="Texture" id=2]
+[ext_resource path="res://scenes/components/PositionSnapper.tscn" type="PackedScene" id=3]
 
 [sub_resource type="RectangleShape2D" id=17]
 extents = Vector2( 9, 2.5 )
@@ -176,6 +177,9 @@ anims/ToggledStatus = SubResource( 16 )
 anims/Glow = SubResource( 36 )
 anims/RESET = SubResource( 34 )
 anims/Toggle = SubResource( 37 )
+
+[node name="PositionSnapper" parent="." instance=ExtResource( 3 )]
+position = Vector2( 0, 8 )
 
 [connection signal="body_entered" from="DetectPlayer" to="." method="_on_DetectPlayer_body_entered"]
 [connection signal="body_exited" from="DetectPlayer" to="." method="_on_DetectPlayer_body_exited"]
