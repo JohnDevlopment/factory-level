@@ -144,6 +144,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/behavior_tree/src/blackboard.gd"
 }, {
+"base": "Node",
+"class": "Command",
+"language": "GDScript",
+"path": "res://scripts/classes/nodes/Command.gd"
+}, {
+"base": "Node",
+"class": "CommandHandler",
+"language": "GDScript",
+"path": "res://scripts/classes/nodes/CommandHandler.gd"
+}, {
 "base": "Node2D",
 "class": "DebugShape2D",
 "language": "GDScript",
@@ -213,6 +223,11 @@ _global_script_classes=[ {
 "class": "VarRef",
 "language": "GDScript",
 "path": "res://scripts/classes/resources/VarRef.gd"
+}, {
+"base": "Command",
+"class": "WaitCommand",
+"language": "GDScript",
+"path": "res://scripts/classes/nodes/commands/WaitCommand.gd"
 } ]
 _global_script_class_icons={
 "ActionQueue": "",
@@ -242,6 +257,8 @@ _global_script_class_icons={
 "BTWait": "res://addons/behavior_tree/icons/btwait.svg",
 "BehaviorTree": "res://addons/behavior_tree/icons/bt.svg",
 "Blackboard": "res://addons/behavior_tree/icons/blackboard.svg",
+"Command": "",
+"CommandHandler": "",
 "DebugShape2D": "",
 "DistanceNotifier": "",
 "Enemy": "res://assets/textures/icons/Enemy.svg",
@@ -255,7 +272,8 @@ _global_script_class_icons={
 "StringCommand": "",
 "TilemapClobberData": "",
 "TypeFormattingLogic": "",
-"VarRef": ""
+"VarRef": "",
+"WaitCommand": ""
 }
 
 [application]
