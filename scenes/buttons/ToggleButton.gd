@@ -32,6 +32,27 @@ func _update_animation_queue() -> void:
 	main_animations.set_meta('animation', animation)
 	main_animations.set_meta('backwards', backwards)
 
+func _queue_animation(anim: String, backwards: bool, metadata := {}) -> void:
+	if _queued_animations.empty():
+		call_deferred('_update_animation_queue')
+	_queued_animations.push_back([anim, backwards, metadata])
+
+func _do_commands() -> void:
+	var cmds : CommandHandler
+	
+	for node in get_children():
+		if node is CommandHandler:
+			cmds = node
+			break
+	
+	if is_instance_valid(cmds):
+		cmds.do_commands()
+
+func _on_MainAnimations_animation_finished(_anim_name: String) -> void:
+	var toggled : bool = main_animations.get_meta('toggled')
+	call_deferred('_do_commands')
+	emit_signal('toggled', toggled)
+
 func _on_Detection_body_entered(_body: Node) -> void:
 	if not _bodies:
 		_queue_animation('Toggle', false, {toggled = true, speed = 2.0})
@@ -41,12 +62,3 @@ func _on_Detection_body_exited(_body: Node) -> void:
 	_bodies -= 1
 	if not _bodies:
 		_queue_animation('Toggle', true, {toggled = false, speed = -2.0})
-
-func _queue_animation(anim: String, backwards: bool, metadata := {}) -> void:
-	if _queued_animations.empty():
-		call_deferred('_update_animation_queue')
-	_queued_animations.push_back([anim, backwards, metadata])
-
-func _on_MainAnimations_animation_finished(_anim_name: String) -> void:
-	var toggled : bool = main_animations.get_meta('toggled')
-	emit_signal('toggled', toggled)

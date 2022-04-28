@@ -40,4 +40,16 @@ func _on_DetectPlayer_body_exited(_body: Node) -> void:
 
 # Called when the hitbox animation finishes
 func _on_AnimationPlayer_animation_finished(_anim_name: String):
+	call_deferred('_do_commands')
 	emit_signal('pressed')
+
+func _do_commands() -> void:
+	var cmds : CommandHandler
+	
+	for node in get_children():
+		if node is CommandHandler:
+			cmds = node
+			break
+	
+	if is_instance_valid(cmds):
+		cmds.do_commands()
