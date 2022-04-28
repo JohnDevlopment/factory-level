@@ -23,7 +23,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="buttons" type="HBoxContainer" parent="menu"]
-margin_right = 1024.0
+margin_right = 640.0
 margin_bottom = 22.0
 
 [node name="btnFolder" type="Button" parent="menu/buttons"]
@@ -69,11 +69,11 @@ icon = ExtResource( 7 )
 
 [node name="search-bar" type="HBoxContainer" parent="menu"]
 margin_top = 26.0
-margin_right = 1024.0
+margin_right = 640.0
 margin_bottom = 52.0
 
 [node name="search" type="LineEdit" parent="menu/search-bar"]
-margin_right = 1024.0
+margin_right = 640.0
 margin_bottom = 26.0
 size_flags_horizontal = 3
 align = 3
@@ -85,8 +85,8 @@ caret_blink = true
 
 [node name="Tree" type="Tree" parent="menu"]
 margin_top = 56.0
-margin_right = 1024.0
-margin_bottom = 582.0
+margin_right = 640.0
+margin_bottom = 462.0
 size_flags_vertical = 3
 columns = 2
 allow_rmb_select = true
@@ -99,9 +99,9 @@ items = [ "Internal Editor", null, 0, false, false, -1, 0, null, "", false, "Ext
 hide_on_checkable_item_selection = false
 
 [node name="Statusbar" type="Label" parent="menu"]
-margin_top = 586.0
-margin_right = 1024.0
-margin_bottom = 600.0
+margin_top = 466.0
+margin_right = 640.0
+margin_bottom = 480.0
 
 [node name="FileDialog" type="FileDialog" parent="."]
 margin_right = 275.0
@@ -112,8 +112,6 @@ resizable = true
 mode = 2
 access = 2
 show_hidden_files = true
-current_dir = "/System/dev/godot/project/research/Godot3/Snippets-EditorPlugin"
-current_path = "/System/dev/godot/project/research/Godot3/Snippets-EditorPlugin/"
 
 [node name="msgTimer" type="Timer" parent="."]
 wait_time = 5.0
@@ -193,6 +191,7 @@ __meta__ = {
 }
 
 [node name="snippet_editor" parent="." instance=ExtResource( 8 )]
+
 [connection signal="mouse_entered" from="menu/buttons/btnFolder" to="." method="_on_btnFolder_mouse_entered"]
 [connection signal="pressed" from="menu/buttons/btnFolder" to="." method="_on_btnFolder_pressed"]
 [connection signal="pressed" from="menu/buttons/btnRefresh" to="." method="_on_btnRefresh_pressed"]
