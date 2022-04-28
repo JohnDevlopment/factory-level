@@ -2,6 +2,8 @@
 # @name PoweredDoorBase
 extends StaticBody2D
 
+signal state_changed(open)
+
 enum TimeFactor {
 	VERY_SLOW = 175,
 	SLOW = 150,
@@ -74,6 +76,7 @@ func _on_animation_completed(anim: String):
 	_busy = false
 	if not open:
 		z_index = get_meta('z_index')
+	emit_signal('state_changed', open)
 
 func _flip_state() -> void:
 	match _current_animation:
