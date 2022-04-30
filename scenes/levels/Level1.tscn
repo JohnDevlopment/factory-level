@@ -10,10 +10,10 @@
 [ext_resource path="res://scenes/actors/enemies/switch_robot/SwitchRobot.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/buttons/Button.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/levels/Level1.gd" type="Script" id=10]
-[ext_resource path="res://scenes/components/commands/button_commands/BC_OpenDoor.tscn" type="PackedScene" id=11]
+[ext_resource path="res://scripts/classes/nodes/CommandHandler.gd" type="Script" id=11]
 [ext_resource path="res://scripts/classes/resources/Stats.gd" type="Script" id=12]
 [ext_resource path="res://scenes/actors/EnergyBall.tscn" type="PackedScene" id=13]
-[ext_resource path="res://scenes/components/commands/enemy_commands/EC_OpenDoor.tscn" type="PackedScene" id=14]
+[ext_resource path="res://scenes/components/commands/C_OpenDoor.tscn" type="PackedScene" id=14]
 [ext_resource path="res://scripts/tools/ClobberTilemap.gd" type="Script" id=15]
 [ext_resource path="res://assets/data/tilemap-clobber-data.tres" type="Resource" id=16]
 [ext_resource path="res://addons/debug_console/theme/Theme.tres" type="Theme" id=17]
@@ -80,8 +80,37 @@ __meta__ = {
 }
 clobber_data = ExtResource( 16 )
 
+[node name="DebugOverlay" type="CanvasLayer" parent="." index="2"]
+visible = false
+script = ExtResource( 18 )
+
+[node name="PanelContainer" type="PanelContainer" parent="DebugOverlay" index="0"]
+anchor_left = 0.35
+anchor_right = 0.65
+anchor_bottom = 0.35
+margin_left = -194.0
+margin_right = -194.0
+theme = ExtResource( 17 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="DebugLabel" type="Label" parent="DebugOverlay/PanelContainer" index="0"]
+margin_left = 7.0
+margin_top = 8.0
+margin_right = 185.0
+margin_bottom = 160.0
+size_flags_vertical = 3
+text = "Label"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Area1" parent="Actors/Triggers" index="0" instance=ExtResource( 5 )]
 position = Vector2( 352, 160 )
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="CollisionShape2D" parent="Actors/Triggers/Area1" index="0"]
 position = Vector2( 16, 24 )
@@ -108,8 +137,12 @@ position = Vector2( 1040, 184 )
 [node name="Button1" parent="Actors" index="4" instance=ExtResource( 9 )]
 position = Vector2( 288, 200 )
 
-[node name="BC_OpenDoor" parent="Actors/Button1" index="4" instance=ExtResource( 11 )]
-powered_door = NodePath("../../SubDoor1")
+[node name="CommandHandler" type="Node" parent="Actors/Button1" index="5"]
+script = ExtResource( 11 )
+active = true
+
+[node name="C_OpenDoor" parent="Actors/Button1/CommandHandler" index="0" instance=ExtResource( 14 )]
+powered_door = NodePath("../../../SubDoor1")
 
 [node name="Explorer" parent="Actors" index="5" instance=ExtResource( 4 )]
 position = Vector2( 49, 207 )
@@ -119,46 +152,26 @@ position = Vector2( 602, 195 )
 
 [node name="SwitchRobot" parent="Actors" index="7" instance=ExtResource( 8 )]
 position = Vector2( 694, 152 )
-armored = true
 stats = SubResource( 3 )
 
-[node name="EC_OpenDoor" parent="Actors/SwitchRobot" index="3" instance=ExtResource( 14 )]
-enemy_condition = 1
-powered_door = NodePath("../../SubDoor2")
+[node name="CommandHandler2" type="Node" parent="Actors/SwitchRobot" index="3"]
+script = ExtResource( 11 )
+active = true
+
+[node name="C_OpenDoor" parent="Actors/SwitchRobot/CommandHandler2" index="0" instance=ExtResource( 14 )]
+powered_door = NodePath("../../../SubDoor2")
 
 [node name="SwitchRobot2" parent="Actors" index="8" instance=ExtResource( 8 )]
 position = Vector2( 996, 151 )
+armored = true
 stats = SubResource( 4 )
 
-[node name="EC_OpenDoor" parent="Actors/SwitchRobot2" index="3" instance=ExtResource( 14 )]
-enemy_condition = 1
-powered_door = NodePath("../../SubDoor3")
+[node name="CommandHandler3" type="Node" parent="Actors/SwitchRobot2" index="3"]
+script = ExtResource( 11 )
+active = true
 
-[node name="DebugOverlay" type="CanvasLayer" parent="." index="2"]
-visible = false
-script = ExtResource( 18 )
-
-[node name="PanelContainer" type="PanelContainer" parent="DebugOverlay" index="0"]
-anchor_left = 0.35
-anchor_right = 0.65
-anchor_bottom = 0.35
-margin_left = -194.0
-margin_right = -194.0
-theme = ExtResource( 17 )
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="DebugLabel" type="Label" parent="DebugOverlay/PanelContainer" index="0"]
-margin_left = 7.0
-margin_top = 8.0
-margin_right = 185.0
-margin_bottom = 160.0
-size_flags_vertical = 3
-text = "Label"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="C_OpenDoor" parent="Actors/SwitchRobot2/CommandHandler3" index="0" instance=ExtResource( 14 )]
+powered_door = NodePath("../../../SubDoor3")
 
 [editable path="Actors/Triggers/Area1"]
 [editable path="Actors/Triggers/Exit1"]
