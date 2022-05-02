@@ -77,21 +77,6 @@ var level_entrance := -1 setget ,get_level_entrance
 # @type Vector2
 var screen_size := Vector2()
 
-func adjust_window_for_gut() -> void:
-	# new size that keeps aspect ratio
-	var new_size : Vector2
-	if true:
-		var window_ar := OS.window_size.aspect()
-		var growth := OS.window_size * window_ar
-		new_size = Vector2(int(growth.x), int(growth.y))
-	# resize & center the window, and disable stretch
-	get_tree().set_screen_stretch(
-		SceneTree.STRETCH_MODE_DISABLED, SceneTree.STRETCH_ASPECT_KEEP_HEIGHT,
-		OS.window_size)
-	get_viewport().size = new_size
-	OS.window_size = new_size
-	OS.center_window()
-
 func get_level_entrance() -> int:
 	var temp = level_entrance
 	level_entrance = -1
@@ -122,25 +107,6 @@ func go_to_scene(scene: String) -> void:
 
 ## Returns true if the player is inside the scene tree.
 func has_player() -> bool: return get_tree().has_group('player')
-
-# Set or clear dialog mode.
-# @desc Depending on whether @a enabled is true or false, this sets or disables
-#       dialog mode. In dialog mode, affected nodes stop working and do not
-#       accept input from the user, allowing dialog boxes to work without interruption.
-#
-#       Emits the @code changed_game_param signal.
-#func set_dialog_mode(enabled: bool):
-#	dialog_mode = enabled
-#	emit_signal("changed_game_param", "dialog_mode", enabled)
-
-# Set the size of the current level.
-# @desc Sets the size of the level to @a size. The size of the level should be
-#       in tiles; the value can be converted to pixels using the @constant TILE_SIZE constant.
-#
-#       Emits the @code change_game_param signal.
-#func set_level_size(size: Vector2):
-#	level_size = size
-#	emit_signal('changed_game_param', 'level_size', level_size)
 
 ## Set the pause status of the scene tree.
 # @desc Pauses the scene tree if @a paused is true or unpauses it otherwise.
