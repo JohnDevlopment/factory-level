@@ -3,6 +3,7 @@ extends Enemy
 
 export(float, 0.1, 1000, 0.1) var detection_radius : float setget set_detection_radius
 export(float, 0.1, 5, 0.1) var time_to_radius : float
+export var face_right := false
 
 enum {STATE_IDLE, STATE_CHARGE, STATE_MOVEBACK, STATE_COOLDOWN}
 
@@ -34,7 +35,7 @@ func _ready() -> void:
 	
 	$Hitbox.disabled = true
 	states.change_state(STATE_IDLE)
-	call_deferred('_face_player')
+	call_deferred('_set_direction')
 
 func _draw() -> void:
 	if Engine.editor_hint:
@@ -70,9 +71,8 @@ func _on_damaged(_stats: Stats) -> void:
 	yield(get_tree().create_timer(1.0), 'timeout')
 	queue_free()
 
-func _face_player() -> void:
-	var dir := global_position.direction_to(Game.get_player().global_position)
-	direction.x = sign(dir.x)
+func _set_direction() -> void:
+	direction.x = -1 if not face_right else 1
 	frames.flip_h = direction.x > 0
 
 func move_actor() -> void:
