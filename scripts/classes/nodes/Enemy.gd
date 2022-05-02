@@ -7,7 +7,7 @@ tool
 extends Actor
 class_name Enemy, "res://assets/textures/icons/Enemy.svg"
 
-signal defeated
+signal defeated()
 
 ## The stats of the @class enemy
 # @type Stats
