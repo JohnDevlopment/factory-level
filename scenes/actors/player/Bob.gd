@@ -48,9 +48,10 @@ func _unhandled_key_input(event: InputEventKey) -> void:
 	
 	if event.is_action_pressed('jump'):
 		if _on_floor or _in_ladder:
-			velocity.y = -speed_cap.y
+			# TODO: Hold the jump button down to jump full height, else jump short.
+			velocity.y = -speed_cap.y * 0.75
 			if states.current_state() == STATE_CLIMB or _object_picked:
-				velocity.y /= 2
+				#velocity.y /= 2
 				states.change_state(STATE_IDLE)
 	elif event.is_action_pressed('ui_up') and _in_ladder and not _object_picked:
 		states.change_state(STATE_CLIMB)
