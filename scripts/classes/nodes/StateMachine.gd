@@ -149,7 +149,7 @@ func set_paused(value: bool) -> void: paused = value
 #        state when it is initialized.
 func set_user_data(udata) -> void: user_data = udata
 
-# Call a state-specific method.
+## Call a state-specific method.
 # @desc  Calls @a method in the current state, with the elements in @a args provided
 #        as arguments, and returns the result of @a method.
 #
