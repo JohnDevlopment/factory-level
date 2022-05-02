@@ -63,6 +63,11 @@ const TILE_SIZE := Vector2(16, 16)
 
 const PLAYER_HURT_METHOD := 'hurt'
 
+const VFX_PATHS := {
+	robot_explosion = 'res://scenes/vfx/RobotExplosion.tscn',
+	armor_break = 'res://scenes/vfx/SwitchRobotArmorBreak.tscn'
+}
+
 #var level_size := Vector2(1020, 610) setget set_level_size
 #var dialog_mode := false setget set_dialog_mode
 
@@ -115,6 +120,26 @@ func has_player() -> bool: return get_tree().has_group('player')
 func set_paused(paused: bool) -> void:
 	get_tree().paused = paused
 	emit_signal("changed_game_param", "tree_paused", paused)
+
+## Spawn the given @a vfx at the given position @a pos.
+# @desc The instanced node is added to @a parent below the @a below_node.
+#       If @a below_node is a valid reference to a @class Node, then
+#       @function{add_child_below_node} is called, otherwise
+#       @function{add_child} is called instead.
+func spawn_vfx(parent: Node, below_node: Node, vfx: String, pos: Vector2):
+	var node
+	if VFX_PATHS.get(vfx) == null:
+		push_error("No vfx by the name '%s' is defined" % vfx)
+		return
+	node = load(VFX_PATHS[vfx])
+	if node is PackedScene:
+		node = node.instance() as Node2D
+		node.global_position = pos
+		if is_instance_valid(below_node):
+			parent.add_child_below_node(below_node, node)
+		else:
+			parent.add_child(below_node)
+	return node
 
 func _ready() -> void:
 	pause_mode = Node.PAUSE_MODE_PROCESS

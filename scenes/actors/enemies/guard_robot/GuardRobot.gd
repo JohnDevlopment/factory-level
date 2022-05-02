@@ -51,6 +51,7 @@ func _physics_process(delta: float) -> void:
 func _on_damaged(_stats: Stats) -> void:
 	hide()
 	enable_collision(false)
+	Game.spawn_vfx(get_parent(), self, 'robot_explosion', global_position)
 	emit_defeated()
 	yield(get_tree().create_timer(1.0), 'timeout')
 	queue_free()

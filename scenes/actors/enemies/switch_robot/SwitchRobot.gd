@@ -47,10 +47,7 @@ func _on_damaged(_stats: Stats) -> void:
 		set_armored(false)
 	else:
 		hide()
-		# Create explosion
-		var explosion : Node2D = load('res://scenes/vfx/RobotExplosion.tscn').instance()
-		get_parent().add_child_below_node(self, explosion)
-		explosion.global_position = global_position
+		Game.spawn_vfx(get_parent(), self, 'robot_explosion', global_position)
 		
 		# Delete the node
 		call_deferred('_do_commands')
