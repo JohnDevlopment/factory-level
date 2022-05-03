@@ -48,6 +48,20 @@ func _physics_process(delta: float) -> void:
 	
 	move_actor()
 
+func _do_commands() -> void:
+	var cmds : CommandHandler
+	
+	for node in get_children():
+		if node is CommandHandler:
+			cmds = node
+			break
+	
+	if is_instance_valid(cmds):
+		cmds.do_commands()
+		yield(cmds, 'finished')
+	
+	queue_free()
+
 func _on_damaged(_stats: Stats) -> void:
 	hide()
 	enable_collision(false)
