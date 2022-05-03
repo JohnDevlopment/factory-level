@@ -82,9 +82,8 @@ func _on_damaged(_stats: Stats) -> void:
 	hide()
 	enable_collision(false)
 	Game.spawn_vfx(get_parent(), self, 'robot_explosion', global_position)
+	call_deferred('_do_commands')
 	emit_defeated()
-	yield(get_tree().create_timer(1.0), 'timeout')
-	queue_free()
 
 func move_actor() -> void:
 	velocity = move_and_slide(velocity, Vector2.UP)
