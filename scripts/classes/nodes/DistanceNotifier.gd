@@ -9,12 +9,10 @@ tool
 extends Node2D
 class_name DistanceNotifier
 
-## The other node is closer than @a threshold.
-# @arg Node2D node The node that entered range
+## Emitted to signify that the other @a node has come within @a threshold.
 signal entered_range(node)
 
-## The other node is farther away then @a threshold.
-# @arg Node2D node The node that exited range
+## Emitted to signify that the other @a node has exceeded @a threshold.
 signal exited_range(node)
 
 ## Measure only the X distance
