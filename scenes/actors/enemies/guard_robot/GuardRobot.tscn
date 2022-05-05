@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scenes/actors/enemies/guard_robot/GuardRobot.gd" type="Script" id=1]
 [ext_resource path="res://assets/textures/actors/robot.res" type="SpriteFrames" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://scenes/actors/enemies/guard_robot/Cooldown.gd" type="Script" id=9]
 [ext_resource path="res://scenes/components/Hitbox.tscn" type="PackedScene" id=10]
 [ext_resource path="res://assets/audio/robot-beep.wav" type="AudioStream" id=11]
+[ext_resource path="res://scenes/components/HitboxHurtbox.gd" type="Script" id=12]
 
 [sub_resource type="Resource" id=1]
 resource_local_to_scene = true
@@ -22,7 +23,7 @@ defense = 0
 owner_name = "Guard Robot"
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 6, 14.5 )
+extents = Vector2( 7, 14.5 )
 
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 2.5, 12.5 )
@@ -36,7 +37,6 @@ __meta__ = {
 "collision_layer": 16,
 "collision_mask": 11
 }
-time_to_radius = 0.5
 armor_time = 1.0
 stats = SubResource( 1 )
 speed_cap = Vector2( 75, 0 )
@@ -53,12 +53,8 @@ light_mask = 0
 position = Vector2( 0, 1.5 )
 shape = SubResource( 2 )
 
-[node name="Timer" type="Timer" parent="."]
-process_mode = 0
-wait_time = 1.5
-one_shot = true
-
 [node name="Hitbox" parent="." instance=ExtResource( 10 )]
+visible = false
 collision_layer = 128
 collision_mask = 64
 
@@ -67,11 +63,25 @@ position = Vector2( -3.5, -0.5 )
 shape = SubResource( 3 )
 
 [node name="Hurtbox" parent="." instance=ExtResource( 3 )]
+visible = false
 collision_layer = 256
 
 [node name="CollisionShape2D" parent="Hurtbox" index="0"]
 position = Vector2( 0, 1.5 )
 shape = SubResource( 2 )
+
+[node name="DetectionField" type="Area2D" parent="."]
+light_mask = 0
+collision_layer = 512
+collision_mask = 4
+input_pickable = false
+monitorable = false
+script = ExtResource( 12 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionField"]
+self_modulate = Color( 0.12549, 0.878431, 0.101961, 1 )
+light_mask = 0
+position = Vector2( 0, 1 )
 
 [node name="States" type="Node" parent="."]
 script = ExtResource( 4 )
@@ -86,16 +96,27 @@ script = ExtResource( 7 )
 
 [node name="MoveBack" type="Node" parent="States"]
 script = ExtResource( 8 )
+deacceleration_time = 0.6
+delay = 0.5
 
 [node name="Cooldown" type="Node" parent="States"]
 script = ExtResource( 9 )
+wait_time = 1.0
 
 [node name="BeepSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 11 )
 bus = "SFX"
 area_mask = 7
 
+[node name="TestLabel" type="Label" parent="."]
+margin_left = -20.0
+margin_top = -32.0
+margin_right = 20.0
+margin_bottom = -18.0
+
 [connection signal="area_entered" from="Hitbox" to="." method="_on_Hitbox_area_entered"]
+[connection signal="body_entered" from="DetectionField" to="." method="_on_DetectionField_body_entered"]
+[connection signal="body_exited" from="DetectionField" to="." method="_on_DetectionField_body_exited"]
 
 [editable path="Hitbox"]
 [editable path="Hurtbox"]

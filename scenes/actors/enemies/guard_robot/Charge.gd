@@ -1,26 +1,54 @@
 extends State
 
+export(float, 0.6, 2.0, 0.1) var delay : float
+
+var _substate : int
+var _destination : float
+
 func _setup() -> void:
 	user_data.frames.play('Move')
 	user_data.hitbox.disabled = false
 	(user_data.beep as AudioStreamPlayer2D).play()
+	
+	# Acclerate velocity
+	var anima := Anima.begin(self)
+	anima.then({
+		node = persistant_state,
+		property = 'velocity:x',
+		to = user_data.charge_speed,
+		easing = Anima.EASING.EASE_IN_CUBIC,
+		duration = 0.5
+	})
+	anima.play()
+	
+	_substate = 0
+	
+	# Set destination
+	var root : Enemy = persistant_state
+	_destination = persistant_state.detection_radius
+	_destination = root.global_position.x + _destination * root.direction.x
+
+func physics_main(delta: float):
+	var root := persistant_state as Enemy
+	match _substate:
+		0:
+			if abs(root.global_position.x - _destination) < 11.0:
+				_substate += 1
+				(user_data.cintp as CubicInterpolator).start_interpolation(
+					root.velocity.x,
+					0,
+					0.7
+				)
+		1:
+			var cintp := user_data.cintp as CubicInterpolator
+			var xvel = cintp.step(delta)
+			assert(xvel is float)
+			root.velocity.x = xvel
+			if cintp.finished:
+				return persistant_state.STATE_MOVEBACK
 
 func cleanup() -> void:
 	user_data.hitbox.disabled = true
 
-func physics_main(delta: float):
-	var root : Actor = persistant_state
-	var velocity : Vector2 = root.velocity
-	
-	if root.distance_met >= root.detection_radius:
-		velocity.x = lerp(velocity.x, 0, delta * 13)
-		if abs(velocity.x) < 0.05:
-			velocity.x = 0.0
-		if is_zero_approx(velocity.x):
-			root.distance_met = 0
-			user_data['delay'] = 1.0
-			return root.STATE_MOVEBACK
-	else:
-		velocity.x = lerp(velocity.x, user_data.charge_speed * root.direction.x, delta * 5)
-	
-	root.velocity = velocity
+func _go_to_next_state():
+	emit_signal('state_change_request', persistant_state.STATE_MOVEBACK)

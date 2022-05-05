@@ -1,14 +1,23 @@
 extends State
 
+var _player
+
 func _setup() -> void:
 	user_data.frames.play('Idle')
+	user_data.detection_field.disabled = false
 
-# warning-ignore:unused_argument
-func physics_main(delta: float):
-	# Triggered when the player enters its range
-	var root : Actor = persistant_state
-	var player := Game.get_player()
-	if Geometry.is_point_in_circle(player.global_position, root.global_position, root.detection_radius):
-		var to_player := root.global_position.direction_to(player.global_position)
-		if to_player.dot(root.direction) > 0.0:
-			return root.STATE_CHARGE
+func physics_main(_delta: float):
+	if not _player: return
+	var player : Actor = _player
+	if player.is_on_floor():
+		return persistant_state.STATE_CHARGE
+
+func cleanup() -> void:
+	_player = null
+	user_data.detection_field.disabled = true
+
+func player_detected(player: Actor):
+	_player = player
+
+func player_exited(_aplayer: Actor):
+	_player = null
