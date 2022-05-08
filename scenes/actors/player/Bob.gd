@@ -48,13 +48,18 @@ func _unhandled_key_input(event: InputEventKey) -> void:
 	
 	if event.is_action_pressed('jump'):
 		if _on_floor or _in_ladder:
-			# TODO: Hold the jump button down to jump full height, else jump short.
-			velocity.y = -speed_cap.y * 0.75
+			velocity.y = -speed_cap.y
 			if states.current_state() == STATE_CLIMB or _object_picked:
 				#velocity.y /= 2
 				states.change_state(STATE_IDLE)
+		get_tree().set_input_as_handled()
+	elif event.is_action_released('jump'):
+		if (not _on_floor or _in_ladder) and velocity.y < -100.0:
+			velocity.y = -100.0
+		get_tree().set_input_as_handled()
 	elif event.is_action_pressed('ui_up') and _in_ladder and not _object_picked:
 		states.change_state(STATE_CLIMB)
+		get_tree().set_input_as_handled()
 
 func _process(delta: float) -> void:
 	if input_vector.x:
