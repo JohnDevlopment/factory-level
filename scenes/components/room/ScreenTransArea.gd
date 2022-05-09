@@ -1,19 +1,8 @@
 extends Area2D
 
-#export var snap := Vector2.ONE
-
 var _connected_screens := []
 
 onready var collision_shape = $CollisionShape2D
-
-#func _notification(what: int) -> void:
-#	match what:
-#		NOTIFICATION_READY:
-#			if Engine.editor_hint:
-#				set_notify_transform(true)
-#		NOTIFICATION_TRANSFORM_CHANGED:
-#			if snap.x > 1.0 and snap.y > 1.0:
-#				position = position.snapped(snap)
 
 func connect_to_actor(actor: Node, function: String) -> void:
 	connect('body_entered', actor, function, [self])
@@ -28,10 +17,8 @@ func get_connected_screens(point: Vector2) -> Array:
 			break
 		i += 1
 	
-	assert(i < 2, "index is not within the range [0, ]")
-	
+	assert(i < 2, "index is not within the range [0, 2]")
 	result.push_back(_connected_screens[i ^ 1])
-	
 	return result
 
 func get_shape_rect() -> Rect2: return _rect_from_shape(collision_shape)
@@ -40,7 +27,6 @@ func set_camera_regions(list: Array) -> void:
 	_connected_screens = []
 	
 	var our_rect := get_shape_rect()
-	
 	var i := 0
 	for rect in list:
 		assert(rect is Rect2, "list[%d] is not Rect2" % i)
@@ -49,7 +35,6 @@ func set_camera_regions(list: Array) -> void:
 		i += 1
 	
 	assert(_connected_screens.size() == 2)
-	
 	_connected_screens.sort_custom(self, '_sort_rects')
 
 func _rect_from_shape(collshape: CollisionShape2D) -> Rect2:
