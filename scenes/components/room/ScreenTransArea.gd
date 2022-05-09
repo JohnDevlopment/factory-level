@@ -1,11 +1,13 @@
 extends Area2D
 
+export(int, "Horizontal", "Vertical") var direction : int
+
 var _connected_screens := []
 
 onready var collision_shape = $CollisionShape2D
 
 func connect_to_actor(actor: Node, function: String) -> void:
-	connect('body_entered', actor, function, [self])
+	connect('body_entered', actor, function, [self, bool(direction)])
 
 func get_connected_screens(point: Vector2) -> Array:
 	var i := 0

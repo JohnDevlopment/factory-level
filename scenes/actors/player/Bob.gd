@@ -172,7 +172,7 @@ func _on_ladder_body_change_enter_state(_node, flag: bool):
 func _on_pickable_object_status_changed(node, picked_up: bool) -> void:
 	_object_picked = node if picked_up else null
 
-func _on_screenarea_body_entered(_body, area) -> void:
+func _on_screenarea_body_entered(_body, area, vertical: bool) -> void:
 	assert(_body == self)
 	
 	var regions : Array = area.get_connected_screens(global_position)
@@ -180,6 +180,7 @@ func _on_screenarea_body_entered(_body, area) -> void:
 	
 	states.user_data['rect_src'] = regions[0]
 	states.user_data['rect_dest'] = regions[1]
+	states.user_data['vertical'] = vertical
 	states.change_state(STATE_SCREENTRANS)
 
 func _on_States_state_signal(spec: String, args: Array) -> void:
