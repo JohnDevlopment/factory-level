@@ -2,7 +2,7 @@ tool
 extends Actor
 
 signal transition_finished(rect)
-signal transition_started
+signal transition_started()
 
 enum { STATE_IDLE, STATE_RUN, STATE_CLIMB, STATE_HURT, STATE_SCREENTRANS }
 
@@ -35,6 +35,7 @@ func _ready() -> void:
 		(node as Actor).connect('picked_up', self, '_on_pickable_object_status_changed', [true])
 		(node as Actor).connect('dropped', self, '_on_pickable_object_status_changed', [false])
 	
+	# Connect screen transition rects to the player
 	for node in get_tree().get_nodes_in_group('screen_transitions'):
 		node.connect_to_actor(self, '_on_screenarea_body_entered')
 	
@@ -94,17 +95,22 @@ func change_animation_state(state: String) -> void:
 	animation_tree.set('parameters/%s/blend_position' % _current_anim_state, direction.x)
 
 func current_state() -> String:
+	var _state : String
+	
 	match states.current_state():
 		STATE_CLIMB:
-			return 'climb'
+			_state = 'climb'
 		STATE_HURT:
-			return 'hurt'
+			_state = 'hurt'
 		STATE_IDLE:
-			return 'idle'
+			_state = 'idle'
 		STATE_RUN:
-			return 'run'
+			_state = 'run'
+		STATE_SCREENTRANS:
+			_state = 'screentrans'
 	
-	return ""
+	assert(not _state.empty(), "the current state is not one of the recognized states")
+	return _state
 
 func deserialize(data: Dictionary) -> void:
 	stats.health = data.current_hp
