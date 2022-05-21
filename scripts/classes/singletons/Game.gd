@@ -133,14 +133,20 @@ func spawn_vfx(parent: Node, below_node: Node, vfx: String, pos: Vector2):
 	if VFX_PATHS.get(vfx) == null:
 		push_error("No vfx by the name '%s' is defined" % vfx)
 		return
+	
+	# Check that the path points to a scene
 	node = load(VFX_PATHS[vfx])
-	if node is PackedScene:
-		node = node.instance() as Node2D
-		node.global_position = pos
-		if is_instance_valid(below_node):
-			parent.add_child_below_node(below_node, node)
-		else:
-			parent.add_child(below_node)
+	assert(node is PackedScene)
+	
+	# Instance the scene and place it at the specified position
+	node = node.instance() as Node2D
+	node.global_position = pos
+	
+	if is_instance_valid(below_node):
+		parent.add_child_below_node(below_node, node)
+	else:
+		parent.add_child(node)
+	
 	return node
 
 func _ready() -> void:
