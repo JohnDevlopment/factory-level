@@ -102,14 +102,29 @@ func _set(property: String, value) -> bool:
 
 func _align_camera():
 	var player := Game.get_player()
+	var desired_rect = null
+	
+	# Find which region the player is in, if any
 	for _rect in camera_rects:
 		var rect: Rect2 = _rect
 		if rect.size < CAMERA_SIZE:
 			var diff := CAMERA_SIZE - rect.size
 			rect = rect.grow_individual(0, 0, diff.x, diff.y)
 		if rect.has_point(player.global_position):
-			player.set_camera_limits_from_rect(rect)
-			_add_invisible_wall(rect)
+			desired_rect = rect
+			break
+	
+	# No region has been selected, so look for any level bounds rect
+	if not desired_rect is Rect2:
+		var level_bounds_rects := get_tree().get_nodes_in_group('level_bounds')
+		if level_bounds_rects.size():
+			var temp : Control = level_bounds_rects[0]
+			desired_rect = temp.get_rect()
+	
+	# Set the player camera limits according to the chosen bounds of the level
+	if desired_rect:
+		player.set_camera_limits_from_rect(desired_rect)
+		_add_invisible_wall(desired_rect)
 
 func _add_invisible_wall(region: Rect2) -> void:
 	var data := [
