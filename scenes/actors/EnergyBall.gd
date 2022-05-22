@@ -42,7 +42,6 @@ func _physics_process(_delta: float) -> void:
 		if collider is Actor:
 			if collider.get_collision_layer_bit(Game.CollisionLayerIndex.ENEMIES):
 				_check_collision_with_enemy(slide)
-				#(collider as Enemy).decide_damage(stats)
 	
 	if velocity.x:
 		var weight : float = 0.2 if is_on_floor() else 0.02
@@ -78,11 +77,11 @@ func _set_picked(picked: bool) -> void:
 func _check_collision_with_enemy(collision: KinematicCollision2D):
 	velocity = reflect_speed * collision.normal
 
-func _on_DetectionField_body_entered(_body: Node) -> void:
-	_detected = true
-
-func _on_DetectionField_body_exited(_body: Node) -> void:
-	_detected = false
+# Disables the hitbox, the process function, and starts a timer
+func _start_disable_timer(time: float = -1):
+	$DisableTimer.start(time)
+	hitbox.set_deferred('disabled', true)
+	set_process(false)
 
 func drop():
 	if picked_up:
@@ -91,16 +90,18 @@ func drop():
 		yield(get_tree(), 'idle_frame')
 		velocity = Vector2(-direction.x * 200, -200)
 
+# Signals
+
 # Hit enemy hurtbox
 func _on_Hitbox_area_entered(area: Area2D) -> void:
 	var collider = area.get_parent()
 	collider.decide_damage(stats)
 
-# Disables the hitbox, the process function, and starts a timer
-func _start_disable_timer(time: float = -1):
-	$DisableTimer.start(time)
-	hitbox.set_deferred('disabled', true)
-	set_process(false)
+func _on_DetectionField_body_entered(_body: Node) -> void:
+	_detected = true
+
+func _on_DetectionField_body_exited(_body: Node) -> void:
+	_detected = false
 
 func _on_DisableTimer_timeout() -> void:
 	set_process(true)
