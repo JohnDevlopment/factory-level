@@ -1,0 +1,11 @@
+[gd_scene format=2]
+
+[node name="LavaArea" type="Area2D" groups=["lava"]]
+z_index = 1
+collision_layer = 2048
+collision_mask = 10
+input_pickable = false
+monitorable = false
+space_override = 1
+gravity = 200.0
+linear_damp = 68.186
