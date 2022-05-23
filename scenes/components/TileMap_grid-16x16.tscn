@@ -1,4 +1,6 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/TilemapCollisionBase.gd" type="Script" id=1]
 
 [node name="TileMap" type="TileMap"]
 cell_size = Vector2( 16, 16 )
@@ -6,3 +8,4 @@ collision_layer = 0
 collision_mask = 0
 occluder_light_mask = 0
 format = 1
+script = ExtResource( 1 )
