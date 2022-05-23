@@ -394,6 +394,7 @@ console={
 2d_physics/layer_9="enemy hurtbox"
 2d_physics/layer_10="triggers"
 2d_physics/layer_11="stairs"
+2d_physics/layer_12="lava"
 
 [physics]
 
