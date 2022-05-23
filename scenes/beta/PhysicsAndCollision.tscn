@@ -1,0 +1,95 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://scenes/Room.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/tilesets/FactoryForeground.tres" type="TileSet" id=2]
+[ext_resource path="res://scenes/components/TileMap_grid-16x16.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/actors/player/Bob.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/components/LevelBounds.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/actors/EnergyBall.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/beta/PhysicsAndCollision.gd" type="Script" id=7]
+[ext_resource path="res://scripts/FactoryTilemapCollision.gd" type="Script" id=8]
+[ext_resource path="res://scenes/actors/LavaArea.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scenes/actors/ConveyorBelt.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scripts/classes/nodes/EditorGrid.gd" type="Script" id=11]
+[ext_resource path="res://scenes/actors/RigidCrate.tscn" type="PackedScene" id=12]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 48, 8 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 32, 8 )
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 80, 11 )
+
+[node name="PhysicsAndCollision" instance=ExtResource( 1 )]
+script = ExtResource( 7 )
+no_fade_in = true
+
+[node name="Foreground" parent="Tilemaps" index="0" instance=ExtResource( 3 )]
+tile_set = ExtResource( 2 )
+collision_layer = 1
+tile_data = PoolIntArray( 65535, 0, 0, 131071, 0, 65536, 196607, 0, 65536, 262143, 0, 65536, 327679, 0, 65536, 393215, 0, 65536, 458751, 0, 65536, 524287, 0, 65536, 589823, 0, 65536, 655359, 0, 65536, 720895, 0, 65536, 786431, 0, 65536, 851967, 0, 65536, 917503, 0, 65536, 983039, 0, 65536, 1048575, 0, 65536, 1114111, 0, 65536, 1179647, 0, 65540, 1114112, 0, 10, 1114113, 0, 10, 1114114, 0, 10, 1114115, 0, 10, 1114116, 0, 10, 1114117, 0, 10, 1114118, 0, 11, 1114119, 12, 0, 1114120, 12, 0, 1114121, 12, 0, 1114122, 12, 0, 1114123, 12, 0, 1114124, 12, 0, 1114125, 12, 0, 1114126, 12, 0, 1114127, 12, 0, 1114128, 12, 0, 1114129, 0, 8, 1114130, 0, 10, 1114131, 0, 10, 1114132, 0, 10, 1114133, 0, 10, 1114134, 0, 10, 1114135, 0, 10, 1114136, 0, 11, 1245183, 0, 65544, 1179648, 0, 131081, 1179649, 0, 131081, 1179650, 0, 131081, 1179651, 0, 131081, 1179652, 0, 131081, 1179653, 0, 131081, 1179654, 0, 131083, 1179655, 13, 0, 1179656, 13, 0, 1179657, 13, 0, 1179658, 13, 0, 1179659, 13, 0, 1179660, 13, 0, 1179661, 13, 0, 1179662, 13, 0, 1179663, 13, 0, 1179664, 13, 0, 1179665, 0, 65544, 1179666, 0, 131081, 1179667, 0, 131081, 1179668, 0, 131081, 1179669, 0, 131081, 1179670, 0, 131081, 1179671, 0, 131081, 1179672, 0, 131083, 1310719, 0, 196616, 1245184, 0, 196617, 1245185, 0, 196617, 1245186, 0, 196617, 1245187, 0, 196617, 1245188, 0, 196617, 1245189, 0, 196617, 1245190, 0, 196614, 1245191, 0, 196610, 1245192, 0, 196610, 1245193, 0, 196610, 1245194, 0, 196610, 1245195, 0, 196610, 1245196, 0, 196610, 1245197, 0, 196610, 1245198, 0, 196610, 1245199, 0, 196610, 1245200, 0, 196610, 1245201, 0, 196613, 1245202, 0, 196617, 1245203, 0, 196617, 1245204, 0, 196617, 1245205, 0, 196617, 1245206, 0, 196617, 1245207, 0, 196617, 1245208, 0, 196619 )
+script = ExtResource( 8 )
+
+[node name="ConveyorBelt" parent="Platforms" index="0" instance=ExtResource( 10 )]
+position = Vector2( 272, 256 )
+__meta__ = {
+"_edit_group_": true,
+"_editor_description_": "Add a CollisionShape2D as a child and its collision shape will be set automatically."
+}
+direction = -1
+width = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/ConveyorBelt" index="2"]
+position = Vector2( 48, 8 )
+shape = SubResource( 2 )
+
+[node name="ConveyorBelt2" parent="Platforms" index="1" instance=ExtResource( 10 )]
+position = Vector2( 64, 256 )
+__meta__ = {
+"_edit_group_": true,
+"_editor_description_": "Add a CollisionShape2D as a child and its collision shape will be set automatically."
+}
+width = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/ConveyorBelt2" index="2"]
+position = Vector2( 32, 8 )
+shape = SubResource( 3 )
+
+[node name="LavaArea" parent="Actors/Triggers" index="0" instance=ExtResource( 9 )]
+position = Vector2( 120, 288 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Actors/Triggers/LavaArea" index="0"]
+position = Vector2( 72, 5 )
+shape = SubResource( 1 )
+
+[node name="Bob" parent="Actors" index="1" instance=ExtResource( 4 )]
+position = Vector2( 42, 254 )
+
+[node name="EnergyBall" parent="Actors" index="2" instance=ExtResource( 6 )]
+position = Vector2( 17, 256 )
+
+[node name="RigidCrate" parent="Actors" index="3" instance=ExtResource( 12 )]
+position = Vector2( 320, 238 )
+
+[node name="RigidCrate2" parent="Actors" index="4" instance=ExtResource( 12 )]
+position = Vector2( 95, 235 )
+
+[node name="LevelBounds" parent="." index="3" instance=ExtResource( 5 )]
+visible = false
+margin_right = 392.0
+margin_bottom = 304.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="EditorGrid" type="Node2D" parent="." index="4"]
+visible = false
+script = ExtResource( 11 )
+__meta__ = {
+"_edit_lock_": true
+}
+on = true
+end = Vector2( 500, 300 )
+grid_size = Vector2( 50, 50 )
