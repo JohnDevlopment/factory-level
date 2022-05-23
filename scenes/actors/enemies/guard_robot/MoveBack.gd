@@ -5,13 +5,12 @@ export(float, 0.1, 2.0, 0.1) var delay : float = 1
 
 var _substate : int
 var _destination : float
+var _timer
 
 func _setup() -> void:
 	user_data.frames.play('Idle')
 	_substate = 0
-	yield(get_tree().create_timer(delay), 'timeout')
-	user_data.frames.play('Move', true)
-	_substate += 1
+	get_tree().create_timer(delay).connect('timeout', self, '_delay_finished')
 
 func physics_main(delta: float):
 	match _substate:
@@ -49,3 +48,7 @@ func physics_main(delta: float):
 		4:
 			(persistant_state as Enemy).global_position.x = _destination
 			return persistant_state.STATE_COOLDOWN
+
+func _delay_finished() -> void:
+	user_data.frames.play('Move', true)
+	_substate += 1

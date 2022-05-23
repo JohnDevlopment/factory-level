@@ -93,6 +93,7 @@ func move_actor() -> void:
 		distance_met += abs(slide.travel.x)
 		if slide.collider is Actor:
 			var other : Actor = slide.collider
+			# FIXME: When we hit an energy ball, this actor stops dead in its tracks
 			if other.get_collision_layer_bit(Game.CollisionLayerIndex.OBJECTS):
 				var normal : Vector2 = -(slide.normal)
 				other.velocity = normal * (speed_cap * 2.0)
