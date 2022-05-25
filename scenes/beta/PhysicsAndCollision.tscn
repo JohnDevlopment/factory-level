@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://scenes/Room.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/tilesets/FactoryForeground.tres" type="TileSet" id=2]
@@ -10,14 +10,19 @@
 [ext_resource path="res://scripts/FactoryTilemapCollision.gd" type="Script" id=8]
 [ext_resource path="res://scenes/actors/LavaArea.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/actors/ConveyorBelt.tscn" type="PackedScene" id=10]
-[ext_resource path="res://scripts/classes/nodes/EditorGrid.gd" type="Script" id=11]
 [ext_resource path="res://scenes/actors/RigidCrate.tscn" type="PackedScene" id=12]
+[ext_resource path="res://scenes/actors/KeycardSwitch.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scenes/actors/Keycard.tscn" type="PackedScene" id=14]
+[ext_resource path="res://scripts/classes/nodes/commands/WaitCommand.gd" type="Script" id=15]
+[ext_resource path="res://scripts/classes/nodes/CommandHandler.gd" type="Script" id=16]
+[ext_resource path="res://scenes/actors/doors/PoweredDoor1x3.tscn" type="PackedScene" id=17]
+[ext_resource path="res://scenes/components/commands/C_OpenDoor.tscn" type="PackedScene" id=18]
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 48, 8 )
 
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 32, 8 )
+extents = Vector2( 40, 8 )
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 80, 11 )
@@ -29,7 +34,7 @@ no_fade_in = true
 [node name="Foreground" parent="Tilemaps" index="0" instance=ExtResource( 3 )]
 tile_set = ExtResource( 2 )
 collision_layer = 1
-tile_data = PoolIntArray( 65535, 0, 0, 131071, 0, 65536, 196607, 0, 65536, 262143, 0, 65536, 327679, 0, 65536, 393215, 0, 65536, 458751, 0, 65536, 524287, 0, 65536, 589823, 0, 65536, 655359, 0, 65536, 720895, 0, 65536, 786431, 0, 65536, 851967, 0, 65536, 917503, 0, 65536, 983039, 0, 65536, 1048575, 0, 65536, 1114111, 0, 65536, 1179647, 0, 65540, 1114112, 0, 10, 1114113, 0, 10, 1114114, 0, 10, 1114115, 0, 10, 1114116, 0, 10, 1114117, 0, 10, 1114118, 0, 11, 1114119, 12, 0, 1114120, 12, 0, 1114121, 12, 0, 1114122, 12, 0, 1114123, 12, 0, 1114124, 12, 0, 1114125, 12, 0, 1114126, 12, 0, 1114127, 12, 0, 1114128, 12, 0, 1114129, 0, 8, 1114130, 0, 10, 1114131, 0, 10, 1114132, 0, 10, 1114133, 0, 10, 1114134, 0, 10, 1114135, 0, 10, 1114136, 0, 11, 1245183, 0, 65544, 1179648, 0, 131081, 1179649, 0, 131081, 1179650, 0, 131081, 1179651, 0, 131081, 1179652, 0, 131081, 1179653, 0, 131081, 1179654, 0, 131083, 1179655, 13, 0, 1179656, 13, 0, 1179657, 13, 0, 1179658, 13, 0, 1179659, 13, 0, 1179660, 13, 0, 1179661, 13, 0, 1179662, 13, 0, 1179663, 13, 0, 1179664, 13, 0, 1179665, 0, 65544, 1179666, 0, 131081, 1179667, 0, 131081, 1179668, 0, 131081, 1179669, 0, 131081, 1179670, 0, 131081, 1179671, 0, 131081, 1179672, 0, 131083, 1310719, 0, 196616, 1245184, 0, 196617, 1245185, 0, 196617, 1245186, 0, 196617, 1245187, 0, 196617, 1245188, 0, 196617, 1245189, 0, 196617, 1245190, 0, 196614, 1245191, 0, 196610, 1245192, 0, 196610, 1245193, 0, 196610, 1245194, 0, 196610, 1245195, 0, 196610, 1245196, 0, 196610, 1245197, 0, 196610, 1245198, 0, 196610, 1245199, 0, 196610, 1245200, 0, 196610, 1245201, 0, 196613, 1245202, 0, 196617, 1245203, 0, 196617, 1245204, 0, 196617, 1245205, 0, 196617, 1245206, 0, 196617, 1245207, 0, 196617, 1245208, 0, 196619 )
+tile_data = PoolIntArray( 65535, 0, 0, 131071, 0, 65536, 196607, 0, 65536, 262143, 0, 65536, 327679, 0, 65536, 393215, 0, 65536, 458751, 0, 65536, 393244, 0, 8, 393245, 0, 10, 393246, 0, 10, 393247, 0, 10, 393248, 0, 10, 393249, 0, 10, 393250, 0, 10, 393251, 0, 10, 393252, 0, 11, 524287, 0, 65536, 458780, 0, 65544, 458781, 0, 131081, 458782, 0, 131081, 458783, 0, 131081, 458784, 0, 131081, 458785, 0, 131081, 458786, 0, 131081, 458787, 0, 131081, 458788, 0, 131083, 589823, 0, 65536, 524316, 0, 65544, 524317, 0, 131081, 524318, 0, 131081, 524319, 0, 131081, 524320, 0, 131081, 524321, 0, 131081, 524322, 0, 131081, 524323, 0, 131081, 524324, 0, 131083, 655359, 0, 65536, 589852, 0, 65544, 589853, 0, 131081, 589854, 0, 131081, 589855, 0, 131081, 589856, 0, 131081, 589857, 0, 131081, 589858, 0, 131081, 589859, 0, 131081, 589860, 0, 131083, 720895, 0, 65536, 655388, 0, 65544, 655389, 0, 131081, 655390, 0, 131081, 655391, 0, 131081, 655392, 0, 131081, 655393, 0, 131081, 655394, 0, 131081, 655395, 0, 131081, 655396, 0, 131083, 786431, 0, 65536, 720924, 0, 196616, 720925, 0, 131077, 720926, 0, 131081, 720927, 0, 131081, 720928, 0, 131081, 720929, 0, 131081, 720930, 0, 131081, 720931, 0, 131081, 720932, 0, 131083, 851967, 0, 65536, 786461, 0, 65544, 786462, 0, 131081, 786463, 0, 131081, 786464, 0, 131081, 786465, 0, 131081, 786466, 0, 131081, 786467, 0, 131081, 786468, 0, 131083, 917503, 0, 65536, 851997, 0, 196616, 851998, 0, 196617, 851999, 0, 196617, 852000, 0, 196617, 852001, 0, 196617, 852002, 0, 196617, 852003, 0, 196617, 852004, 0, 196619, 983039, 0, 65536, 1048575, 0, 65536, 1114111, 0, 65536, 1179647, 0, 65540, 1114112, 0, 10, 1114113, 0, 10, 1114114, 0, 10, 1114115, 0, 10, 1114116, 0, 10, 1114117, 0, 10, 1114118, 0, 11, 1114119, 12, 0, 1114120, 12, 0, 1114121, 12, 0, 1114122, 12, 0, 1114123, 12, 0, 1114124, 12, 0, 1114125, 12, 0, 1114126, 12, 0, 1114127, 12, 0, 1114128, 12, 0, 1114129, 0, 8, 1114130, 0, 10, 1114131, 0, 10, 1114132, 0, 10, 1114133, 0, 10, 1114134, 0, 10, 1114135, 0, 10, 1114136, 0, 10, 1114137, 0, 10, 1114138, 0, 10, 1114139, 0, 10, 1114140, 0, 10, 1114141, 0, 10, 1114142, 0, 10, 1114143, 0, 10, 1114144, 0, 10, 1114145, 0, 10, 1114146, 0, 10, 1114147, 0, 10, 1114148, 0, 11, 1245183, 0, 65544, 1179648, 0, 131081, 1179649, 0, 131081, 1179650, 0, 131081, 1179651, 0, 131081, 1179652, 0, 131081, 1179653, 0, 131081, 1179654, 0, 131083, 1179655, 13, 0, 1179656, 13, 0, 1179657, 13, 0, 1179658, 13, 0, 1179659, 13, 0, 1179660, 13, 0, 1179661, 13, 0, 1179662, 13, 0, 1179663, 13, 0, 1179664, 13, 0, 1179665, 0, 65544, 1179666, 0, 131081, 1179667, 0, 131081, 1179668, 0, 131081, 1179669, 0, 131081, 1179670, 0, 131081, 1179671, 0, 131081, 1179672, 0, 131081, 1179673, 0, 131081, 1179674, 0, 131081, 1179675, 0, 131081, 1179676, 0, 131081, 1179677, 0, 131081, 1179678, 0, 131081, 1179679, 0, 131081, 1179680, 0, 131081, 1179681, 0, 131081, 1179682, 0, 131081, 1179683, 0, 131081, 1179684, 0, 131083, 1310719, 0, 196616, 1245184, 0, 196617, 1245185, 0, 196617, 1245186, 0, 196617, 1245187, 0, 196617, 1245188, 0, 196617, 1245189, 0, 196617, 1245190, 0, 196614, 1245191, 0, 196610, 1245192, 0, 196610, 1245193, 0, 196610, 1245194, 0, 196610, 1245195, 0, 196610, 1245196, 0, 196610, 1245197, 0, 196610, 1245198, 0, 196610, 1245199, 0, 196610, 1245200, 0, 196610, 1245201, 0, 196613, 1245202, 0, 196617, 1245203, 0, 196617, 1245204, 0, 196617, 1245205, 0, 196617, 1245206, 0, 196617, 1245207, 0, 196617, 1245208, 0, 196617, 1245209, 0, 196617, 1245210, 0, 196617, 1245211, 0, 196617, 1245212, 0, 196617, 1245213, 0, 196617, 1245214, 0, 196617, 1245215, 0, 196617, 1245216, 0, 196617, 1245217, 0, 196617, 1245218, 0, 196617, 1245219, 0, 196617, 1245220, 0, 196619 )
 script = ExtResource( 8 )
 
 [node name="ConveyorBelt" parent="Platforms" index="0" instance=ExtResource( 10 )]
@@ -51,10 +56,10 @@ __meta__ = {
 "_edit_group_": true,
 "_editor_description_": "Add a CollisionShape2D as a child and its collision shape will be set automatically."
 }
-width = 4
+width = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/ConveyorBelt2" index="2"]
-position = Vector2( 32, 8 )
+position = Vector2( 40, 8 )
 shape = SubResource( 3 )
 
 [node name="LavaArea" parent="Actors/Triggers" index="0" instance=ExtResource( 9 )]
@@ -64,8 +69,24 @@ position = Vector2( 120, 288 )
 position = Vector2( 72, 5 )
 shape = SubResource( 1 )
 
+[node name="KeycardSwitch" parent="Actors/Triggers" index="1" instance=ExtResource( 13 )]
+position = Vector2( 512, 261 )
+
+[node name="CommandHandler" type="Node" parent="Actors/Triggers/KeycardSwitch" index="2"]
+script = ExtResource( 16 )
+active = true
+root_node = NodePath("..")
+
+[node name="WaitCommand" type="Node" parent="Actors/Triggers/KeycardSwitch/CommandHandler" index="0"]
+script = ExtResource( 15 )
+wait_time = 1.0
+active = true
+
+[node name="C_OpenDoor" parent="Actors/Triggers/KeycardSwitch/CommandHandler" index="1" instance=ExtResource( 18 )]
+powered_door = NodePath("../../../../PoweredDoor1x3")
+
 [node name="Bob" parent="Actors" index="1" instance=ExtResource( 4 )]
-position = Vector2( 42, 254 )
+position = Vector2( 479, 252 )
 
 [node name="EnergyBall" parent="Actors" index="2" instance=ExtResource( 6 )]
 position = Vector2( 17, 256 )
@@ -76,20 +97,16 @@ position = Vector2( 320, 238 )
 [node name="RigidCrate2" parent="Actors" index="4" instance=ExtResource( 12 )]
 position = Vector2( 95, 235 )
 
+[node name="PoweredDoor1x3" parent="Actors" index="5" instance=ExtResource( 17 )]
+position = Vector2( 560, 248 )
+
 [node name="LevelBounds" parent="." index="3" instance=ExtResource( 5 )]
 visible = false
-margin_right = 392.0
+margin_right = 576.0
 margin_bottom = 304.0
 __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="EditorGrid" type="Node2D" parent="." index="4"]
-visible = false
-script = ExtResource( 11 )
-__meta__ = {
-"_edit_lock_": true
-}
-on = true
-end = Vector2( 500, 300 )
-grid_size = Vector2( 50, 50 )
+[node name="Keycard" parent="." index="4" instance=ExtResource( 14 )]
+position = Vector2( 440, 256 )
