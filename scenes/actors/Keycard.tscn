@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/actors/Keycard.gd" type="Script" id=1]
+[ext_resource path="res://scenes/components/DetectionField.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/textures/actors/keycard.png" type="Texture" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 4.5, 3 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 6, 4 )
+
+[node name="Keycard" type="KinematicBody2D"]
+collision_layer = 0
+collision_mask = 11
+script = ExtResource( 1 )
+__meta__ = {
+"collision_layer": 0,
+"collision_mask": 11
+}
+speed_cap = Vector2( 0, 0 )
+snap_length = 1.0
+disabled = null
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+
+[node name="DetectionField" parent="." instance=ExtResource( 2 )]
+collision_mask = 4
+monitorable = false
+
+[node name="CollisionShape2D" parent="DetectionField" index="0"]
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )
+
+[connection signal="body_entered" from="DetectionField" to="." method="_on_DetectionField_body_entered"]
+
+[editable path="DetectionField"]

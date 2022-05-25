@@ -71,6 +71,8 @@ const VFX_PATHS := {
 #var level_size := Vector2(1020, 610) setget set_level_size
 #var dialog_mode := false setget set_dialog_mode
 
+var keycards := 0
+
 ## A number indicating the level entrance.
 # @type int
 # @getter get_level_entrance()
