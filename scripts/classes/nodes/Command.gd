@@ -13,6 +13,12 @@ var active := true
 # @type Dictionary
 var user_data := {}
 
+## The root node for this command.
+# @type NodePath
+var root_node : NodePath
+
+var _root_node : Node
+
 func _ready() -> void:
 	if Engine.editor_hint: return
 	for node in get_children():
@@ -30,6 +36,10 @@ func do_command():
 	return _do_command()
 
 func get_class() -> String: return 'Command'
+
+func set_command_root_node(n: Node) -> void:
+	_root_node = n
+	root_node = _root_node.get_path()
 
 ## Override this function in your script to implement your own command.
 # @virtual
