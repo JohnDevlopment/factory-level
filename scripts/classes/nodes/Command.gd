@@ -9,11 +9,19 @@ class_name Command
 # @type bool
 var active := true
 
+## User-defined data.
+# @type Dictionary
+var user_data := {}
+
 func _ready() -> void:
 	if Engine.editor_hint: return
 	for node in get_children():
-		var is_valid_class : bool = node.get_class() in ['Command', 'CommandHandler']
+		var is_valid_class : bool = node.get_class() in ['Command', 'Position2D']
 		assert(is_valid_class, "child must be a Command")
+		
+		if node is Position2D:
+			user_data[node.name] = node.global_position
+			node.queue_free()
 
 ## Performs the action.
 # @desc Calls the virtual method @function{_do_command} to do the actual command.
