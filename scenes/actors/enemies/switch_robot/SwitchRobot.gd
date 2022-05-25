@@ -49,6 +49,8 @@ func _on_damaged(_stats: Stats) -> void:
 		hide()
 		Game.spawn_vfx(get_parent(), self, 'robot_explosion', global_position)
 		
-		# Delete the node
+		enable_collision(false)
+		
+		# Evaluate commands and mark this robot as dead
 		call_deferred('_do_commands')
 		emit_defeated()
