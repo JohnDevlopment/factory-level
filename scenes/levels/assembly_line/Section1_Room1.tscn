@@ -4,11 +4,11 @@
 [ext_resource path="res://assets/tilesets/FactoryForeground.tres" type="TileSet" id=2]
 [ext_resource path="res://scenes/actors/player/Bob.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/components/commands/C_OpenDoor.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/components/PositionSnapper.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/actors/RigidCrate.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/actors/ConveyorBelt.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/levels/assembly_line/Section1_Room1.gd" type="Script" id=9]
 [ext_resource path="res://scenes/actors/doors/PoweredDoor1x2.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/actors/KeycardSwitch.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scenes/actors/EnergyBall.tscn" type="PackedScene" id=12]
 [ext_resource path="res://scenes/buttons/Button.tscn" type="PackedScene" id=13]
 [ext_resource path="res://scripts/classes/nodes/CommandHandler.gd" type="Script" id=14]
@@ -149,6 +149,7 @@ position = Vector2( 164, 455 )
 [node name="CommandHandler" type="Node" parent="Actors/Button" index="5"]
 script = ExtResource( 14 )
 active = true
+root_node = NodePath("..")
 
 [node name="C_OpenDoor" parent="Actors/Button/CommandHandler" index="0" instance=ExtResource( 4 )]
 powered_door = NodePath("../../../Door1")
@@ -160,34 +161,24 @@ stats = SubResource( 2 )
 [node name="CommandHandler" type="Node" parent="Actors/SwitchRobot" index="3"]
 script = ExtResource( 14 )
 active = true
+root_node = NodePath("..")
 
 [node name="C_OpenDoor" parent="Actors/SwitchRobot/CommandHandler" index="0" instance=ExtResource( 4 )]
 powered_door = NodePath("../../../Door2")
 
-[node name="PositionSnapper" parent="Actors/SwitchRobot" index="4" instance=ExtResource( 5 )]
-position = Vector2( 12, 6 )
-cast_to = Vector2( 20, 0 )
-
 [node name="GuardRobot" parent="Actors" index="8" instance=ExtResource( 22 )]
-position = Vector2( 533, 447 )
-detection_radius = 138.2
+position = Vector2( 476, 447 )
+detection_radius = 115.6
 stats = SubResource( 7 )
 
 [node name="GuardRobot2" parent="Actors" index="9" instance=ExtResource( 22 )]
 position = Vector2( 30, 192 )
-detection_radius = 87.9
 face_right = true
+spawn_key = true
 stats = SubResource( 8 )
 
-[node name="CommandHandler" type="Node" parent="Actors/GuardRobot2" index="8"]
-script = ExtResource( 14 )
-active = true
-
-[node name="C_OpenDoor" parent="Actors/GuardRobot2/CommandHandler" index="0" instance=ExtResource( 4 )]
-powered_door = NodePath("../../../Door3")
-
 [node name="GuardRobot3" parent="Actors" index="10" instance=ExtResource( 22 )]
-position = Vector2( 328, 256 )
+position = Vector2( 373, 256 )
 detection_radius = 87.9
 face_right = true
 stats = SubResource( 8 )
@@ -195,18 +186,30 @@ stats = SubResource( 8 )
 [node name="CommandHandler" type="Node" parent="Actors/GuardRobot3" index="8"]
 script = ExtResource( 14 )
 active = true
+root_node = NodePath("..")
 
 [node name="C_OpenDoor" parent="Actors/GuardRobot3/CommandHandler" index="0" instance=ExtResource( 4 )]
 powered_door = NodePath("../../../Door4")
 
 [node name="Bob" parent="Actors" index="11" instance=ExtResource( 3 )]
-position = Vector2( 32, 446 )
+position = Vector2( 42, 446 )
 
 [node name="EnergyBall" parent="Actors" index="12" instance=ExtResource( 12 )]
-position = Vector2( 238, 433 )
+position = Vector2( 241, 434 )
 
 [node name="RigidCrate" parent="Actors" index="13" instance=ExtResource( 6 )]
 position = Vector2( 223, 189 )
+
+[node name="KeycardSwitch" parent="Actors" index="14" instance=ExtResource( 11 )]
+position = Vector2( 550, 452 )
+
+[node name="CommandHandler" type="Node" parent="Actors/KeycardSwitch" index="2"]
+script = ExtResource( 14 )
+active = true
+root_node = NodePath("..")
+
+[node name="C_OpenDoor" parent="Actors/KeycardSwitch/CommandHandler" index="0" instance=ExtResource( 4 )]
+powered_door = NodePath("../../../Door3")
 
 [editable path="Actors/Triggers/ScreenTrans1"]
 [editable path="Actors/Triggers/ScreenTrans2"]
