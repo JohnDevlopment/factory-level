@@ -94,14 +94,9 @@ func drop():
 
 # Hit enemy hurtbox
 func _on_Hitbox_area_entered(area: Area2D) -> void:
-	var collider = area.get_parent()
-	collider.decide_damage(stats)
-
-func _on_DetectionField_body_entered(_body: Node) -> void:
-	_detected = true
-
-func _on_DetectionField_body_exited(_body: Node) -> void:
-	_detected = false
 
 func _on_DisableTimer_timeout() -> void:
 	set_process(true)
+
+func _on_player_detected(_body: Node, flag: bool) -> void:
+	_detected = flag
