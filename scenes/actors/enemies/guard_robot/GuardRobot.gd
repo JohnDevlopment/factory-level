@@ -3,6 +3,7 @@ extends Enemy
 
 export(float, 45.0, 1000, 0.1) var detection_radius := 45.0 setget set_detection_radius
 export var face_right := false
+export var spawn_key := false
 
 enum {STATE_IDLE, STATE_CHARGE, STATE_MOVEBACK, STATE_COOLDOWN}
 
@@ -82,6 +83,7 @@ func _on_damaged(_stats: Stats) -> void:
 	hide()
 	enable_collision(false)
 	Game.spawn_vfx(get_parent(), self, 'robot_explosion', global_position)
+	call_deferred('_spawn_keycard_after_death')
 	call_deferred('_do_commands')
 	emit_defeated()
 
@@ -101,6 +103,13 @@ func move_actor() -> void:
 func set_detection_radius(r: float) -> void:
 	detection_radius = r
 	update()
+
+func _spawn_keycard_after_death() -> void:
+	if spawn_key:
+		var spawned = preload('res://scenes/actors/Keycard.tscn').instance()
+		get_parent().add_child(spawned)
+		spawned.global_position = global_position
+		spawned.launch()
 
 # Hit the player
 func _on_Hitbox_area_entered(area: Area2D) -> void:
