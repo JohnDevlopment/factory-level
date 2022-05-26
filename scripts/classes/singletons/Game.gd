@@ -68,6 +68,8 @@ const VFX_PATHS := {
 	armor_break = 'res://scenes/vfx/SwitchRobotArmorBreak.tscn'
 }
 
+const DIVISIONS := 12
+
 #var level_size := Vector2(1020, 610) setget set_level_size
 #var dialog_mode := false setget set_dialog_mode
 
@@ -84,6 +86,8 @@ var level_entrance := -1 setget ,get_level_entrance
 # @type Vector2
 var screen_size := Vector2()
 
+var _baked_normals : PoolVector2Array
+
 func get_level_entrance() -> int:
 	var temp = level_entrance
 	level_entrance = -1
@@ -96,6 +100,19 @@ func get_meta_default(meta: String, default = null):
 	if not has_meta(meta):
 		set_meta(meta, default)
 	return get_meta(meta)
+
+func get_nearest_collision_normal(n: Vector2) -> Vector2:
+	var nearest = 0
+	var dot = 0.0
+	
+	for i in _baked_normals.size():
+		var origin := _baked_normals[i]
+		var d = n.dot(origin)
+		if d > dot:
+			dot = d
+			nearest = i
+	
+	return _baked_normals[nearest]
 
 ## Fetch the player node.
 # @desc Returns a reference to the player node. If the player is not in the
@@ -155,3 +172,8 @@ func _ready() -> void:
 		ProjectSettings.get_setting('display/window/size/width'),
 		ProjectSettings.get_setting('display/window/size/height')
 	)
+	
+	var angle_increment : float = 6.28319 / float(DIVISIONS)
+	for i in range(1, DIVISIONS+1):
+		var x : float = angle_increment * i
+		_baked_normals.push_back(Vector2.UP.rotated(x))

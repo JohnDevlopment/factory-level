@@ -19,7 +19,7 @@ owner_name = ""
 extents = Vector2( 7, 10 )
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 8, 10 )
+extents = Vector2( 9, 11 )
 
 [node name="SwitchRobot" type="KinematicBody2D"]
 collision_layer = 16

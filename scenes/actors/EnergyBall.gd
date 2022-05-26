@@ -6,7 +6,8 @@ signal dropped(node)
 
 export var neccessary_velocity := Vector2()
 export(float, 1, 500, 0.1) var throw_force : float = 1
-export var reflect_speed : Vector2
+
+const REFLECT_SPEED := Vector2(130, 150)
 
 onready var hitbox = $Hitbox
 
@@ -75,7 +76,7 @@ func _set_picked(picked: bool) -> void:
 	enable_collision(!picked_up)
 
 func _check_collision_with_enemy(collision: KinematicCollision2D):
-	velocity = reflect_speed * collision.normal
+	velocity = REFLECT_SPEED * collision.normal
 
 # Disables the hitbox, the process function, and starts a timer
 func _start_disable_timer(time: float = -1):
@@ -94,6 +95,17 @@ func drop():
 
 # Hit enemy hurtbox
 func _on_Hitbox_area_entered(area: Area2D) -> void:
+	var collider := area.get_parent() as Enemy
+	collider.decide_damage(stats)
+	if collider.stats.health > 0: return
+	var normal : Vector2 = (velocity * -1).normalized().snapped(Vector2.ONE * 0.001)
+	normal = Game.get_nearest_collision_normal(normal)
+	if is_equal_approx(normal.y, -1):
+		randomize()
+		var angle : float = rand_range(0.610865, 0.785398)
+		angle *= -1 if (randi() % 50) < 25 else 1
+		normal = normal.rotated(angle)
+	velocity = REFLECT_SPEED.length() * normal
 
 func _on_DisableTimer_timeout() -> void:
 	set_process(true)
