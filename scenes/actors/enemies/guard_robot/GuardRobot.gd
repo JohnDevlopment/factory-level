@@ -45,8 +45,7 @@ func _ready() -> void:
 		distance = detection_radius,
 		hitbox = $Hitbox,
 		beep = $BeepSound,
-		detection_field = $DetectionField,
-		test_label = $TestLabel
+		detection_field = $DetectionField
 	}
 	states.change_state(STATE_IDLE)
 
