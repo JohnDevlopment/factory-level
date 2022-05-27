@@ -6,12 +6,13 @@ func _ready() -> void:
 		return
 	
 	assert(get_parent() is Node2D, "parent must be a Node2D")
-	yield(get_tree(), 'idle_frame')
-	if is_colliding():
-		var point := get_collision_point()
-		(get_parent() as Node2D).global_position = point - position
-	
-	queue_free()
+	call_deferred('_snap_actor')
 
 func _is_scene_root() -> bool:
 	return self.get_instance_id() == get_tree().current_scene.get_instance_id()
+
+func _snap_actor() -> void:
+	if is_colliding():
+		var point := get_collision_point()
+		var difference = point - position
+		(get_parent() as Node2D).global_position = difference
