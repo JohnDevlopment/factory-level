@@ -7,19 +7,21 @@ extends EditorScript
 
 func _run() -> void:
 	var root := get_scene()
-	var selection := get_editor_interface().get_selection()
-	var selected_node : Node = selection.get_selected_nodes()[0]
-	if _has(root, 'camera_rects') and root.get('camera_rects') is Array:
-		if selected_node is Control and selected_node.get_class().ends_with('Rect'):
-			var rects : Array = root.get('camera_rects')
-			var node_rect := (selected_node as Control).get_global_rect()
-			rects.push_back(node_rect)
-			root.set('camera_rects', rects)
-			selected_node.queue_free()
-		else:
-			print("%s is not a *Rect control" % selected_node)
-	else:
-		print("%s is not a room scene" % root)
-
-func _has(node: Node, property: String) -> bool:
-	return node.get(property) != null
+	
+	# Root scene must have 'camera_rects' property and it must be an array
+	if not root.get('camera_rects') is Array:
+		printerr("%s: Invalid 'camera_rects' property, not an array" % root)
+		return
+	
+	# Set each selected node as one of the camera rects
+	var rects : Array = root.get('camera_rects')
+	
+	for node in get_editor_interface().get_selection().get_selected_nodes():
+		if not node is ReferenceRect:
+			printerr("Expected a ReferenceRect")
+			continue
+		
+		rects.push_back((node as Control).get_global_rect())
+		node.queue_free()
+	
+	root.set('camera_rects', rects)
