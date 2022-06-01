@@ -1,5 +1,5 @@
 tool
-class_name EditorGrid
+class_name MyEditorGrid
 extends Node2D
 
 export var on := false setget set_on
