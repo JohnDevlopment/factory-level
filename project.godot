@@ -179,11 +179,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/classes/nodes/DistanceNotifier.gd"
 }, {
-"base": "Node2D",
-"class": "EditorGrid",
-"language": "GDScript",
-"path": "res://scripts/classes/nodes/EditorGrid.gd"
-}, {
 "base": "Actor",
 "class": "Enemy",
 "language": "GDScript",
@@ -208,6 +203,11 @@ _global_script_classes=[ {
 "class": "Messenger",
 "language": "GDScript",
 "path": "res://scripts/classes/nodes/Messenger.gd"
+}, {
+"base": "Node2D",
+"class": "MyEditorGrid",
+"language": "GDScript",
+"path": "res://scripts/classes/nodes/MyEditorGrid.gd"
 }, {
 "base": "Node",
 "class": "State",
@@ -284,12 +284,12 @@ _global_script_class_icons={
 "CubicInterpolator": "",
 "DebugShape2D": "",
 "DistanceNotifier": "",
-"EditorGrid": "",
 "Enemy": "res://assets/textures/icons/Enemy.svg",
 "ErrorInfo": "",
 "GitAPI": "",
 "MessageData": "",
 "Messenger": "",
+"MyEditorGrid": "",
 "State": "",
 "StateMachine": "",
 "Stats": "",
