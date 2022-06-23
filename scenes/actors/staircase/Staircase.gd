@@ -32,14 +32,11 @@ func _notification(what: int) -> void:
 		NOTIFICATION_READY:
 			set_collision_layer(Game.CollisionLayer.STAIRS)
 			set_collision_mask(0)
-			set_process(false)
 			
 			if Engine.editor_hint:
 				set_notify_transform(true)
 				connect('child_entered_tree', self, '_on_tree_child_entered')
 				return
-			
-			set_process_unhandled_key_input(false)
 			
 			# Collision for the floor on top of the stairs
 			$TopPlatform.set_collision_box(height, TILE_SIZE)
@@ -51,25 +48,8 @@ func _notification(what: int) -> void:
 				collision.one_way_collision_margin = 1.0
 				add_child(collision)
 				collision.set_deferred('polygon', get_collision_points())
-			
-			# Collision for the area
-			if true:
-				var detection_field = $DetectionField
-				var area_collision := CollisionPolygon2D.new()
-				area_collision.polygon = PoolVector2Array([
-					Vector2(-height * TILE_SIZE.x, 0),
-					Vector2(-4, 0),
-					Vector2(-height * TILE_SIZE.x, height * TILE_SIZE.y)
-				])
-				detection_field.add_child(area_collision)
 		NOTIFICATION_TRANSFORM_CHANGED:
 			position = position.snapped(TILE_SIZE / 2)
-		NOTIFICATION_PROCESS:
-			# If the player is jumping, enable collision
-			if _player.velocity.y < 0.0 or _player.velocity.y > Actor.GRAVITY_STEP:
-				_player.set_collision_mask_bit(Game.CollisionLayerIndex.STAIRS, true)
-				set_process(false)
-				return
 		NOTIFICATION_DRAW:
 			scale.x = -direction
 			
@@ -101,16 +81,6 @@ func _notification(what: int) -> void:
 					),
 					Color(0.4, 0, 0.1, 0.7)
 				)
-
-func _unhandled_key_input(event: InputEventKey) -> void:
-	if event.is_action_pressed('jump'):
-		if _player.is_on_floor():
-			_player.set_collision_mask_bit(Game.CollisionLayerIndex.STAIRS, true)
-		get_tree().set_input_as_handled()
-	elif event.is_action_pressed('ui_down'):
-		if _player.is_on_floor() and _player.get_collision_mask_bit(Game.CollisionLayerIndex.STAIRS):
-			_player.set_collision_mask_bit(Game.CollisionLayerIndex.STAIRS, false)
-		get_tree().set_input_as_handled()
 
 func set_direction(d: int) -> void:
 	direction = d
@@ -316,9 +286,3 @@ func _on_tree_child_entered(node: Node) -> void:
 		if node.polygon.empty():
 			node.polygon = get_collision_points()
 			node.one_way_collision = true
-
-func _on_DetectionField_body(body: Node, entered: bool) -> void:
-	set_process_unhandled_key_input(entered)
-	set_process(entered)
-	_player = body
-	_player.set_collision_mask_bit(Game.CollisionLayerIndex.STAIRS, false)

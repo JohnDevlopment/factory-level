@@ -17,14 +17,6 @@ If a CollisionPolygon2D child is added (in the editor or scene), its collision p
 editor_draw_collision = false
 editor_draw_tiles = true
 
-[node name="DetectionField" type="Area2D" parent="."]
-modulate = Color( 0.00784314, 1, 0, 1 )
-light_mask = 0
-collision_layer = 0
-collision_mask = 4
-input_pickable = false
-monitorable = false
-
 [node name="TopPlatform" type="StaticBody2D" parent="."]
 light_mask = 0
 collision_layer = 2
@@ -40,6 +32,4 @@ collision_layer = 0
 collision_mask = 4
 monitorable = false
 
-[connection signal="body_entered" from="DetectionField" to="." method="_on_DetectionField_body" binds= [ true ]]
-[connection signal="body_exited" from="DetectionField" to="." method="_on_DetectionField_body" binds= [ false ]]
 [connection signal="body_entered" from="TopPlatform/DetectionArea" to="TopPlatform" method="_on_DetectionArea_body" binds= [ true ]]
