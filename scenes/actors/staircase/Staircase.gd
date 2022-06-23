@@ -30,7 +30,7 @@ var _player : Actor
 func _notification(what: int) -> void:
 	match what:
 		NOTIFICATION_READY:
-			set_collision_layer(Game.CollisionLayer.STAIRS)
+			set_collision_layer(Game.CollisionLayer.PLATFORMS)
 			set_collision_mask(0)
 			
 			if Engine.editor_hint:
