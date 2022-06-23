@@ -15,6 +15,7 @@ __meta__ = {
 If a CollisionPolygon2D child is added (in the editor or scene), its collision points are set automatically."
 }
 editor_draw_collision = false
+editor_draw_tiles = true
 
 [node name="DetectionField" type="Area2D" parent="."]
 modulate = Color( 0.00784314, 1, 0, 1 )
