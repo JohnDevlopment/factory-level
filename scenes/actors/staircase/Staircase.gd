@@ -82,6 +82,11 @@ func _notification(what: int) -> void:
 					Color(0.4, 0, 0.1, 0.7)
 				)
 
+func get_collision_points() -> PoolVector2Array:
+	var functions := PoolStringArray(['_get_collision_points_nonsteep',
+									'_get_collision_points_steep'])
+	return call(functions[steepness])
+	
 func set_direction(d: int) -> void:
 	direction = d
 	update()
@@ -114,11 +119,6 @@ func _get_collision_points_steep() -> PoolVector2Array:
 		Vector2(-height * TILE_SIZE.x, bottom)
 	])
 
-func get_collision_points() -> PoolVector2Array:
-	var functions := PoolStringArray(['_get_collision_points_nonsteep',
-									'_get_collision_points_steep'])
-	return call(functions[steepness])
-	
 func _get_collision_points_nonsteep() -> PoolVector2Array:
 	return PoolVector2Array([
 		Vector2(0, 1),
