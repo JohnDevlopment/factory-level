@@ -104,6 +104,13 @@ func _align_camera():
 	var player := Game.get_player()
 	var desired_rect = null
 	
+	# No region has been selected, so look for any level bounds rect
+	if not desired_rect is Rect2:
+		var level_bounds_rects := get_tree().get_nodes_in_group('level_bounds')
+		if level_bounds_rects.size():
+			var temp : Control = level_bounds_rects[0]
+			desired_rect = temp.get_rect()
+	
 	# Find which region the player is in, if any
 	for _rect in camera_rects:
 		var rect: Rect2 = _rect
@@ -113,13 +120,6 @@ func _align_camera():
 		if rect.has_point(player.global_position):
 			desired_rect = rect
 			break
-	
-	# No region has been selected, so look for any level bounds rect
-	if not desired_rect is Rect2:
-		var level_bounds_rects := get_tree().get_nodes_in_group('level_bounds')
-		if level_bounds_rects.size():
-			var temp : Control = level_bounds_rects[0]
-			desired_rect = temp.get_rect()
 	
 	# Set the player camera limits according to the chosen bounds of the level
 	if desired_rect:
