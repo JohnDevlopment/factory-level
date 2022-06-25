@@ -2,8 +2,15 @@ tool
 extends Enemy
 
 export var armored := false setget set_armored
+export var flipped := false
 
 func _ready():
+	direction.x = -1 if flipped else 1
+	$PositionSnapper.cast_to.x = 20 * direction.x
+	$PositionSnapper.position = Vector2(direction.x * 12, 6)
+	for node in [$Sprite, $CollisionShape2D, $Hurtbox/CollisionShape2D]:
+		node.scale.x = direction.x
+	
 	if Engine.editor_hint:
 		set_process(false)
 		set_physics_process(false)
