@@ -3,6 +3,7 @@
 [ext_resource path="res://scenes/components/HitboxHurtbox.gd" type="Script" id=1]
 
 [node name="DetectionField" type="Area2D"]
+modulate = Color( 0.243137, 0.913725, 0, 1 )
 light_mask = 0
 collision_layer = 0
 collision_mask = 0
