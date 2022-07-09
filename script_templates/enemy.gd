@@ -14,3 +14,9 @@ func _on_damaged(stats: Stats) -> void:
 
 func _should_damage() -> bool:
 	return true
+
+func _enable_actor(flag: bool) -> void:
+	pass
+
+func _enable_collision(flag: bool) -> void:
+	pass
