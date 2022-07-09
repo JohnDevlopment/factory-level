@@ -63,6 +63,7 @@ func enable_collision(flag: bool) -> void:
 	else:
 		collision_layer = get_meta('collision_layer')
 		collision_mask = get_meta('collision_mask')
+	call('_enable_collision', flag)
 
 ## Returns the center of the actor
 # @virtual
@@ -147,3 +148,10 @@ func _snap_to_ground():
 	var collision := move_and_collide(relvec, false, true)
 	if is_instance_valid(collision):
 		move_and_collide(collision.remainder)
+
+## Override this function to customize @function enable_collision().
+# @virtual
+# @desc    This function is called at the end of @function enable_collision().
+#          You can override this function to customize it.
+func _enable_collision(_flag: bool) -> void:
+	pass
