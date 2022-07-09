@@ -1,0 +1,45 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=5]
+script/source = "tool
+extends RayCast2D
+
+export var _normalize := false setget normalize
+export var normalized_vector := Vector2.UP
+
+export(Font) var draw_font
+export var draw_color : Color
+
+export var snap := 0.01
+
+func normalize(_a):
+	if not cast_to.is_normalized():
+		normalized_vector = cast_to.normalized()
+		update()
+
+func _draw() -> void:
+	var font = draw_font
+	if not font:
+		var label := Label.new()
+		draw_font = label.get_font('')
+		label.free()
+	
+	if Engine.editor_hint and draw_font:
+		draw_string(
+			draw_font,
+			Vector2(),
+			\"normal.raw: %s\" % [normalized_vector],
+			draw_color
+		)
+		draw_string(
+			draw_font,
+			Vector2(0, 16),
+			\"normal.snapped: %s\" % [normalized_vector.snapped(Vector2(snap, snap))],
+			draw_color
+		)
+"
+
+[node name="NormalVector" type="RayCast2D"]
+collision_mask = 0
+collide_with_bodies = false
+script = SubResource( 5 )
