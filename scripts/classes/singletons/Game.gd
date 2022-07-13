@@ -65,7 +65,8 @@ const PLAYER_HURT_METHOD := 'hurt'
 
 const VFX_PATHS := {
 	robot_explosion = 'res://scenes/vfx/RobotExplosion.tscn',
-	armor_break = 'res://scenes/vfx/SwitchRobotArmorBreak.tscn'
+	armor_break = 'res://scenes/vfx/SwitchRobotArmorBreak.tscn',
+	explosion = 'res://scenes/vfx/Explosion.tscn'
 }
 
 const DIVISIONS := 12
