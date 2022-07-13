@@ -21,8 +21,9 @@ const GRAVITY_STEP: float = 13.4
 
 ## Speed cap of the actor
 # @type   Vector2
-# @desc   The max speed of the actor. As this property is not acted upon in @class Actor, it is
-#         up to the programmer whether to use it. That being said, it is meant to be used to
+# @desc   The max speed of the actor. As this property
+#         is not acted upon in @class Actor, it is up to the programmer
+#         whether to use it. That being said, it is meant to be used to
 #         cap the actor's speed, hence the name.
 var speed_cap := Vector2()
 
