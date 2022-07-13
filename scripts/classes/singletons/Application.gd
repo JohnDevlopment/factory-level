@@ -11,8 +11,10 @@ static func get_screen_size() -> Vector2:
 	)
 
 static func print_fields(fields: Array) -> void:
+	print("{")
 	for i in fields:
-		print(i.name, " = ", i.value)
+		print("\t%s = %s" % [i.name, i.value])
+	print("}")
 
 func _exit(error_info: ErrorInfo) -> void:
 	if error_info.code: error_info.print()
