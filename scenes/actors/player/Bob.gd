@@ -118,6 +118,9 @@ func deserialize(data: Dictionary) -> void:
 func get_bottom_edge() -> Vector2:
 	return global_position + Vector2(0, 16)
 
+func get_center() -> Vector2:
+	return global_position + Vector2(0, 2.5)
+
 func hurt(area: Area2D, speed: Vector2 = Vector2(100, 200)) -> void:
 	# Collided with enemy hitbox
 	if states.current_state() == STATE_HURT: return
