@@ -32,6 +32,10 @@ var speed_cap := Vector2()
 # @desc  This is the margin for the actor to snap to a colliding body, usually the floor or a platform.
 var snap_length := 1.0
 
+## Whether gravity is enabled.
+# @type bool
+var gravity_enabled := true
+
 onready var gravity_value: float = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 var velocity: = Vector2.ZERO
@@ -103,6 +107,8 @@ func _set(property, value):
 			speed_cap = value
 		"snap_length":
 			snap_length = value
+		"gravity_enabled":
+			gravity_enabled = value
 		_:
 			return false
 	return true
@@ -113,6 +119,8 @@ func _get(property):
 			return speed_cap
 		"snap_length":
 			return snap_length
+		"gravity_enabled":
+			return gravity_enabled
 
 func _get_property_list():
 	return [
@@ -137,11 +145,17 @@ func _get_property_list():
 			name = "disabled",
 			type = TYPE_BOOL,
 			usage = PROPERTY_USAGE_DEFAULT
+		},
+		{
+			name = "gravity_enabled",
+			type = TYPE_BOOL,
+			usage = PROPERTY_USAGE_DEFAULT
 		}
 	]
 
 func _physics_process(_delta):
-	velocity.y = move_toward(velocity.y, gravity_value, GRAVITY_STEP)
+	if gravity_enabled:
+		velocity.y = move_toward(velocity.y, gravity_value, GRAVITY_STEP)
 
 func _snap_to_ground():
 	var length : float = max(snap_length, get_safe_margin())
