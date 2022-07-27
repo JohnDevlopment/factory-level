@@ -1,0 +1,131 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://addons/behavior_tree/src/behavior_tree.gd" type="Script" id=1]
+[ext_resource path="res://addons/behavior_tree/src/btnodes/composites/bt_state_selector.gd" type="Script" id=2]
+[ext_resource path="res://scenes/actors/enemies/laser_robot/Aim.gd" type="Script" id=3]
+[ext_resource path="res://addons/behavior_tree/src/btnodes/leaves/bt_wait.gd" type="Script" id=4]
+[ext_resource path="res://addons/behavior_tree/src/btnodes/composites/bt_sequence.gd" type="Script" id=5]
+[ext_resource path="res://scenes/actors/enemies/laser_robot/ShootLaser.gd" type="Script" id=6]
+[ext_resource path="res://scenes/actors/enemies/laser_robot/RaycastPlayer.gd" type="Script" id=7]
+[ext_resource path="res://addons/behavior_tree/src/btnodes/leaves/bt_change_state.gd" type="Script" id=8]
+[ext_resource path="res://addons/behavior_tree/src/btnodes/composites/bt_selector.gd" type="Script" id=9]
+[ext_resource path="res://scenes/actors/enemies/laser_robot/ResetPosition.gd" type="Script" id=10]
+[ext_resource path="res://scenes/actors/enemies/laser_robot/RotateHead.gd" type="Script" id=11]
+[ext_resource path="res://scenes/actors/enemies/laser_robot/SetAimTime.gd" type="Script" id=12]
+[ext_resource path="res://addons/behavior_tree/src/btnodes/decorators/bt_guard.gd" type="Script" id=13]
+[ext_resource path="res://scenes/actors/enemies/laser_robot/MeasureAimDelay.gd" type="Script" id=14]
+[ext_resource path="res://addons/behavior_tree/src/btnodes/decorators/bt_always.gd" type="Script" id=15]
+[ext_resource path="res://scenes/actors/enemies/laser_robot/DoIShoot.gd" type="Script" id=16]
+
+[node name="AI" type="Node"]
+script = ExtResource( 1 )
+sync_mode = 1
+
+[node name="BTStateSelector" type="Node" parent="."]
+script = ExtResource( 2 )
+
+[node name="AimState" type="Node" parent="BTStateSelector"]
+script = ExtResource( 5 )
+
+[node name="BTAlways" type="Node" parent="BTStateSelector/AimState"]
+script = ExtResource( 15 )
+always_what = 1
+
+[node name="BTGuard" type="Node" parent="BTStateSelector/AimState/BTAlways"]
+script = ExtResource( 13 )
+lock_if = 1
+_unlocker = NodePath("../../MeasureAimDelay")
+unlock_if = 1
+
+[node name="BTSequence" type="Node" parent="BTStateSelector/AimState/BTAlways/BTGuard"]
+script = ExtResource( 5 )
+
+[node name="Aim" type="Node" parent="BTStateSelector/AimState/BTAlways/BTGuard/BTSequence"]
+script = ExtResource( 3 )
+__meta__ = {
+"_editor_description_": "Sets bb 'aim_angle' to the robot's angle to the player."
+}
+
+[node name="SetAimTime" type="Node" parent="BTStateSelector/AimState/BTAlways/BTGuard/BTSequence"]
+script = ExtResource( 12 )
+__meta__ = {
+"_editor_description_": "Sets bb 'aim_time' to a random value.
+Sets bb 'aim_speed' to the d / t, where d = the angle delta, and t = bb 'aim_time'."
+}
+
+[node name="RotateHead" type="Node" parent="BTStateSelector/AimState"]
+script = ExtResource( 11 )
+__meta__ = {
+"_editor_description_": "Interpolates the angle of the head toward bb 'angle'."
+}
+
+[node name="MeasureAimDelay" type="Node" parent="BTStateSelector/AimState"]
+script = ExtResource( 14 )
+__meta__ = {
+"_editor_description_": "Decrements bb 'aim_time' to zero. Succeeds once the timer reaches zero."
+}
+
+[node name="NextState" type="Node" parent="BTStateSelector/AimState"]
+script = ExtResource( 8 )
+next_state = 1
+
+[node name="ShootState" type="Node" parent="BTStateSelector"]
+script = ExtResource( 5 )
+__meta__ = {
+"_editor_description_": "Shoot the laser and then go to the cooldown state."
+}
+
+[node name="RaycastPlayer" type="Node" parent="BTStateSelector/ShootState"]
+script = ExtResource( 7 )
+__meta__ = {
+"_editor_description_": "Sets bb 'raycast/colliding' to true/false depending on whether the raycast collided with something.
+Always succeeds."
+}
+
+[node name="BTChangeState" type="Node" parent="BTStateSelector/ShootState"]
+script = ExtResource( 8 )
+next_state = 2
+
+[node name="DoIShoot" type="Node" parent="BTStateSelector/ShootState"]
+script = ExtResource( 16 )
+__meta__ = {
+"_editor_description_": "Evaluates to true if the robot should shoot."
+}
+
+[node name="ShootLaser" type="Node" parent="BTStateSelector/ShootState/DoIShoot"]
+script = ExtResource( 6 )
+__meta__ = {
+"_editor_description_": "Spawns a laser and calls its `launch' method, 
+* Uses bb 'spawn_point' as the spawning point
+* Uses bb 'aim_angle' to rotate the sprite"
+}
+
+[node name="_Cooldown" type="Node" parent="BTStateSelector/ShootState"]
+script = ExtResource( 4 )
+is_active = false
+wait_time = 2.7
+
+[node name="CooldownState" type="Node" parent="BTStateSelector"]
+script = ExtResource( 5 )
+
+[node name="BTChangeState" type="Node" parent="BTStateSelector/CooldownState"]
+script = ExtResource( 8 )
+
+[node name="BTWait" type="Node" parent="BTStateSelector/CooldownState"]
+script = ExtResource( 4 )
+wait_time = 2.7
+
+[node name="ResetState" type="Node" parent="BTStateSelector"]
+script = ExtResource( 9 )
+is_active = false
+
+[node name="ResetPosition" type="Node" parent="BTStateSelector/ResetState"]
+script = ExtResource( 10 )
+
+[node name="BTWait" type="Node" parent="BTStateSelector/ResetState"]
+script = ExtResource( 4 )
+wait_time = 2.0
+
+[node name="BTChangeState" type="Node" parent="BTStateSelector/ResetState"]
+script = ExtResource( 8 )
+abort_tree = true
