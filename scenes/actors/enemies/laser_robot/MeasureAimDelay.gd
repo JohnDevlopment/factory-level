@@ -9,8 +9,6 @@ func _tick(_agent: Node, blackboard: Blackboard) -> bool:
 	blackboard.set_data('aim_time', delay)
 	
 	if is_zero_approx(delay):
-		if debug:
-			print('DEBUG: Aim delay counter depleted')
 		return succeed()
 	
 	return fail()

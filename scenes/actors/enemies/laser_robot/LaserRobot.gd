@@ -20,11 +20,9 @@ func _ready():
 	stats.init_stats(self)
 	
 	# Set direction
-	direction.x = -1 if flipped else 1
-	$Head.scale.x = direction.x
-	$Pole.scale.x = direction.x
-	$DetectionField/CollisionShape2D.position.x = 73 if flipped else -61
-	$Hurtbox.position.x = 9.5
+	direction.x = 1 if flipped else -1
+	
+	call_deferred('_flip_actor')
 	
 	if Game.has_player():
 		enable_actor(true)
@@ -32,10 +30,20 @@ func _ready():
 		_enable_actor(false)
 		enable_collision(false)
 	
-	blackboard.set_data('direction', -direction.x)
+	blackboard.set_data('direction', direction.x)
 	blackboard.set_data('raycast', detect_player)
 	blackboard.set_data('raycast/cast_to', detect_player.cast_to * direction.x)
 	blackboard.set_data('spawn_point', $'%SpawnPoint')
+
+func _flip_actor() -> void:
+	var play_if_flipped = $PlayIfFlipped
+	
+	# Play a certain animation if facing right
+	if flipped:
+		play_if_flipped.play('AlignFlipped')
+		yield(play_if_flipped, 'animation_finished')
+	
+	play_if_flipped.queue_free()
 
 func _enable_actor(flag: bool) -> void:
 	set_physics_process(flag)
@@ -62,7 +70,7 @@ func _physics_process(_delta: float) -> void:
 func _target_player(offset: Vector2 = Vector2()):
 	var a : Vector2 = global_position
 	var b : Vector2 = Game.get_player().get_center() + offset
-	var c : Vector2 = ((b - a) if direction.x < 0 else (a - b)).normalized()
+	var c : Vector2 = ((b - a) if direction.x > 0 else (a - b)).normalized()
 	
 	var angle : float = c.angle()
 	if not Math.is_in_range(angle, -ANGLE_THRESHOLD, ANGLE_THRESHOLD) \
@@ -80,8 +88,9 @@ func _on_screen_visibility(flag: bool) -> void:
 	_enable_actor(flag and Game.has_player())
 
 func _on_DetectionField_body_entered(_body: Node) -> void:
+	blackboard.set_data('abort_tree', false)
 	ai.is_active = true
 	ai.start()
 
 func _on_DetectionField_body_exited(_body: Node) -> void:
-	ai.abort()
+	blackboard.set_data('abort_tree', true)
