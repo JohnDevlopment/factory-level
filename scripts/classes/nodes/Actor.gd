@@ -41,6 +41,7 @@ onready var gravity_value: float = ProjectSettings.get_setting("physics/2d/defau
 var velocity: = Vector2.ZERO
 
 var _enabled := true
+var _debug_autodelete := false
 
 ## Enable/disable the @class Actor
 # @desc  Call this function to enable or disable the actor.
@@ -87,6 +88,10 @@ func _ready() -> void:
 		set_physics_process(false)
 		set_process(false)
 		return
+	if _debug_autodelete:
+		#enable_actor(false)
+		queue_free()
+		return
 	call_deferred('_snap_to_ground')
 	set_meta('gravity', gravity_value)
 
@@ -109,6 +114,8 @@ func _set(property, value):
 			snap_length = value
 		"gravity_enabled":
 			gravity_enabled = value
+		"debug_autodelete":
+			_debug_autodelete = value
 		_:
 			return false
 	return true
@@ -121,6 +128,8 @@ func _get(property):
 			return snap_length
 		"gravity_enabled":
 			return gravity_enabled
+		"debug_autodelete":
+			return _debug_autodelete
 
 func _get_property_list():
 	return [
@@ -148,6 +157,17 @@ func _get_property_list():
 		},
 		{
 			name = "gravity_enabled",
+			type = TYPE_BOOL,
+			usage = PROPERTY_USAGE_DEFAULT
+		},
+		{
+			name = "debug",
+			type = TYPE_NIL,
+			usage = PROPERTY_USAGE_GROUP | PROPERTY_USAGE_SCRIPT_VARIABLE,
+			hint_string = "debug_"
+		},
+		{
+			name = "debug_autodelete",
 			type = TYPE_BOOL,
 			usage = PROPERTY_USAGE_DEFAULT
 		}
