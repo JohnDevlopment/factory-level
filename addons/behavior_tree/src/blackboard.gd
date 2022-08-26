@@ -26,6 +26,9 @@ func _ready() -> void :
 
 func set_data(key: String, value) -> void:
 	data[key] = value
+	if value == null:
+		if key in data:
+			data.erase(key)
 
 
 func get_data(key: String):
