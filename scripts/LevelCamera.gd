@@ -3,12 +3,15 @@ extends Camera2D
 const TakeScreenshot = preload('res://scenes/components/TakeScreenshot.tscn')
 
 export var velocity := Vector2(1, 1)
+export var delete_player := false
 
 var _intvel := Vector2()
 
 func _ready() -> void:
 	if Game.has_player():
 		var player = Game.get_player()
+		if delete_player and not player.is_queued_for_deletion():
+			player.queue_free()
 		assert(player.is_queued_for_deletion(),
 			"Player and level camera cannot exist in the same scene")
 	make_current()

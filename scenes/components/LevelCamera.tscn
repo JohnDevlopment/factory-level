@@ -4,3 +4,15 @@
 
 [node name="LevelCamera" type="Camera2D"]
 script = ExtResource( 1 )
+__meta__ = {
+"_editor_description_": "A camera that scrolls in 8 directions. Cannot be in the same scene as the player.
+Options:
+	velocity <Vector2> -- camera scrolling speed
+	delay <float> -- if > 0, delays the _ready function
+Controls:
+	UP, LEFT, DOWN, RIGHT -- scrolls the camera at the specified VELOCITY
+	PAGE UP -- each time it is pressed, zooms the camera out
+	PAGE DOWN -- each time it is pressed, zooms the camera in
+	HOME -- resets the zoom factor
+	DEBUG -- takes a screenshot and saves it to file"
+}
