@@ -12,7 +12,7 @@ radius = 14.0357
 
 [node name="EnergyBall" type="KinematicBody2D" groups=["energy_ball", "pickable"]]
 collision_layer = 8
-collision_mask = 275
+collision_mask = 19
 script = ExtResource( 1 )
 __meta__ = {
 "collision_layer": 8,
@@ -23,6 +23,8 @@ throw_force = 190.8
 speed_cap = Vector2( 0, 0 )
 snap_length = 1.0
 disabled = null
+gravity_enabled = true
+debug_autodelete = false
 
 [node name="Frames" type="Sprite" parent="."]
 texture = ExtResource( 2 )
