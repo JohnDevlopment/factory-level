@@ -514,6 +514,7 @@ speed_cap = Vector2( 75, 300 )
 snap_length = 5.0
 disabled = null
 gravity_enabled = true
+debug_autodelete = false
 
 [node name="Frames" type="Sprite" parent="."]
 texture = ExtResource( 2 )

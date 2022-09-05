@@ -16,7 +16,7 @@ collision_mask = 19
 script = ExtResource( 1 )
 __meta__ = {
 "collision_layer": 8,
-"collision_mask": 275
+"collision_mask": 19
 }
 neccessary_velocity = Vector2( 100, 130 )
 throw_force = 190.8

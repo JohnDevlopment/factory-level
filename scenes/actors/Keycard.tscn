@@ -21,6 +21,8 @@ __meta__ = {
 speed_cap = Vector2( 0, 0 )
 snap_length = 1.0
 disabled = null
+gravity_enabled = true
+debug_autodelete = false
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 3 )

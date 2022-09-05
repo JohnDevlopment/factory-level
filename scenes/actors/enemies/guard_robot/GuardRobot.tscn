@@ -42,6 +42,8 @@ stats = SubResource( 1 )
 speed_cap = Vector2( 75, 0 )
 snap_length = 3.0
 disabled = null
+gravity_enabled = true
+debug_autodelete = false
 
 [node name="Frames" type="AnimatedSprite" parent="."]
 frames = ExtResource( 2 )
