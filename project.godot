@@ -321,7 +321,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Factory Level"
-run/main_scene="res://Title.tscn"
+run/main_scene="res://scenes/levels/assembly_line/Section1_Room2.tscn"
 config/icon="res://icon.png"
 
 [autoload]
