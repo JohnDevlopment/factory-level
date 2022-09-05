@@ -333,6 +333,7 @@ Math="*res://scripts/classes/singletons/Math.gd"
 TransitionRect="*res://scenes/autoloads/TransitionRect.tscn"
 SceneSwitcher="*res://scenes/autoloads/SceneSwitcher.tscn"
 Anima="*res://addons/anima/core/anima.gd"
+Application="*res://scripts/classes/singletons/Application.gd"
 
 [debug]
 
