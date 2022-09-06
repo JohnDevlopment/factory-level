@@ -3,6 +3,7 @@ extends Actor
 
 signal transition_finished(rect)
 signal transition_started()
+signal player_dead()
 
 enum { STATE_IDLE, STATE_RUN, STATE_CLIMB, STATE_HURT, STATE_SCREENTRANS }
 
@@ -139,6 +140,11 @@ func hurt(area: Area2D, speed: Vector2 = Vector2(100, 200)) -> void:
 	var damage = stats.calculate_damage(other.stats)
 	if damage:
 		stats.health = int(max(0, stats.health - damage))
+		if not stats.health:
+			print("dead")
+			enable_collision(false)
+			call_deferred('_make_still_camera')
+			$DeathTimer.start()
 
 func serialize() -> Dictionary:
 	return {
@@ -164,6 +170,11 @@ func update_velocity(delta: float) -> Vector2:
 		velocity.x = move_toward(velocity.x, 0, 300 * delta)
 	
 	return velocity
+
+# internal functions
+
+func _make_still_camera() -> void:
+	$Camera2D.clear_current()
 
 #signals
 
@@ -199,3 +210,7 @@ func _on_States_state_signal(spec: String, args: Array) -> void:
 			emit_signal('transition_finished', rect)
 		'transition_started':
 			emit_signal('transition_started')
+
+func _on_DeathTimer_timeout() -> void:
+	emit_signal('player_dead')
+	queue_free()
