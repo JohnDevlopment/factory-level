@@ -12,15 +12,19 @@ var editor_draw := false setget set_editor_draw
 
 func _ready() -> void:
 	if Engine.editor_hint: return
+	
 	# connect level exits
 	for node in get_tree().get_nodes_in_group('exits'):
 		node.connect_exit(self, '_on_Room_Exit_go_to_scene')
+		
 	# connect doors
 	for node in get_tree().get_nodes_in_group('doors'):
 		node.connect_exit(self, '_on_door_go_to_scene')
+		
 	# provide screen transition rects with the camera rects
 	for tr in get_tree().get_nodes_in_group('screen_transitions'):
 		tr.set_camera_regions(camera_rects)
+		
 	# check if there is an entrance defined
 	if Game.has_player():
 		var level_entrance = Game.level_entrance
@@ -30,10 +34,12 @@ func _ready() -> void:
 				var player := Game.get_player()
 				player.global_position = node.global_position
 		call_deferred('_align_camera')
+		
 		# Connect player signals
 		var player = Game.get_player()
 		player.connect('transition_finished', self, '_on_player_transition_finished')
 		player.connect('transition_started', self, '_on_player_transition_started')
+		player.connect('player_dead', self, '_on_player_dead')
 	if is_inside_tree():
 		_fade_in()
 
@@ -174,3 +180,15 @@ func _on_player_transition_finished(rect: Rect2) -> void:
 
 func _on_player_transition_started() -> void:
 	_clear_invisible_walls()
+
+func _on_player_dead() -> void:
+	var root := get_viewport()
+	assert(root == get_tree().root)
+	
+	# Instance the gameover screen
+	var GameOverScreen := preload('res://scenes/GameOverScreen.tscn')
+	var gms := GameOverScreen.instance()
+	gms.music_playing = true
+	gms.previous_scene = filename
+	root.add_child(gms)
+	gms.fade_in()
