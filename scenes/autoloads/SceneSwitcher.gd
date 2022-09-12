@@ -41,7 +41,8 @@ func add_node_data(node: Node, function: String = 'serialize') -> void:
 # @desc Changes the scene to the one identified by @a scene, which must be an
 #       absolute path to a packed scene.
 #
-#       Returns @constant OK (0) if the switch is successful, and any other value on failure.
+#       Returns @constant OK (0) if the switch is successful, and any other
+#       value on failure.
 func change_scene(scene: String, opt: Dictionary = {}) -> int:
 	set_options(opt)
 	return _load_scene(scene, 'change_scene_to')
@@ -49,7 +50,8 @@ func change_scene(scene: String, opt: Dictionary = {}) -> int:
 ## Change scenes.
 # @desc Changes the scene to @a scene.
 #
-#       Returns @constant OK (0) if the switch is successful, and any other value on failure.
+#       Returns @constant OK (0) if the switch is successful,
+#       and any other value on failure.
 func change_scene_to(scene: PackedScene) -> int:
 	var node : Node
 	if is_instance_valid(scene):
@@ -64,6 +66,13 @@ func set_options(opt: Dictionary) -> void:
 	options = opt
 	if not 'save_nodes' in options:
 		options['save_nodes'] = {}
+	
+	var metadata := {}
+	for key in options:
+		if key != 'save_nodes':
+			metadata[key] = options[key]
+			options.erase(key)
+	options['metadata'] = metadata
 
 func _change_scene(new_root: Node) -> void:
 	var tree := get_tree()
@@ -96,6 +105,11 @@ func _change_scene(new_root: Node) -> void:
 		if not is_instance_valid(node): continue
 		var node_data : Dictionary = options.save_nodes[_node]
 		node.call(node_data.get('deserialize_function', 'deserialize'), node_data)
+	
+	# set metadata for the new node
+	var metadata : Dictionary = options.metadata
+	for key in metadata:
+		new_root.set_meta(key, metadata[key])
 	
 	# cleanup
 	set_options({})
