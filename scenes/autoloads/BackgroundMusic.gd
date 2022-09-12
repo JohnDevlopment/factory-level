@@ -3,13 +3,6 @@
 # @singleton
 extends AudioStreamPlayer
 
-## A list of songs each mapped to a name.
-# @type Dictionary
-# @desc  This holds a bunch of songs, mapping each name of a file relative
-#        to @constant MUSIC_PATH. Each call to @function play_music() is expects
-#        a key from this dictionary.
-export(Dictionary) var songs
-
 ## Path to the music folder
 # @type String
 const MUSIC_PATH := "res://assets/audio/music"
@@ -35,13 +28,8 @@ func fade_out(duration: float) -> void:
 #        and is greater than zero, marks the position in the song (in seconds) to start
 #        playback.
 func play_music(song: String, position: float = 0.0) -> void:
-	var audio_stream = songs.get(song)
-	
-	if not(song in songs):
-		push_error("No song named \"%s\" exists in the list" % song)
-		return
-	var path := str(MUSIC_PATH, '/', audio_stream as String)
-	audio_stream = load(path)
+	var path := str(MUSIC_PATH, '/', song)
+	var audio_stream = load(path)
 	if audio_stream == null: return
 	stream = audio_stream as AudioStream
 	play(position)
