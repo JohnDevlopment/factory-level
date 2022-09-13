@@ -5,21 +5,23 @@ export(float, 0.6, 2.0, 0.1) var delay : float
 var _substate : int
 var _destination : float
 
+func _accelerate() -> void:
+	# Acclerate velocity
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tween.tween_property(
+		persistant_state,
+		'velocity:x',
+		user_data.charge_speed,
+		0.5
+	)
+	yield(tween, 'finished')
+	user_data.hitbox.disabled = false
+
 func _setup() -> void:
 	user_data.frames.play('Move')
-	user_data.hitbox.disabled = false
 	(user_data.beep as AudioStreamPlayer2D).play()
-	
-	# Acclerate velocity
-	var anima := Anima.begin(self)
-	anima.then({
-		node = persistant_state,
-		property = 'velocity:x',
-		to = user_data.charge_speed,
-		easing = Anima.EASING.EASE_IN_CUBIC,
-		duration = 0.5
-	})
-	anima.play()
+	_accelerate()
 	
 	_substate = 0
 	

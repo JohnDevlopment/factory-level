@@ -4,6 +4,7 @@ extends Enemy
 export(float, 45.0, 1000, 0.1) var detection_radius := 45.0 setget set_detection_radius
 export var face_right := false
 export var spawn_key := false
+export var charge_speed := 75.0
 
 enum {STATE_IDLE, STATE_CHARGE, STATE_MOVEBACK, STATE_COOLDOWN}
 
@@ -41,7 +42,7 @@ func _ready() -> void:
 		frames = $Frames,
 		initial_position = global_position,
 		cintp = CubicInterpolator.new(),
-		charge_speed = speed_cap.x * direction.x,
+		charge_speed = direction.x * charge_speed,
 		distance = detection_radius,
 		hitbox = $Hitbox,
 		beep = $BeepSound,
