@@ -50,6 +50,12 @@ func calculate_damage(other_stats: Stats) -> int:
 #		return get_meta(name)
 #	return default
 
+func _init(data := {}) -> void:
+	var keys := PoolStringArray(['max_health', 'max_mana', 'attack', 'defense'])
+	for key in keys:
+		if key in data:
+			set(key, data[key])
+
 ## Initialize the stats of the @a owner.
 # @desc This should be called either when the owner is ready or when it enters
 #       scene tree. @a owner is, as implied, the actor that owns these stats.
