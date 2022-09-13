@@ -14,15 +14,15 @@ func launch(location: Vector2, direction: float, angle: float) -> void:
 	$Frames.play('Charge')
 	yield($Frames, 'animation_finished')
 	velocity = linvel.rotated(angle)
+	$CollisionShape2D.set_deferred('disabled', false)
 
 func _physics_process(delta: float) -> void:
 	if move_and_collide(velocity * delta, false):
-		_on_Hitbox_body_entered(null)
+		_explode()
 
 func _on_VisibilityNotifier2D_screen_exited() -> void:
 	queue_free()
 
-func _on_Hitbox_body_entered(_body: Node) -> void:
-	enable_actor(false)
-	queue_free()
+func _explode() -> void:
 	Game.spawn_vfx(get_parent(), self, 'explosion', global_position)
+	queue_free()
